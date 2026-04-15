@@ -4,11 +4,25 @@ const activityForm = document.getElementById("activityForm");
 const activityList = document.getElementById("activityList");
 const userLabel = document.getElementById("userLabel");
 const logoutBtn = document.getElementById("logoutBtn");
+const activityCount = document.getElementById("activityCount");
 
 const session = requireAuth("admin");
 if (!session) {
   throw new Error("Sessao invalida para area de administracao.");
 }
+
+const modal = window.ZenifyModals.create({
+  modalId: "feedbackModal",
+  titleId: "modalTitle",
+  bodyId: "modalBody",
+  closeId: "modalCloseBtn",
+});
+
+window.ZenifyViews.init({
+  selectorButtons: "[data-view-target]",
+  selectorViews: "[data-view]",
+  activeClass: "bg-indigo-600",
+});
 
 userLabel.textContent = `${session.name} (${session.role})`;
 logoutBtn.addEventListener("click", () => {
@@ -35,6 +49,7 @@ function setActivities(data) {
 function renderActivities() {
   const activities = getActivities();
   activityList.innerHTML = "";
+  activityCount.textContent = String(activities.length);
 
   activities.forEach((activity) => {
     const item = document.createElement("li");
@@ -64,6 +79,12 @@ activityForm.addEventListener("submit", (event) => {
   setActivities(activities);
   activityForm.reset();
   renderActivities();
+  if (modal) {
+    modal.show({
+      heading: "Atividade criada",
+      message: "A nova atividade foi adicionada com sucesso.",
+    });
+  }
 });
 
 activityList.addEventListener("click", (event) => {
@@ -76,6 +97,12 @@ activityList.addEventListener("click", (event) => {
   const activities = getActivities().filter((activity) => activity.id !== id);
   setActivities(activities);
   renderActivities();
+  if (modal) {
+    modal.show({
+      heading: "Atividade removida",
+      message: "A atividade selecionada foi removida da lista.",
+    });
+  }
 });
 
 renderActivities();
