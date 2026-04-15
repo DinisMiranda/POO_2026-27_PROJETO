@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zenify | Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-100 text-slate-800">
+    <main class="mx-auto mt-12 max-w-md rounded-xl bg-white p-6 shadow">
+      <h1 class="mb-1 text-2xl font-semibold">Criar conta</h1>
+      <p class="mb-5 text-sm text-slate-600">Escolhe o teu tipo de utilizador e regista-te.</p>
+
+      <form id="registerForm" class="space-y-4">
+        <div>
+          <label class="mb-1 block text-sm font-medium" for="name">Nome</label>
+          <input id="name" name="name" required class="w-full rounded-md border border-slate-300 px-3 py-2" />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm font-medium" for="email">Email</label>
+          <input id="email" name="email" type="email" required class="w-full rounded-md border border-slate-300 px-3 py-2" />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm font-medium" for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            minlength="6"
+            required
+            class="w-full rounded-md border border-slate-300 px-3 py-2"
+          />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm font-medium" for="role">Tipo de conta</label>
+          <select id="role" name="role" class="w-full rounded-md border border-slate-300 px-3 py-2">
+            <option value="user">Utilizador</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+        <p id="registerError" class="hidden rounded bg-rose-50 p-2 text-sm text-rose-700"></p>
+        <button class="w-full rounded-md bg-emerald-600 px-4 py-2 font-medium text-white" type="submit">Registar</button>
+      </form>
+
+      <p class="mt-4 text-sm">
+        Ja tens conta?
+        <a class="font-semibold text-indigo-700" href="login.html">Entrar</a>
+      </p>
+    </main>
+
+    <script src="src/js/auth.js"></script>
+    <script src="src/js/register.js"></script>
+  </body>
+</html>
