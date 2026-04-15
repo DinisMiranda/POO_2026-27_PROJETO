@@ -2,6 +2,19 @@ const STORAGE_KEY = "zenify_admin_activities";
 
 const activityForm = document.getElementById("activityForm");
 const activityList = document.getElementById("activityList");
+const userLabel = document.getElementById("userLabel");
+const logoutBtn = document.getElementById("logoutBtn");
+
+const session = requireAuth("admin");
+if (!session) {
+  throw new Error("Sessao invalida para area de administracao.");
+}
+
+userLabel.textContent = `${session.name} (${session.role})`;
+logoutBtn.addEventListener("click", () => {
+  clearSession();
+  window.location.href = "login.html";
+});
 
 const defaultActivities = [
   { id: 1, title: "Respiracao 4-4", type: "respiracao" },

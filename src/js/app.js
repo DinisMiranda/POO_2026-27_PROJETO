@@ -11,6 +11,19 @@ const streakValue = document.getElementById("streakValue");
 const badgeValue = document.getElementById("badgeValue");
 const breathingBtn = document.getElementById("breathingBtn");
 const breathingStatus = document.getElementById("breathingStatus");
+const userLabel = document.getElementById("userLabel");
+const logoutBtn = document.getElementById("logoutBtn");
+
+const session = requireAuth("user");
+if (!session) {
+  throw new Error("Sessao invalida para area de utilizador.");
+}
+
+userLabel.textContent = `${session.name} (${session.role})`;
+logoutBtn.addEventListener("click", () => {
+  clearSession();
+  window.location.href = "login.html";
+});
 
 function getCheckIns() {
   return JSON.parse(localStorage.getItem(STORAGE_KEYS.checkIns) || "[]");

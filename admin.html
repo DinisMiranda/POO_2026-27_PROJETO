@@ -10,7 +10,10 @@
     <header class="bg-white shadow-sm">
       <nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
         <a class="text-xl font-bold text-indigo-700" href="index.html">Zenify</a>
-        <a class="rounded-md border border-slate-300 px-4 py-2" href="app.html">Area utilizador</a>
+        <div class="flex items-center gap-3">
+          <span id="userLabel" class="text-sm text-slate-600"></span>
+          <button id="logoutBtn" class="rounded-md border border-slate-300 px-4 py-2" type="button">Logout</button>
+        </div>
       </nav>
     </header>
 
@@ -39,6 +42,7 @@
       </section>
     </main>
 
+    <script src="src/js/auth.js"></script>
     <script src="src/js/admin.js"></script>
   </body>
 </html>
