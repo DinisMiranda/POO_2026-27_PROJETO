@@ -12,7 +12,7 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
 
 - `index.html` - pagina publica (visitante)
 - `login.html` - autenticacao de utilizadores existentes
-- `register.html` - criacao de conta com role (`user` ou `admin`)
+- `register.html` - criacao de conta de utilizador (`user`)
 - `app.html` - area pessoal do utilizador autenticado
 - `admin.html` - painel base de administrador
 - `src/js/auth.js` - registo, login, sessao e controlo de acesso por role
@@ -31,6 +31,8 @@ Credenciais admin seeded:
 
 - email: `admin@zenify.local`
 - password: `admin123`
+
+Nota: contas de administrador sao pre-definidas e nao podem ser criadas no formulario de registo.
 
 ```bash
 npx json-server --watch mock/db.json --port 3000

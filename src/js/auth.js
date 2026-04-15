@@ -31,6 +31,10 @@ function clearSession() {
 }
 
 function registerUser({ name, email, password, role }) {
+  if (role !== "user") {
+    return { ok: false, message: "Nao e permitido criar contas de administrador." };
+  }
+
   const users = getUsers();
   const alreadyExists = users.some((user) => user.email.toLowerCase() === email.toLowerCase());
   if (alreadyExists) return { ok: false, message: "Ja existe uma conta com este email." };
