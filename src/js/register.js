@@ -8,7 +8,7 @@ registerForm.addEventListener("submit", (event) => {
   const name = String(formData.get("name") || "").trim();
   const email = String(formData.get("email") || "").trim();
   const password = String(formData.get("password") || "");
-  const role = String(formData.get("role") || "user");
+  const role = "user";
 
   const result = registerUser({ name, email, password, role });
   if (!result.ok) {
