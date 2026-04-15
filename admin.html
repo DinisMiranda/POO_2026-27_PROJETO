@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zenify | Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-100 text-slate-800">
+    <header class="bg-white shadow-sm">
+      <nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+        <a class="text-xl font-bold text-indigo-700" href="index.html">Zenify</a>
+        <a class="rounded-md border border-slate-300 px-4 py-2" href="app.html">Area utilizador</a>
+      </nav>
+    </header>
+
+    <main class="mx-auto max-w-5xl space-y-6 px-6 py-8">
+      <section class="rounded-xl bg-white p-5 shadow">
+        <h1 class="mb-4 text-2xl font-semibold">Gestao de atividades</h1>
+        <form id="activityForm" class="grid gap-3 md:grid-cols-3">
+          <input
+            id="activityTitle"
+            class="rounded-md border border-slate-300 px-3 py-2"
+            placeholder="Titulo da atividade"
+            required
+          />
+          <select id="activityType" class="rounded-md border border-slate-300 px-3 py-2">
+            <option value="respiracao">Respiracao</option>
+            <option value="meditacao">Meditacao</option>
+            <option value="mindfulness">Mindfulness</option>
+          </select>
+          <button class="rounded-md bg-indigo-600 px-4 py-2 text-white" type="submit">Adicionar</button>
+        </form>
+      </section>
+
+      <section class="rounded-xl bg-white p-5 shadow">
+        <h2 class="mb-4 text-xl font-semibold">Atividades ativas</h2>
+        <ul id="activityList" class="space-y-2 text-sm"></ul>
+      </section>
+    </main>
+
+    <script src="src/js/admin.js"></script>
+  </body>
+</html>
