@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Dinis",
+      "role": "user"
+    },
+    {
+      "id": 2,
+      "name": "Emanuel",
+      "role": "admin"
+    }
+  ],
+  "activities": [
+    {
+      "id": 1,
+      "title": "Respiracao 4-4",
+      "type": "respiracao"
+    },
+    {
+      "id": 2,
+      "title": "Meditacao guiada 5 min",
+      "type": "meditacao"
+    }
+  ],
+  "tips": [
+    {
+      "id": 1,
+      "mood": "baixo",
+      "content": "Faz 3 ciclos de respiracao profunda e escreve uma nota curta no diario."
+    },
+    {
+      "id": 2,
+      "mood": "medio",
+      "content": "Experimenta uma pausa de 20 minutos sem notificacoes."
+    },
+    {
+      "id": 3,
+      "mood": "alto",
+      "content": "Mantem a consistencia com uma caminhada curta."
+    }
+  ]
+}
