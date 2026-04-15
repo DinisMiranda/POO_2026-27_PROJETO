@@ -19,6 +19,19 @@ if (!session) {
   throw new Error("Sessao invalida para area de utilizador.");
 }
 
+const modal = window.ZenifyModals.create({
+  modalId: "feedbackModal",
+  titleId: "modalTitle",
+  bodyId: "modalBody",
+  closeId: "modalCloseBtn",
+});
+
+window.ZenifyViews.init({
+  selectorButtons: "[data-view-target]",
+  selectorViews: "[data-view]",
+  activeClass: "bg-indigo-600",
+});
+
 userLabel.textContent = `${session.name} (${session.role})`;
 logoutBtn.addEventListener("click", () => {
   clearSession();
@@ -114,6 +127,12 @@ moodForm.addEventListener("submit", (event) => {
   recommendationText.textContent = getRecommendation(level);
   moodForm.reset();
   refreshDashboard();
+  if (modal) {
+    modal.show({
+      heading: "Check-in guardado",
+      message: "O teu registo foi guardado e a gamificacao foi atualizada.",
+    });
+  }
 });
 
 breathingBtn.addEventListener("click", () => {
@@ -127,6 +146,12 @@ breathingBtn.addEventListener("click", () => {
     setStats(stats);
     refreshDashboard();
     breathingBtn.disabled = false;
+    if (modal) {
+      modal.show({
+        heading: "Exercicio concluido",
+        message: "Boa! Recebeste +5 XP por completares a sessao de respiracao.",
+      });
+    }
   }, 20000);
 });
 

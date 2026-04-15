@@ -18,67 +18,107 @@
     </header>
 
     <main class="mx-auto grid max-w-6xl gap-6 px-6 py-8 md:grid-cols-3">
-      <section class="rounded-xl bg-white p-5 shadow md:col-span-2">
-        <h2 class="mb-4 text-xl font-semibold">Diario de humor</h2>
-        <form id="moodForm" class="space-y-4">
-          <div>
-            <label class="mb-2 block text-sm font-medium" for="moodLevel">Nivel de humor (1-5)</label>
-            <input
-              id="moodLevel"
-              name="moodLevel"
-              type="number"
-              min="1"
-              max="5"
-              class="w-full rounded-md border border-slate-300 px-3 py-2"
-              required
-            />
-          </div>
-          <div>
-            <label class="mb-2 block text-sm font-medium" for="moodNote">Nota do dia</label>
-            <textarea
-              id="moodNote"
-              name="moodNote"
-              rows="3"
-              class="w-full rounded-md border border-slate-300 px-3 py-2"
-              placeholder="Como te sentes hoje?"
-            ></textarea>
-          </div>
-          <button class="rounded-md bg-indigo-600 px-4 py-2 text-white" type="submit">Guardar check-in</button>
-        </form>
-      </section>
-
-      <section class="rounded-xl bg-white p-5 shadow">
-        <h2 class="mb-4 text-xl font-semibold">Gamificacao</h2>
-        <div class="space-y-2 text-sm">
-          <p><strong>XP:</strong> <span id="xpValue">0</span></p>
-          <p><strong>Streak:</strong> <span id="streakValue">0</span> dias</p>
-          <p><strong>Badge:</strong> <span id="badgeValue">Inicial</span></p>
+      <section class="rounded-xl bg-white p-4 shadow md:col-span-3">
+        <div class="flex flex-wrap gap-2">
+          <button
+            type="button"
+            data-view-target="dashboard"
+            class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium"
+          >
+            Dashboard
+          </button>
+          <button
+            type="button"
+            data-view-target="breathing"
+            class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium"
+          >
+            Exercicio de calma
+          </button>
+          <button
+            type="button"
+            data-view-target="history"
+            class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium"
+          >
+            Historico
+          </button>
         </div>
       </section>
 
-      <section class="rounded-xl bg-white p-5 shadow md:col-span-2">
-        <h2 class="mb-4 text-xl font-semibold">Recomendacoes inteligentes</h2>
-        <p id="recommendationText" class="rounded-md bg-emerald-50 p-4 text-emerald-800">
-          Faz o teu primeiro registo para receber sugestoes.
-        </p>
+      <section data-view="dashboard" class="space-y-6 md:col-span-3">
+        <div class="grid gap-6 md:grid-cols-3">
+          <section class="rounded-xl bg-white p-5 shadow md:col-span-2">
+            <h2 class="mb-4 text-xl font-semibold">Diario de humor</h2>
+            <form id="moodForm" class="space-y-4">
+              <div>
+                <label class="mb-2 block text-sm font-medium" for="moodLevel">Nivel de humor (1-5)</label>
+                <input
+                  id="moodLevel"
+                  name="moodLevel"
+                  type="number"
+                  min="1"
+                  max="5"
+                  class="w-full rounded-md border border-slate-300 px-3 py-2"
+                  required
+                />
+              </div>
+              <div>
+                <label class="mb-2 block text-sm font-medium" for="moodNote">Nota do dia</label>
+                <textarea
+                  id="moodNote"
+                  name="moodNote"
+                  rows="3"
+                  class="w-full rounded-md border border-slate-300 px-3 py-2"
+                  placeholder="Como te sentes hoje?"
+                ></textarea>
+              </div>
+              <button class="rounded-md bg-indigo-600 px-4 py-2 text-white" type="submit">Guardar check-in</button>
+            </form>
+          </section>
+
+          <section class="rounded-xl bg-white p-5 shadow">
+            <h2 class="mb-4 text-xl font-semibold">Gamificacao</h2>
+            <div class="space-y-2 text-sm">
+              <p><strong>XP:</strong> <span id="xpValue">0</span></p>
+              <p><strong>Streak:</strong> <span id="streakValue">0</span> dias</p>
+              <p><strong>Badge:</strong> <span id="badgeValue">Inicial</span></p>
+            </div>
+          </section>
+        </div>
+
+        <section class="rounded-xl bg-white p-5 shadow">
+          <h2 class="mb-4 text-xl font-semibold">Recomendacoes inteligentes</h2>
+          <p id="recommendationText" class="rounded-md bg-emerald-50 p-4 text-emerald-800">
+            Faz o teu primeiro registo para receber sugestoes.
+          </p>
+        </section>
       </section>
 
-      <section class="rounded-xl bg-white p-5 shadow">
+      <section data-view="breathing" class="hidden rounded-xl bg-white p-5 shadow md:col-span-3">
         <h2 class="mb-4 text-xl font-semibold">Exercicio de calma</h2>
         <p class="mb-3 text-sm text-slate-600">Respiracao guiada de 20 segundos.</p>
-        <button id="breathingBtn" class="rounded-md bg-emerald-500 px-4 py-2 text-white" type="button">
-          Iniciar
-        </button>
+        <button id="breathingBtn" class="rounded-md bg-emerald-500 px-4 py-2 text-white" type="button">Iniciar</button>
         <p id="breathingStatus" class="mt-3 text-sm text-slate-600">Pronto para comecar.</p>
       </section>
 
-      <section class="rounded-xl bg-white p-5 shadow md:col-span-3">
+      <section data-view="history" class="hidden rounded-xl bg-white p-5 shadow md:col-span-3">
         <h2 class="mb-4 text-xl font-semibold">Historico recente</h2>
         <ul id="historyList" class="space-y-2 text-sm text-slate-700"></ul>
       </section>
     </main>
 
+    <div id="feedbackModal" class="fixed inset-0 hidden bg-slate-900/40 p-4">
+      <div class="mx-auto mt-24 max-w-md rounded-xl bg-white p-5 shadow-lg">
+        <h3 id="modalTitle" class="text-lg font-semibold"></h3>
+        <p id="modalBody" class="mt-2 text-sm text-slate-700"></p>
+        <button id="modalCloseBtn" type="button" class="mt-4 rounded-md bg-indigo-600 px-4 py-2 text-white">
+          Fechar
+        </button>
+      </div>
+    </div>
+
     <script src="src/js/auth.js"></script>
+    <script src="src/js/views/view-manager.js"></script>
+    <script src="src/js/modals/modal-manager.js"></script>
     <script src="src/js/app.js"></script>
   </body>
 </html>
