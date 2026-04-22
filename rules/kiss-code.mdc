@@ -1,0 +1,19 @@
+---
+description: Apply KISS (Keep It Simple Stupid) for readability
+globs:
+alwaysApply: true
+---
+
+# KISS: Keep It Simple Stupid
+
+Prefer the simplest solution that satisfies the requirement.
+
+When implementing or explaining code, aim for:
+- minimal moving parts (avoid unnecessary abstractions)
+- clear variable/function names
+- small, focused functions
+- straightforward control flow (avoid clever one-liners when they reduce clarity)
+- no premature optimization
+
+Add comments only when the intent is not obvious from the code.
+

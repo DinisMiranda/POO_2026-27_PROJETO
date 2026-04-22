@@ -1,0 +1,17 @@
+---
+description: Commits via git add . and conventional commit -m; user runs commands; no push unless asked.
+globs:
+alwaysApply: true
+---
+
+# Git: user runs commits locally
+
+When the user asks you to **commit** (or prepare a commit):
+
+1. **Do not** run `git add`, `git commit`, or `git push` yourself (unless they explicitly ask you to run them).
+2. **Do** show **copy-paste terminal commands** from the repo root (`Sistema_de_Controlo_Ambiental/`): **`git add .`** then **`git commit -m "…"`** — always this sequence.
+3. The **`-m` string** must follow **[Conventional Commits](https://www.conventionalcommits.org/)**: `<type>[optional scope]: <description>` in lowercase types, imperative description, no trailing period (optional but preferred: short and clear). Common types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `build`, `ci`, `perf`, `style`. Example: `feat(db): add Casa_Administradores junction table`.
+4. Show the exact **`git commit -m "…"`** line (with the suggested message) in a **fenced code block** so they can read and copy it.
+5. **Remind:** `git add .` stages **everything** under the repo from the current directory; run `cd` to the project root first so nothing outside the project is included. If they only want specific files, they must say so — the default rule here is still `git add .`.
+
+If they explicitly ask you to **commit and push**, you may still give them a **separate** `git push` command rather than executing, unless they insist you run tools.
