@@ -1,5 +1,5 @@
-window.AdminView = (() => {
-  function getElements() {
+class AdminView {
+  getElements() {
     return {
       activityForm: document.getElementById("activityForm"),
       activityList: document.getElementById("activityList"),
@@ -11,13 +11,13 @@ window.AdminView = (() => {
     };
   }
 
-  function renderUser(session) {
-    const { userLabel } = getElements();
+  renderUser(session) {
+    const { userLabel } = this.getElements();
     userLabel.textContent = `${session.name} (${session.role})`;
   }
 
-  function renderActivities(activities) {
-    const { activityList, activityCount } = getElements();
+  renderActivities(activities) {
+    const { activityList, activityCount } = this.getElements();
     activityList.innerHTML = "";
     activityCount.textContent = String(activities.length);
 
@@ -32,13 +32,13 @@ window.AdminView = (() => {
     });
   }
 
-  function resetForm() {
-    const { activityForm } = getElements();
+  resetForm() {
+    const { activityForm } = this.getElements();
     activityForm.reset();
   }
 
-  function bindCreate(handler) {
-    const { activityForm, titleInput, typeInput } = getElements();
+  bindCreate(handler) {
+    const { activityForm, titleInput, typeInput } = this.getElements();
     activityForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const title = titleInput.value.trim();
@@ -47,8 +47,8 @@ window.AdminView = (() => {
     });
   }
 
-  function bindRemove(handler) {
-    const { activityList } = getElements();
+  bindRemove(handler) {
+    const { activityList } = this.getElements();
     activityList.addEventListener("click", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLButtonElement)) return;
@@ -58,17 +58,8 @@ window.AdminView = (() => {
     });
   }
 
-  function bindLogout(handler) {
-    const { logoutBtn } = getElements();
+  bindLogout(handler) {
+    const { logoutBtn } = this.getElements();
     logoutBtn.addEventListener("click", handler);
   }
-
-  return {
-    renderUser,
-    renderActivities,
-    resetForm,
-    bindCreate,
-    bindRemove,
-    bindLogout,
-  };
-})();
+}

@@ -1,56 +1,76 @@
-(() => {
-  const session = window.AuthModel.requireAuth("admin");
-  if (!session) return;
-
-  const modal = window.ZenifyModals.create({
-    modalId: "feedbackModal",
-    titleId: "modalTitle",
-    bodyId: "modalBody",
-    closeId: "modalCloseBtn",
-  });
-
-  window.ZenifyViews.init({
-    selectorButtons: "[data-view-target]",
-    selectorViews: "[data-view]",
-    activeClass: "bg-indigo-600",
-  });
-
-  function refreshActivities() {
-    const activities = window.AdminModel.getActivities();
-    window.AdminView.renderActivities(activities);
+class AdminController {
+  constructor(authModel, adminModel, adminView, viewManager, modalManager) {
+    this.authModel = authModel;
+    this.adminModel = adminModel;
+    this.adminView = adminView;
+    this.viewManager = viewManager;
+    this.modalManager = modalManager;
+    this.modal = null;
   }
 
-  window.AdminView.renderUser(session);
-  refreshActivities();
+  refreshActivities() {
+    const activities = this.adminModel.getActivities();
+    this.adminView.renderActivities(activities);
+  }
 
-  window.AdminView.bindLogout(() => {
-    window.AuthModel.clearSession();
-    window.location.href = "login.html";
-  });
+  init() {
+    const session = this.authModel.requireAuth("admin");
+    if (!session) return;
 
-  window.AdminView.bindCreate(({ title, type }) => {
-    if (!title) return;
-    window.AdminModel.addActivity({ title, type });
-    window.AdminView.resetForm();
-    refreshActivities();
+    this.modal = this.modalManager.create({
+      modalId: "feedbackModal",
+      titleId: "modalTitle",
+      bodyId: "modalBody",
+      closeId: "modalCloseBtn",
+    });
 
-    if (modal) {
-      modal.show({
-        heading: "Atividade criada",
-        message: "A nova atividade foi adicionada com sucesso.",
-      });
-    }
-  });
+    this.viewManager.init({
+      selectorButtons: "[data-view-target]",
+      selectorViews: "[data-view]",
+      activeClass: "bg-indigo-600",
+    });
 
-  window.AdminView.bindRemove((id) => {
-    window.AdminModel.removeActivity(id);
-    refreshActivities();
+    this.adminView.renderUser(session);
+    this.refreshActivities();
 
-    if (modal) {
-      modal.show({
-        heading: "Atividade removida",
-        message: "A atividade selecionada foi removida da lista.",
-      });
-    }
-  });
-})();
+    this.adminView.bindLogout(() => {
+      this.authModel.clearSession();
+      window.location.href = "login.html";
+    });
+
+    this.adminView.bindCreate(({ title, type }) => {
+      if (!title) return;
+      this.adminModel.addActivity({ title, type });
+      this.adminView.resetForm();
+      this.refreshActivities();
+
+      if (this.modal) {
+        this.modal.show({
+          heading: "Atividade criada",
+          message: "A nova atividade foi adicionada com sucesso.",
+        });
+      }
+    });
+
+    this.adminView.bindRemove((id) => {
+      this.adminModel.removeActivity(id);
+      this.refreshActivities();
+
+      if (this.modal) {
+        this.modal.show({
+          heading: "Atividade removida",
+          message: "A atividade selecionada foi removida da lista.",
+        });
+      }
+    });
+  }
+}
+
+const adminController = new AdminController(
+  new AuthModel(),
+  new AdminModel(),
+  new AdminView(),
+  new ViewManager(),
+  new ModalManager()
+);
+adminController.init();

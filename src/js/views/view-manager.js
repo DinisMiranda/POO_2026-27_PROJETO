@@ -1,5 +1,5 @@
-window.ZenifyViews = (() => {
-  function init({ selectorButtons, selectorViews, activeClass }) {
+class ViewManager {
+  init({ selectorButtons, selectorViews, activeClass }) {
     const buttons = Array.from(document.querySelectorAll(selectorButtons));
     const views = Array.from(document.querySelectorAll(selectorViews));
     if (!buttons.length || !views.length) return;
@@ -23,6 +23,4 @@ window.ZenifyViews = (() => {
 
     show(buttons[0].dataset.viewTarget);
   }
-
-  return { init };
-})();
+}

@@ -1,40 +1,42 @@
-window.AuthModel = (() => {
-  const AUTH_KEYS = {
-    users: "zenify_users",
-    session: "zenify_session",
-  };
+class AuthModel {
+  constructor() {
+    this.AUTH_KEYS = {
+      users: "zenify_users",
+      session: "zenify_session",
+    };
+  }
 
-  function getUsers() {
-    const saved = localStorage.getItem(AUTH_KEYS.users);
+  getUsers() {
+    const saved = localStorage.getItem(this.AUTH_KEYS.users);
     if (saved) return JSON.parse(saved);
 
     const seedUsers = [{ id: 1, name: "Administrador", email: "admin@zenify.local", password: "admin123", role: "admin" }];
-    localStorage.setItem(AUTH_KEYS.users, JSON.stringify(seedUsers));
+    localStorage.setItem(this.AUTH_KEYS.users, JSON.stringify(seedUsers));
     return seedUsers;
   }
 
-  function setUsers(users) {
-    localStorage.setItem(AUTH_KEYS.users, JSON.stringify(users));
+  setUsers(users) {
+    localStorage.setItem(this.AUTH_KEYS.users, JSON.stringify(users));
   }
 
-  function getSession() {
-    return JSON.parse(localStorage.getItem(AUTH_KEYS.session) || "null");
+  getSession() {
+    return JSON.parse(localStorage.getItem(this.AUTH_KEYS.session) || "null");
   }
 
-  function setSession(user) {
-    localStorage.setItem(AUTH_KEYS.session, JSON.stringify(user));
+  setSession(user) {
+    localStorage.setItem(this.AUTH_KEYS.session, JSON.stringify(user));
   }
 
-  function clearSession() {
-    localStorage.removeItem(AUTH_KEYS.session);
+  clearSession() {
+    localStorage.removeItem(this.AUTH_KEYS.session);
   }
 
-  function registerUser({ name, email, password, role }) {
+  registerUser({ name, email, password, role }) {
     if (role !== "user") {
       return { ok: false, message: "Nao e permitido criar contas de administrador." };
     }
 
-    const users = getUsers();
+    const users = this.getUsers();
     const alreadyExists = users.some((user) => user.email.toLowerCase() === email.toLowerCase());
     if (alreadyExists) return { ok: false, message: "Ja existe uma conta com este email." };
 
@@ -46,22 +48,22 @@ window.AuthModel = (() => {
       role,
     };
     users.push(user);
-    setUsers(users);
+    this.setUsers(users);
     return { ok: true, user };
   }
 
-  function loginUser({ email, password }) {
-    const users = getUsers();
+  loginUser({ email, password }) {
+    const users = this.getUsers();
     const match = users.find((user) => user.email.toLowerCase() === email.toLowerCase() && user.password === password);
     if (!match) return { ok: false, message: "Credenciais invalidas." };
 
     const session = { id: match.id, name: match.name, email: match.email, role: match.role };
-    setSession(session);
+    this.setSession(session);
     return { ok: true, session };
   }
 
-  function requireAuth(requiredRole) {
-    const session = getSession();
+  requireAuth(requiredRole) {
+    const session = this.getSession();
     if (!session) {
       window.location.href = "login.html";
       return null;
@@ -74,13 +76,4 @@ window.AuthModel = (() => {
 
     return session;
   }
-
-  return {
-    getSession,
-    setSession,
-    clearSession,
-    registerUser,
-    loginUser,
-    requireAuth,
-  };
-})();
+}

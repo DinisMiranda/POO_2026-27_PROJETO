@@ -1,5 +1,5 @@
-window.AppView = (() => {
-  function getElements() {
+class AppView {
+  getElements() {
     return {
       moodForm: document.getElementById("moodForm"),
       historyList: document.getElementById("historyList"),
@@ -14,13 +14,13 @@ window.AppView = (() => {
     };
   }
 
-  function renderUser(session) {
-    const { userLabel } = getElements();
+  renderUser(session) {
+    const { userLabel } = this.getElements();
     userLabel.textContent = `${session.name} (${session.role})`;
   }
 
-  function renderDashboard({ checkIns, stats, computeBadge }) {
-    const { xpValue, streakValue, badgeValue, historyList } = getElements();
+  renderDashboard({ checkIns, stats, computeBadge }) {
+    const { xpValue, streakValue, badgeValue, historyList } = this.getElements();
 
     xpValue.textContent = String(stats.xp);
     streakValue.textContent = String(stats.streak);
@@ -38,24 +38,24 @@ window.AppView = (() => {
       });
   }
 
-  function setRecommendation(text) {
-    const { recommendationText } = getElements();
+  setRecommendation(text) {
+    const { recommendationText } = this.getElements();
     recommendationText.textContent = text;
   }
 
-  function resetMoodForm() {
-    const { moodForm } = getElements();
+  resetMoodForm() {
+    const { moodForm } = this.getElements();
     moodForm.reset();
   }
 
-  function setBreathingState({ running, status }) {
-    const { breathingBtn, breathingStatus } = getElements();
+  setBreathingState({ running, status }) {
+    const { breathingBtn, breathingStatus } = this.getElements();
     breathingBtn.disabled = running;
     breathingStatus.textContent = status;
   }
 
-  function bindMoodSubmit(handler) {
-    const { moodForm } = getElements();
+  bindMoodSubmit(handler) {
+    const { moodForm } = this.getElements();
     moodForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const formData = new FormData(moodForm);
@@ -66,24 +66,13 @@ window.AppView = (() => {
     });
   }
 
-  function bindBreathingStart(handler) {
-    const { breathingBtn } = getElements();
+  bindBreathingStart(handler) {
+    const { breathingBtn } = this.getElements();
     breathingBtn.addEventListener("click", handler);
   }
 
-  function bindLogout(handler) {
-    const { logoutBtn } = getElements();
+  bindLogout(handler) {
+    const { logoutBtn } = this.getElements();
     logoutBtn.addEventListener("click", handler);
   }
-
-  return {
-    renderUser,
-    renderDashboard,
-    setRecommendation,
-    resetMoodForm,
-    setBreathingState,
-    bindMoodSubmit,
-    bindBreathingStart,
-    bindLogout,
-  };
-})();
+}

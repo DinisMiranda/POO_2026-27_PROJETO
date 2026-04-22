@@ -1,74 +1,94 @@
-(() => {
-  const session = window.AuthModel.requireAuth("user");
-  if (!session) return;
+class AppController {
+  constructor(authModel, appModel, appView, viewManager, modalManager) {
+    this.authModel = authModel;
+    this.appModel = appModel;
+    this.appView = appView;
+    this.viewManager = viewManager;
+    this.modalManager = modalManager;
+    this.modal = null;
+  }
 
-  const modal = window.ZenifyModals.create({
-    modalId: "feedbackModal",
-    titleId: "modalTitle",
-    bodyId: "modalBody",
-    closeId: "modalCloseBtn",
-  });
-
-  window.ZenifyViews.init({
-    selectorButtons: "[data-view-target]",
-    selectorViews: "[data-view]",
-    activeClass: "bg-indigo-600",
-  });
-
-  function refreshDashboard() {
-    const checkIns = window.AppModel.getCheckIns();
-    const stats = window.AppModel.getStats();
-    window.AppView.renderDashboard({
+  refreshDashboard() {
+    const checkIns = this.appModel.getCheckIns();
+    const stats = this.appModel.getStats();
+    this.appView.renderDashboard({
       checkIns,
       stats,
-      computeBadge: window.AppModel.computeBadge,
+      computeBadge: (xp) => this.appModel.computeBadge(xp),
     });
   }
 
-  window.AppView.renderUser(session);
-  refreshDashboard();
+  init() {
+    const session = this.authModel.requireAuth("user");
+    if (!session) return;
 
-  window.AppView.bindLogout(() => {
-    window.AuthModel.clearSession();
-    window.location.href = "login.html";
-  });
-
-  window.AppView.bindMoodSubmit(({ level, note }) => {
-    const today = new Date().toISOString().split("T")[0];
-    const result = window.AppModel.addCheckIn({ level, note, today });
-
-    window.AppView.setRecommendation(result.recommendation);
-    window.AppView.resetMoodForm();
-    refreshDashboard();
-
-    if (modal) {
-      modal.show({
-        heading: "Check-in guardado",
-        message: "O teu registo foi guardado e a gamificacao foi atualizada.",
-      });
-    }
-  });
-
-  window.AppView.bindBreathingStart(() => {
-    window.AppView.setBreathingState({
-      running: true,
-      status: "Inspira por 4s... expira por 4s... repete.",
+    this.modal = this.modalManager.create({
+      modalId: "feedbackModal",
+      titleId: "modalTitle",
+      bodyId: "modalBody",
+      closeId: "modalCloseBtn",
     });
 
-    setTimeout(() => {
-      window.AppModel.addBreathingReward();
-      refreshDashboard();
-      window.AppView.setBreathingState({
-        running: false,
-        status: "Sessao concluida. Ganhaste +5 XP de consistencia!",
-      });
+    this.viewManager.init({
+      selectorButtons: "[data-view-target]",
+      selectorViews: "[data-view]",
+      activeClass: "bg-indigo-600",
+    });
 
-      if (modal) {
-        modal.show({
-          heading: "Exercicio concluido",
-          message: "Boa! Recebeste +5 XP por completares a sessao de respiracao.",
+    this.appView.renderUser(session);
+    this.refreshDashboard();
+
+    this.appView.bindLogout(() => {
+      this.authModel.clearSession();
+      window.location.href = "login.html";
+    });
+
+    this.appView.bindMoodSubmit(({ level, note }) => {
+      const today = new Date().toISOString().split("T")[0];
+      const result = this.appModel.addCheckIn({ level, note, today });
+
+      this.appView.setRecommendation(result.recommendation);
+      this.appView.resetMoodForm();
+      this.refreshDashboard();
+
+      if (this.modal) {
+        this.modal.show({
+          heading: "Check-in guardado",
+          message: "O teu registo foi guardado e a gamificacao foi atualizada.",
         });
       }
-    }, 20000);
-  });
-})();
+    });
+
+    this.appView.bindBreathingStart(() => {
+      this.appView.setBreathingState({
+        running: true,
+        status: "Inspira por 4s... expira por 4s... repete.",
+      });
+
+      setTimeout(() => {
+        this.appModel.addBreathingReward();
+        this.refreshDashboard();
+        this.appView.setBreathingState({
+          running: false,
+          status: "Sessao concluida. Ganhaste +5 XP de consistencia!",
+        });
+
+        if (this.modal) {
+          this.modal.show({
+            heading: "Exercicio concluido",
+            message: "Boa! Recebeste +5 XP por completares a sessao de respiracao.",
+          });
+        }
+      }, 20000);
+    });
+  }
+}
+
+const appController = new AppController(
+  new AuthModel(),
+  new AppModel(),
+  new AppView(),
+  new ViewManager(),
+  new ModalManager()
+);
+appController.init();

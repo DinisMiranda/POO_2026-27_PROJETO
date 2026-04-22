@@ -1,5 +1,5 @@
-window.ZenifyModals = (() => {
-  function create({ modalId, titleId, bodyId, closeId }) {
+class ModalManager {
+  create({ modalId, titleId, bodyId, closeId }) {
     const modal = document.getElementById(modalId);
     const title = document.getElementById(titleId);
     const body = document.getElementById(bodyId);
@@ -23,6 +23,4 @@ window.ZenifyModals = (() => {
 
     return { show, hide };
   }
-
-  return { create };
-})();
+}
