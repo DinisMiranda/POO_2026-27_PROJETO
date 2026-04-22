@@ -22,7 +22,7 @@ Este ficheiro centraliza a navegacao entre views:
   - mostra a view ativa e esconde as restantes
   - aplica classe visual no botao ativo
 
-### `src/js/modals/modal-manager.js`
+### `src/js/views/modal-manager.js`
 
 Este ficheiro centraliza o comportamento de modal:
 
@@ -31,11 +31,11 @@ Este ficheiro centraliza o comportamento de modal:
   - devolve `show({ heading, message })`
   - permite fechar no botao ou ao clicar fora da caixa
 
-Assim, `app.js` e `admin.js` so chamam funcoes prontas.
+Assim, os controllers so chamam funcoes prontas.
 
 ## 3) Divisao por pagina
 
-### `app.html` + `src/js/app.js`
+### `app.html` + `src/js/controllers/app-controller.js`
 
 Views existentes:
 
@@ -48,7 +48,7 @@ Modais usados para:
 - confirmar que check-in foi guardado
 - confirmar fim do exercicio e ganho de XP
 
-### `admin.html` + `src/js/admin.js`
+### `admin.html` + `src/js/controllers/admin-controller.js`
 
 Views existentes:
 
@@ -63,10 +63,9 @@ Modais usados para:
 ## 4) Onde fica cada responsabilidade
 
 - **HTML (`*.html`)**: estrutura visual e marcadores (`data-view`, ids, botoes)
-- **Views (`views/view-manager.js`)**: troca entre views
-- **Modals (`modals/modal-manager.js`)**: abrir/fechar modais de feedback
-- **Logica de negocio (`app.js`, `admin.js`)**: dados, regras e eventos da pagina
-- **Auth (`auth.js`)**: sessao, login/registo e controlo de acesso por role
+- **Models (`models/*.js`)**: dados e regras de negocio
+- **Views (`views/*.js`)**: render, DOM e utilitarios de interface
+- **Controllers (`controllers/*.js`)**: eventos, fluxo e orquestracao
 
 ## 5) Como adicionar nova view
 

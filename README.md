@@ -15,9 +15,9 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
 - `register.html` - criacao de conta de utilizador (`user`)
 - `app.html` - area pessoal do utilizador autenticado
 - `admin.html` - painel base de administrador
-- `src/js/auth.js` - registo, login, sessao e controlo de acesso por role
-- `src/js/app.js` - logica de diario, recomendacoes e gamificacao
-- `src/js/admin.js` - logica base de gestao de atividades
+- `src/js/models` - dados e regras de negocio (auth, app, admin)
+- `src/js/views` - manipulacao de DOM, render e utilitarios de interface
+- `src/js/controllers` - fluxo da pagina e ligacao entre model e view
 - `mock/db.json` - dados iniciais para JSON Server
 
 ## Arranque rapido
