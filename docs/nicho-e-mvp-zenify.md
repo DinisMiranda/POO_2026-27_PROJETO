@@ -66,8 +66,14 @@ O Zenify ajuda estudantes universitarios a reduzir ansiedade academica com inter
   - `registerUser()`, `loginUser()`, `requireAuth()`
 - `AppModel`
   - `getCheckIns()`, `getStats()`, `addCheckIn()`, `addBreathingReward()`, `computeBadge()`
+- `RecommendationModel`
+  - `getRecommendation(level, date)` — regras por humor e periodo do dia
+- `ChatbotModel`
+  - `respond(input)` — if/else com respostas pre-definidas (sem API externa)
 - `AdminModel`
-  - `getActivities()`, `addActivity()`, `removeActivity()`
+  - `getActivities()`, `addActivity()`, `removeActivity()`, `syncFromApiIfEmpty()`
+- `ApiClient`
+  - `get(resource)` — JSON Server opcional com fallback local
 
 ## Views (`src/js/views`)
 
@@ -92,7 +98,7 @@ O Zenify ajuda estudantes universitarios a reduzir ansiedade academica com inter
 - `register-controller`
   - processa registo, cria sessao de user, redireciona para app
 - `app-controller`
-  - orquestra diario, recomendacoes, respiracao, gamificacao e modal
+  - orquestra diario, recomendacoes, chatbot, respiracao, gamificacao e modal
 - `admin-controller`
   - orquestra criacao/remocao de atividades e feedback admin
 

@@ -10,6 +10,18 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
 
 Ver [docs/persistencia.md](docs/persistencia.md) para a divisao exacta entre localStorage e JSON Server.
 
+## Arquitectura MVC
+
+O frontend esta organizado em **Model – View – Controller** (classes ES6 em `src/js/`).
+
+| Camada | Pasta | Exemplo |
+|--------|-------|---------|
+| Model | `src/js/models/` | `AppModel`, `ChatbotModel` |
+| View | `src/js/views/` | `AppView`, `ModalManager` |
+| Controller | `src/js/controllers/` | `app-controller.js` |
+
+Documentacao detalhada: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/design-inclusivo.md](docs/design-inclusivo.md)
+
 ## Estrutura
 
 - `index.html` - pagina publica (visitante)
