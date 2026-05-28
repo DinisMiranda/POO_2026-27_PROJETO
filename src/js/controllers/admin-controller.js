@@ -13,7 +13,7 @@ class AdminController {
     this.adminView.renderActivities(activities);
   }
 
-  init() {
+  async init() {
     const session = this.authModel.requireAuth("admin");
     if (!session) return;
 
@@ -31,6 +31,7 @@ class AdminController {
     });
 
     this.adminView.renderUser(session);
+    await this.adminModel.syncFromApiIfEmpty();
     this.refreshActivities();
 
     this.adminView.bindLogout(() => {

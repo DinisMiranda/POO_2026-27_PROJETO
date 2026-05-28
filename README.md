@@ -5,8 +5,10 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
 ## Stack
 
 - Frontend: HTML5, Tailwind CSS (CDN), JavaScript
-- Persistencia: LocalStorage
-- Mock API: JSON Server
+- Persistencia: LocalStorage (dados de utilizador e progresso)
+- Mock API: JSON Server (catalogo opcional de atividades/dicas)
+
+Ver [docs/persistencia.md](docs/persistencia.md) para a divisao exacta entre localStorage e JSON Server.
 
 ## Estrutura
 
