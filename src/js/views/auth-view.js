@@ -1,42 +1,41 @@
-class AuthView {
-  showError(elementId, message) {
-    const element = document.getElementById(elementId);
-    if (!element) return;
-    element.textContent = message;
-    element.classList.remove("hidden");
-  }
+const loginForm = document.getElementById("loginForm");
+const registerForm = document.getElementById("registerForm");
 
-  hideError(elementId) {
-    const element = document.getElementById(elementId);
-    if (!element) return;
-    element.textContent = "";
-    element.classList.add("hidden");
-  }
+export function showError(elementId, message) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  element.textContent = message;
+  element.classList.remove("hidden");
+}
 
-  bindLoginSubmit(handler) {
-    const form = document.getElementById("loginForm");
-    if (!form) return;
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const formData = new FormData(form);
-      handler({
-        email: String(formData.get("email") || "").trim(),
-        password: String(formData.get("password") || ""),
-      });
+export function hideError(elementId) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  element.textContent = "";
+  element.classList.add("hidden");
+}
+
+export function bindLoginSubmit(handler) {
+  if (!loginForm) return;
+  loginForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(loginForm);
+    handler({
+      email: String(formData.get("email") || "").trim(),
+      password: String(formData.get("password") || ""),
     });
-  }
+  });
+}
 
-  bindRegisterSubmit(handler) {
-    const form = document.getElementById("registerForm");
-    if (!form) return;
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const formData = new FormData(form);
-      handler({
-        name: String(formData.get("name") || "").trim(),
-        email: String(formData.get("email") || "").trim(),
-        password: String(formData.get("password") || ""),
-      });
+export function bindRegisterSubmit(handler) {
+  if (!registerForm) return;
+  registerForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(registerForm);
+    handler({
+      name: String(formData.get("name") || "").trim(),
+      email: String(formData.get("email") || "").trim(),
+      password: String(formData.get("password") || ""),
     });
-  }
+  });
 }

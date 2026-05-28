@@ -1,110 +1,95 @@
-class AppView {
-  getElements() {
-    return {
-      moodForm: document.getElementById("moodForm"),
-      historyList: document.getElementById("historyList"),
-      recommendationText: document.getElementById("recommendationText"),
-      recommendationRule: document.getElementById("recommendationRule"),
-      xpValue: document.getElementById("xpValue"),
-      streakValue: document.getElementById("streakValue"),
-      badgeValue: document.getElementById("badgeValue"),
-      breathingBtn: document.getElementById("breathingBtn"),
-      breathingStatus: document.getElementById("breathingStatus"),
-      userLabel: document.getElementById("userLabel"),
-      logoutBtn: document.getElementById("logoutBtn"),
-      chatForm: document.getElementById("chatForm"),
-      chatInput: document.getElementById("chatInput"),
-      chatLog: document.getElementById("chatLog"),
-    };
-  }
+const moodForm = document.getElementById("moodForm");
+const historyList = document.getElementById("historyList");
+const recommendationText = document.getElementById("recommendationText");
+const recommendationRule = document.getElementById("recommendationRule");
+const xpValue = document.getElementById("xpValue");
+const streakValue = document.getElementById("streakValue");
+const badgeValue = document.getElementById("badgeValue");
+const breathingBtn = document.getElementById("breathingBtn");
+const breathingStatus = document.getElementById("breathingStatus");
+const userLabel = document.getElementById("userLabel");
+const logoutBtn = document.getElementById("logoutBtn");
+const chatForm = document.getElementById("chatForm");
+const chatLog = document.getElementById("chatLog");
 
-  renderUser(session) {
-    const { userLabel } = this.getElements();
-    userLabel.textContent = `${session.name} (${session.role})`;
-  }
+export function renderUser(session) {
+  if (userLabel) userLabel.textContent = `${session.name} (${session.role})`;
+}
 
-  renderDashboard({ checkIns, stats, computeBadge }) {
-    const { xpValue, streakValue, badgeValue, historyList } = this.getElements();
+export function renderDashboard({ checkIns, progress }) {
+  if (!xpValue || !streakValue || !badgeValue || !historyList) return;
 
-    xpValue.textContent = String(stats.xp);
-    streakValue.textContent = String(stats.streak);
-    badgeValue.textContent = computeBadge(stats.xp);
+  const stats = progress.toJSON();
+  xpValue.textContent = String(stats.xp);
+  streakValue.textContent = String(stats.streak);
+  badgeValue.textContent = progress.computeBadge();
 
-    historyList.innerHTML = "";
-    checkIns
-      .slice(-5)
-      .reverse()
-      .forEach((entry) => {
-        const item = document.createElement("li");
-        item.className = "rounded-md bg-slate-50 p-3";
-        item.textContent = `${entry.date} - humor ${entry.level}/5 - ${entry.note || "sem nota"}`;
-        historyList.appendChild(item);
-      });
-  }
-
-  setRecommendation({ text, rule }) {
-    const { recommendationText, recommendationRule } = this.getElements();
-    recommendationText.textContent = text;
-    if (recommendationRule) {
-      recommendationRule.textContent = rule ? `Regra aplicada: ${rule}` : "";
-    }
-  }
-
-  resetMoodForm() {
-    const { moodForm } = this.getElements();
-    moodForm.reset();
-  }
-
-  setBreathingState({ running, status }) {
-    const { breathingBtn, breathingStatus } = this.getElements();
-    breathingBtn.disabled = running;
-    breathingStatus.textContent = status;
-  }
-
-  bindMoodSubmit(handler) {
-    const { moodForm } = this.getElements();
-    moodForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const formData = new FormData(moodForm);
-      handler({
-        level: Number(formData.get("moodLevel")),
-        note: String(formData.get("moodNote") || "").trim(),
-      });
+  historyList.innerHTML = "";
+  checkIns
+    .slice(-5)
+    .reverse()
+    .forEach((entry) => {
+      const item = document.createElement("li");
+      item.className = "rounded-md bg-slate-50 p-3";
+      item.textContent = `${entry.date} - humor ${entry.level}/5 - ${entry.note || "sem nota"}`;
+      historyList.appendChild(item);
     });
+}
+
+export function setRecommendation({ text, rule }) {
+  if (recommendationText) recommendationText.textContent = text;
+  if (recommendationRule) {
+    recommendationRule.textContent = rule ? `Regra aplicada: ${rule}` : "";
   }
+}
 
-  bindBreathingStart(handler) {
-    const { breathingBtn } = this.getElements();
-    breathingBtn.addEventListener("click", handler);
-  }
+export function resetMoodForm() {
+  if (moodForm) moodForm.reset();
+}
 
-  bindLogout(handler) {
-    const { logoutBtn } = this.getElements();
-    logoutBtn.addEventListener("click", handler);
-  }
+export function setBreathingState({ running, status }) {
+  if (breathingBtn) breathingBtn.disabled = running;
+  if (breathingStatus) breathingStatus.textContent = status;
+}
 
-  appendChatMessage({ author, text }) {
-    const { chatLog } = this.getElements();
-    if (!chatLog) return;
-
-    const item = document.createElement("p");
-    item.className = author === "user" ? "text-indigo-800" : "text-slate-700";
-    item.textContent = `${author === "user" ? "Tu" : "Zenify"}: ${text}`;
-    chatLog.appendChild(item);
-    chatLog.scrollTop = chatLog.scrollHeight;
-  }
-
-  bindChatSubmit(handler) {
-    const { chatForm } = this.getElements();
-    if (!chatForm) return;
-
-    chatForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const formData = new FormData(chatForm);
-      const message = String(formData.get("chatInput") || "").trim();
-      if (!message) return;
-      handler(message);
-      chatForm.reset();
+export function bindMoodSubmit(handler) {
+  if (!moodForm) return;
+  moodForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(moodForm);
+    handler({
+      level: Number(formData.get("moodLevel")),
+      note: String(formData.get("moodNote") || "").trim(),
     });
-  }
+  });
+}
+
+export function bindBreathingStart(handler) {
+  if (breathingBtn) breathingBtn.addEventListener("click", handler);
+}
+
+export function bindLogout(handler) {
+  if (logoutBtn) logoutBtn.addEventListener("click", handler);
+}
+
+export function appendChatMessage({ author, text }) {
+  if (!chatLog) return;
+
+  const item = document.createElement("p");
+  item.className = author === "user" ? "text-indigo-800" : "text-slate-700";
+  item.textContent = `${author === "user" ? "Tu" : "Zenify"}: ${text}`;
+  chatLog.appendChild(item);
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+export function bindChatSubmit(handler) {
+  if (!chatForm) return;
+  chatForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(chatForm);
+    const message = String(formData.get("chatInput") || "").trim();
+    if (!message) return;
+    handler(message);
+    chatForm.reset();
+  });
 }

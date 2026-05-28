@@ -1,65 +1,57 @@
-class AdminView {
-  getElements() {
-    return {
-      activityForm: document.getElementById("activityForm"),
-      activityList: document.getElementById("activityList"),
-      userLabel: document.getElementById("userLabel"),
-      logoutBtn: document.getElementById("logoutBtn"),
-      activityCount: document.getElementById("activityCount"),
-      titleInput: document.getElementById("activityTitle"),
-      typeInput: document.getElementById("activityType"),
-    };
-  }
+const activityForm = document.getElementById("activityForm");
+const activityList = document.getElementById("activityList");
+const userLabel = document.getElementById("userLabel");
+const logoutBtn = document.getElementById("logoutBtn");
+const activityCount = document.getElementById("activityCount");
+const titleInput = document.getElementById("activityTitle");
+const typeInput = document.getElementById("activityType");
 
-  renderUser(session) {
-    const { userLabel } = this.getElements();
-    userLabel.textContent = `${session.name} (${session.role})`;
-  }
+export function renderUser(session) {
+  if (userLabel) userLabel.textContent = `${session.name} (${session.role})`;
+}
 
-  renderActivities(activities) {
-    const { activityList, activityCount } = this.getElements();
-    activityList.innerHTML = "";
-    activityCount.textContent = String(activities.length);
+export function renderActivities(activities) {
+  if (!activityList || !activityCount) return;
 
-    activities.forEach((activity) => {
-      const item = document.createElement("li");
-      item.className = "flex items-center justify-between rounded-md bg-slate-50 p-3";
-      item.innerHTML = `
-        <span>${activity.title} <small class="text-slate-500">(${activity.type})</small></span>
-        <button data-id="${activity.id}" class="rounded bg-rose-500 px-2 py-1 text-xs text-white">Remover</button>
-      `;
-      activityList.appendChild(item);
-    });
-  }
+  activityList.innerHTML = "";
+  activityCount.textContent = String(activities.length);
 
-  resetForm() {
-    const { activityForm } = this.getElements();
-    activityForm.reset();
-  }
+  activities.forEach((activity) => {
+    const item = document.createElement("li");
+    item.className = "flex items-center justify-between rounded-md bg-slate-50 p-3";
+    item.innerHTML = `
+      <span>${activity.title} <small class="text-slate-500">(${activity.type})</small></span>
+      <button data-id="${activity.id}" class="rounded bg-rose-500 px-2 py-1 text-xs text-white">Remover</button>
+    `;
+    activityList.appendChild(item);
+  });
+}
 
-  bindCreate(handler) {
-    const { activityForm, titleInput, typeInput } = this.getElements();
-    activityForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const title = titleInput.value.trim();
-      const type = typeInput.value;
-      handler({ title, type });
-    });
-  }
+export function resetForm() {
+  if (activityForm) activityForm.reset();
+}
 
-  bindRemove(handler) {
-    const { activityList } = this.getElements();
-    activityList.addEventListener("click", (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLButtonElement)) return;
-      const id = Number(target.dataset.id);
-      if (!id) return;
-      handler(id);
-    });
-  }
+export function bindCreate(handler) {
+  if (!activityForm) return;
+  activityForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const title = titleInput?.value.trim() || "";
+    const type = typeInput?.value || "";
+    handler({ title, type });
+  });
+}
 
-  bindLogout(handler) {
-    const { logoutBtn } = this.getElements();
-    logoutBtn.addEventListener("click", handler);
-  }
+export function bindRemove(handler) {
+  if (!activityList) return;
+  activityList.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLButtonElement)) return;
+    const id = Number(target.dataset.id);
+    if (!id) return;
+    handler(id);
+  });
+}
+
+export function bindLogout(handler) {
+  if (logoutBtn) logoutBtn.addEventListener("click", handler);
 }
