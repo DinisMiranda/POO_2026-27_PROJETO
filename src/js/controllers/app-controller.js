@@ -48,7 +48,10 @@ class AppController {
       const today = new Date().toISOString().split("T")[0];
       const result = this.appModel.addCheckIn({ level, note, today });
 
-      this.appView.setRecommendation(result.recommendation);
+      this.appView.setRecommendation({
+        text: result.recommendation.text,
+        rule: result.recommendation.rule,
+      });
       this.appView.resetMoodForm();
       this.refreshDashboard();
 

@@ -4,6 +4,7 @@ class AppView {
       moodForm: document.getElementById("moodForm"),
       historyList: document.getElementById("historyList"),
       recommendationText: document.getElementById("recommendationText"),
+      recommendationRule: document.getElementById("recommendationRule"),
       xpValue: document.getElementById("xpValue"),
       streakValue: document.getElementById("streakValue"),
       badgeValue: document.getElementById("badgeValue"),
@@ -41,9 +42,12 @@ class AppView {
       });
   }
 
-  setRecommendation(text) {
-    const { recommendationText } = this.getElements();
+  setRecommendation({ text, rule }) {
+    const { recommendationText, recommendationRule } = this.getElements();
     recommendationText.textContent = text;
+    if (recommendationRule) {
+      recommendationRule.textContent = rule ? `Regra aplicada: ${rule}` : "";
+    }
   }
 
   resetMoodForm() {

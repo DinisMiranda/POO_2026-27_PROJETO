@@ -1,5 +1,6 @@
 class AppModel {
-  constructor() {
+  constructor(recommendationModel = new RecommendationModel()) {
+    this.recommendationModel = recommendationModel;
     this.STORAGE_KEYS = {
       checkIns: "zenify_check_ins",
       stats: "zenify_stats",
@@ -20,12 +21,6 @@ class AppModel {
 
   setStats(data) {
     localStorage.setItem(this.STORAGE_KEYS.stats, JSON.stringify(data));
-  }
-
-  getRecommendation(level) {
-    if (level <= 2) return "Hoje recomenda-se: 5 minutos de respiracao + caminhada leve.";
-    if (level === 3) return "Hoje recomenda-se: meditacao curta e pausa digital de 20 minutos.";
-    return "Bom momento para manter rotina: check-in, gratidao e desafio semanal.";
   }
 
   computeBadge(xp) {
@@ -65,10 +60,12 @@ class AppModel {
     stats.xp += 10;
     this.setStats(stats);
 
+    const recommendation = this.recommendationModel.getRecommendation(level, currentDate);
+
     return {
       checkIns,
       stats,
-      recommendation: this.getRecommendation(level),
+      recommendation,
     };
   }
 

@@ -93,10 +93,14 @@
         </div>
 
         <section class="rounded-xl bg-white p-5 shadow">
-          <h2 class="mb-4 text-xl font-semibold">Recomendacoes inteligentes</h2>
-          <p id="recommendationText" class="rounded-md bg-emerald-50 p-4 text-emerald-800">
+          <h2 class="mb-2 text-xl font-semibold">Recomendacoes por regras</h2>
+          <p class="mb-3 text-sm text-slate-600">
+            Logica fixa: se o humor estiver baixo (1-2), sugerimos intervencoes curtas; o periodo do dia ajusta a sugestao.
+          </p>
+          <p id="recommendationText" class="rounded-md bg-emerald-50 p-4 text-emerald-900">
             Faz o teu primeiro registo para receber sugestoes.
           </p>
+          <p id="recommendationRule" class="mt-2 text-xs text-slate-500" aria-live="polite"></p>
         </section>
       </section>
 
@@ -151,6 +155,7 @@
 
     <script src="src/js/models/auth-model.js"></script>
     <script src="src/js/models/chatbot-model.js"></script>
+    <script src="src/js/models/recommendation-model.js"></script>
     <script src="src/js/models/app-model.js"></script>
     <script src="src/js/views/app-view.js"></script>
     <script src="src/js/views/view-manager.js"></script>
