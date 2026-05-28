@@ -4,50 +4,52 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
 
 ## Stack
 
-- Frontend: HTML5, Tailwind CSS (CDN), JavaScript
-- Persistencia: LocalStorage (dados de utilizador e progresso)
-- Mock API: JSON Server (catalogo opcional de atividades/dicas)
+- Frontend: HTML5, Tailwind CSS (CDN), JavaScript (ES modules)
+- Autenticacao: localStorage (Opcao B — utilizadores locais, documentado)
+- API mock: JSON Server (`activities`, `checkins`, `userStats`)
 
 Ver [docs/persistencia.md](docs/persistencia.md) para a divisao exacta entre localStorage e JSON Server.
 
-## Arquitectura MVC
+## Arquitectura
 
-O frontend esta organizado em **Model – View – Controller** (classes ES6 em `src/js/`).
+```
+src/js/
+  data/      ← servicos (auth, activities, checkins)
+  models/    ← UserProgress (classe) + funcoes puras
+  views/     ← modulos funcionais (DOM no topo)
+  entries/   ← arranque por pagina (login.js, app.js, …)
+```
 
-| Camada | Pasta | Exemplo |
-|--------|-------|---------|
-| Model | `src/js/models/` | `AppModel`, `ChatbotModel` |
-| View | `src/js/views/` | `AppView`, `ModalManager` |
-| Controller | `src/js/controllers/` | `app-controller.js` |
-
-Documentacao detalhada: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/design-inclusivo.md](docs/design-inclusivo.md)
+Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/design-inclusivo.md](docs/design-inclusivo.md)
 
 ## Estrutura
 
 - `index.html` - pagina publica (visitante)
-- `login.html` - autenticacao de utilizadores existentes
-- `register.html` - criacao de conta de utilizador (`user`)
-- `app.html` - area pessoal do utilizador autenticado
-- `admin.html` - painel base de administrador
-- `src/js/models` - dados e regras de negocio (auth, app, admin)
-- `src/js/views` - manipulacao de DOM, render e utilitarios de interface
-- `src/js/controllers` - fluxo da pagina e ligacao entre model e view
-- `mock/db.json` - dados iniciais para JSON Server
+- `login.html` / `register.html` - autenticacao
+- `app.html` - area do utilizador
+- `admin.html` - gestao de atividades (requer JSON Server)
+- `src/js/entries/` - ponto de entrada de cada pagina
+- `mock/db.json` - dados do JSON Server (sem `users` — ver persistencia)
 
 ## Arranque rapido
 
-1. Abrir `index.html` no browser.
-2. Criar conta em `register.html` ou entrar em `login.html`.
-3. O redirecionamento e feito automaticamente para `app.html` (user) ou `admin.html` (admin).
-4. (Opcional) Levantar mock server:
+1. Servir o projecto com um servidor local (modulos ES6 nao funcionam em `file://`):
 
-Credenciais admin seeded:
+```bash
+npx serve .
+```
 
-- email: `admin@zenify.local`
-- password: `admin123`
-
-Nota: contas de administrador sao pre-definidas e nao podem ser criadas no formulario de registo.
+2. Noutro terminal, levantar o mock API:
 
 ```bash
 npx json-server --watch mock/db.json --port 3000
 ```
+
+3. Abrir `http://localhost:3000` (ou a porta do `serve`) → `login.html` ou `register.html`.
+
+Credenciais admin (seed no localStorage na primeira execucao):
+
+- email: `admin@zenify.local`
+- password: `admin123`
+
+Nota: contas de administrador nao podem ser criadas no registo. Utilizadores normais registam-se em `register.html`.

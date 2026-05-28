@@ -35,7 +35,7 @@ Assim, os controllers so chamam funcoes prontas.
 
 ## 3) Divisao por pagina
 
-### `app.html` + `src/js/controllers/app-controller.js`
+### `app.html` + `src/js/entries/app.js`
 
 Views existentes:
 
@@ -48,7 +48,7 @@ Modais usados para:
 - confirmar que check-in foi guardado
 - confirmar fim do exercicio e ganho de XP
 
-### `admin.html` + `src/js/controllers/admin-controller.js`
+### `admin.html` + `src/js/entries/admin.js`
 
 Views existentes:
 
@@ -65,7 +65,8 @@ Modais usados para:
 - **HTML (`*.html`)**: estrutura visual e marcadores (`data-view`, ids, botoes)
 - **Models (`models/*.js`)**: dados e regras de negocio
 - **Views (`views/*.js`)**: render, DOM e utilitarios de interface
-- **Controllers (`controllers/*.js`)**: eventos, fluxo e orquestracao
+- **Entries (`entries/*.js`)**: arranque e orquestracao por pagina
+- **Services (`data/*.js`)**: persistencia e API
 
 ## 5) Como adicionar nova view
 

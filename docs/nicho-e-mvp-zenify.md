@@ -57,50 +57,29 @@ O Zenify ajuda estudantes universitarios a reduzir ansiedade academica com inter
 - Machine learning avancado para predicao.
 - Conteudo premium/paywall.
 
-## 4) Mapa de classes MVC (alinhado com a implementacao atual)
+## 4) Mapa da arquitectura (implementacao actual)
+
+## Servicos (`src/js/data`)
+
+- `auth-service.js` — utilizadores e sessao em localStorage
+- `activity-service.js` — CRUD de atividades no JSON Server
+- `app-service.js` — check-ins e stats filtrados por `userId`
 
 ## Models (`src/js/models`)
 
-- `AuthModel`
-  - `getSession()`, `setSession()`, `clearSession()`
-  - `registerUser()`, `loginUser()`, `requireAuth()`
-- `AppModel`
-  - `getCheckIns()`, `getStats()`, `addCheckIn()`, `addBreathingReward()`, `computeBadge()`
-- `RecommendationModel`
-  - `getRecommendation(level, date)` — regras por humor e periodo do dia
-- `ChatbotModel`
-  - `respond(input)` — if/else com respostas pre-definidas (sem API externa)
-- `AdminModel`
-  - `getActivities()`, `addActivity()`, `removeActivity()`, `syncFromApiIfEmpty()`
-- `ApiClient`
-  - `get(resource)` — JSON Server opcional com fallback local
+- `UserProgress` — classe com `#xp`, `#streak`, regras de gamificacao
+- `recommendation.js` — `getRecommendation(level, date)`
+- `chatbot.js` — `respondToChat(input)` por regras fixas
 
 ## Views (`src/js/views`)
 
-- `AuthView`
-  - bind de formularios (`bindLoginSubmit`, `bindRegisterSubmit`)
-  - render de erro (`showError`, `hideError`)
-- `AppView`
-  - render dashboard e historico
-  - bind de eventos (`bindMoodSubmit`, `bindBreathingStart`, `bindLogout`)
-- `AdminView`
-  - render de atividades
-  - bind de eventos (`bindCreate`, `bindRemove`, `bindLogout`)
-- `ZenifyViews` (view manager)
-  - troca entre views por `data-view`
-- `ZenifyModals` (modal manager)
-  - feedback de acoes com modal reutilizavel
+- Modulos funcionais com selectors DOM no topo do ficheiro
+- `view-manager.js` — `initViews(...)`
+- `modal-manager.js` — `createModal(...)`
 
-## Controllers (`src/js/controllers`)
+## Entradas (`src/js/entries`)
 
-- `login-controller`
-  - valida sessao existente, processa login, redireciona por role
-- `register-controller`
-  - processa registo, cria sessao de user, redireciona para app
-- `app-controller`
-  - orquestra diario, recomendacoes, chatbot, respiracao, gamificacao e modal
-- `admin-controller`
-  - orquestra criacao/remocao de atividades e feedback admin
+- `login.js`, `register.js`, `app.js`, `admin.js` — arranque explicito por pagina
 
 ## 5) Escopo recomendado para apresentacao
 

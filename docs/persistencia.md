@@ -1,25 +1,28 @@
-# Persistencia: localStorage vs JSON Server
+# Persistencia de dados (Zenify)
 
-## Resumo para defesa
+## Divisao actual (Opcao B + JSON Server)
 
-- **localStorage (activo hoje):** sessao, utilizadores, check-ins, XP/streak e atividades editadas pelo admin.
-- **JSON Server (mock opcional):** catalogo inicial de `activities` e `tips` em `mock/db.json` para simular uma API REST.
+| Dado | Onde vive | Notas |
+|------|-----------|--------|
+| Utilizadores e passwords | `localStorage` (`zenify_users`) | Autenticacao local simplificada (sem JWT) |
+| Sessao activa | `localStorage` (`zenify_session`) | `{ id, name, email, role }` |
+| Atividades (admin) | **JSON Server** `/activities` | Partilhadas entre utilizadores |
+| Check-ins | **JSON Server** `/checkins?userId=` + cache local | Filtrados por utilizador |
+| XP / streak | **JSON Server** `/userStats?userId=` + cache local | Um registo por utilizador |
+| Dicas (referencia) | `mock/db.json` → `/tips` | Conteudo estatico no mock |
 
-## O que fica em cada um
+## Porque nao ha `users` no `db.json`
 
-| Dado | localStorage | JSON Server (`mock/db.json`) |
-|------|--------------|------------------------------|
-| Sessao e login | `zenify_session`, `zenify_users` | — |
-| Check-ins e gamificacao | `zenify_check_ins`, `zenify_stats` | — |
-| Atividades do admin (CRUD) | `zenify_admin_activities` | Seed em `/activities` |
-| Dicas por humor | — | Seed em `/tips` |
+Evita inconsistencia: utilizadores existem **so** no `localStorage`. O `db.json` guarda apenas dados partilhados ou filtrados por `userId`.
 
-## Comportamento no codigo
+## Arranque do mock API
 
-1. A app funciona offline so com localStorage.
-2. Com `npx json-server --watch mock/db.json --port 3000`, o `AdminModel` tenta importar atividades do endpoint `/activities` na primeira carga (se localStorage ainda nao tiver dados guardados).
-3. Se o servidor nao responder em 2s, mantem-se o fallback local.
+```bash
+npx json-server --watch mock/db.json --port 3000
+```
 
-## Migracao futura (se perguntarem)
+Sem o servidor: a area de utilizador usa fallback local para check-ins/stats; o painel admin mostra lista vazia ate o servidor estar activo.
 
-Objectivo de evolucao: mover utilizadores e check-ins para uma API real; manter localStorage apenas como cache offline temporario.
+## Evolucao futura (Opcao A)
+
+Migrar autenticacao para `json-server-auth` com JWT em `localStorage` (`token` + `user`), como na F07.

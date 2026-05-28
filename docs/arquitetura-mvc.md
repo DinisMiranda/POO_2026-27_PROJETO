@@ -1,58 +1,43 @@
-# Arquitectura MVC (Zenify)
+# Arquitectura do frontend (Zenify)
 
 ## Frase para a defesa
 
-O Zenify segue **MVC em JavaScript**: os **models** guardam dados e regras, as **views** actualizam o DOM, e os **controllers** ligam eventos entre model e view.
+O Zenify usa **modulos ES6 funcionais** para views e arranque, **servicos em `data/`** para persistencia, e **uma classe de dominio** (`UserProgress`) onde o estado por utilizador faz sentido.
 
-## Camadas
+## Estrutura
 
 ```
-HTML (*.html)
-    ↓ carrega scripts por pagina
-Controllers (src/js/controllers/*-controller.js)
-    ↓ orquestra
-Models (src/js/models/*.js)  ←→  Views (src/js/views/*.js)
+src/js/
+  data/           ← servicos (auth, activities, checkins) — falam com localStorage/API
+  models/         ← dominio: UserProgress + funcoes puras (chatbot, recommendation)
+  views/          ← DOM: selectors no topo, funcoes exportadas
+  entries/        ← ponto de entrada por pagina (login.js, app.js, …)
 ```
 
-## Models
+## Porque as Views nao sao classes
 
-| Classe | Responsabilidade |
-|--------|------------------|
-| `AuthModel` | Utilizadores, sessao, login/registo |
-| `AppModel` | Check-ins, XP, streak |
-| `RecommendationModel` | Sugestoes por regras (humor + hora) |
-| `ChatbotModel` | Respostas if/else do assistente |
-| `AdminModel` | CRUD de atividades |
-| `ApiClient` | Fetch opcional ao JSON Server |
+Cada instancia de `AuthView` seria identica — sem estado proprio. Os selectors DOM correm **uma vez** no topo do modulo; as funcoes exportadas manipulam esses elementos.
 
-## Views
+## Porque os Controllers deram lugar a `entries/`
 
-| Classe | Responsabilidade |
-|--------|------------------|
-| `AuthView` | Formularios de login/registo |
-| `AppView` | Dashboard, chat, respiracao, historico |
-| `AdminView` | Lista e formulario de atividades |
-| `ViewManager` | Troca de `data-view` |
-| `ModalManager` | Feedback modal reutilizavel |
+Cada HTML carrega um unico `<script type="module" src="…/entries/app.js">`. Esse ficheiro coordena servicos + views — sem `new AppController()` no fim do proprio controller.
 
-## Controllers (um por pagina)
+## Classe legitima: `UserProgress`
 
-| Pagina | Controller |
-|--------|------------|
-| `login.html` | `login-controller.js` |
-| `register.html` | `register-controller.js` |
-| `app.html` | `app-controller.js` |
-| `admin.html` | `admin-controller.js` |
+Representa **uma coisa** com estado proprio (`#xp`, `#streak`, `#lastDate`) e metodos que o modificam (`applyCheckInReward`, `computeBadge`).
 
-## Exemplo de fluxo (check-in)
+## Servicos vs models
 
-1. Utilizador submete o formulario → `AppView.bindMoodSubmit`
-2. `AppController` chama `AppModel.addCheckIn`
-3. `RecommendationModel` calcula texto + regra aplicada
-4. `AppView.setRecommendation` e `ModalManager.show` actualizam a interface
+| Ficheiro | Papel |
+|----------|--------|
+| `auth-service.js` | Onde os utilizadores “vivem” (localStorage) |
+| `activity-service.js` | CRUD de atividades no JSON Server |
+| `app-service.js` | Check-ins e stats com `userId` |
+| `UserProgress.js` | Regras de gamificacao |
 
-## POO aplicada
+## Fluxo de check-in (`entries/app.js`)
 
-- Cada ficheiro expõe uma **classe** (`class AppModel`, `class AppController`, …).
-- **Composicao:** `AppModel` recebe `RecommendationModel`; `AdminModel` recebe `ApiClient`.
-- **Separacao de responsabilidades:** sem manipulacao directa de DOM nos models nem regras de negocio nas views.
+1. `bindMoodSubmit` (view) → entrada
+2. `addCheckin` (app-service) → servidor ou cache local
+3. `progress.applyCheckInReward` (model) → XP/streak + recomendacao
+4. `saveStats` + `renderDashboard` (service + view)

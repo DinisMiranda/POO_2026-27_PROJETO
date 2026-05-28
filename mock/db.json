@@ -1,16 +1,4 @@
 {
-  "users": [
-    {
-      "id": 1,
-      "name": "Dinis",
-      "role": "user"
-    },
-    {
-      "id": 2,
-      "name": "Emanuel",
-      "role": "admin"
-    }
-  ],
   "activities": [
     {
       "id": 1,
@@ -23,6 +11,8 @@
       "type": "meditacao"
     }
   ],
+  "checkins": [],
+  "userStats": [],
   "tips": [
     {
       "id": 1,
