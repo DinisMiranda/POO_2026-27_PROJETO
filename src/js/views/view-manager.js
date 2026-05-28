@@ -12,6 +12,8 @@ class ViewManager {
       buttons.forEach((button) => {
         const isActive = button.dataset.viewTarget === targetName;
         button.classList.toggle(activeClass, isActive);
+        button.setAttribute("aria-selected", String(isActive));
+        button.setAttribute("aria-pressed", String(isActive));
       });
     }
 

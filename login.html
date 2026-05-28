@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zenify | Login</title>
+    <link rel="stylesheet" href="src/css/a11y.css" />
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-slate-100 text-slate-800">
-    <main class="mx-auto mt-16 max-w-md rounded-xl bg-white p-6 shadow">
+  <body class="bg-slate-100 text-slate-900">
+    <a class="skip-link" href="#conteudo-principal">Saltar para o conteudo</a>
+    <main id="conteudo-principal" class="mx-auto mt-16 max-w-md rounded-xl bg-white p-6 shadow" role="main">
       <h1 class="mb-1 text-2xl font-semibold">Entrar</h1>
       <p class="mb-5 text-sm text-slate-600">Acede a tua conta para entrar na tua area.</p>
 
@@ -26,7 +28,7 @@
             class="w-full rounded-md border border-slate-300 px-3 py-2"
           />
         </div>
-        <p id="loginError" class="hidden rounded bg-rose-50 p-2 text-sm text-rose-700"></p>
+        <p id="loginError" class="hidden rounded bg-rose-50 p-2 text-sm text-rose-900" role="alert" aria-live="assertive"></p>
         <button class="w-full rounded-md bg-indigo-600 px-4 py-2 font-medium text-white" type="submit">Entrar</button>
       </form>
 
