@@ -41,6 +41,13 @@
           >
             Historico
           </button>
+          <button
+            type="button"
+            data-view-target="chatbot"
+            class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium"
+          >
+            Assistente
+          </button>
         </div>
       </section>
 
@@ -104,6 +111,32 @@
         <h2 class="mb-4 text-xl font-semibold">Historico recente</h2>
         <ul id="historyList" class="space-y-2 text-sm text-slate-700"></ul>
       </section>
+
+      <section data-view="chatbot" class="hidden rounded-xl bg-white p-5 shadow md:col-span-3">
+        <h2 class="mb-2 text-xl font-semibold">Assistente Zenify</h2>
+        <p class="mb-4 text-sm text-slate-600">
+          Chatbot por regras fixas (if/else). Sem API externa.
+        </p>
+        <div
+          id="chatLog"
+          class="mb-4 max-h-64 space-y-2 overflow-y-auto rounded-md border border-slate-200 bg-slate-50 p-3 text-sm"
+          aria-live="polite"
+          aria-relevant="additions"
+        ></div>
+        <form id="chatForm" class="flex gap-2">
+          <label class="sr-only" for="chatInput">Mensagem para o assistente</label>
+          <input
+            id="chatInput"
+            name="chatInput"
+            type="text"
+            class="flex-1 rounded-md border border-slate-300 px-3 py-2"
+            placeholder="Ex.: estou com ansiedade antes do exame"
+            autocomplete="off"
+            required
+          />
+          <button class="rounded-md bg-indigo-600 px-4 py-2 text-white" type="submit">Enviar</button>
+        </form>
+      </section>
     </main>
 
     <div id="feedbackModal" class="fixed inset-0 hidden bg-slate-900/40 p-4">
@@ -117,6 +150,7 @@
     </div>
 
     <script src="src/js/models/auth-model.js"></script>
+    <script src="src/js/models/chatbot-model.js"></script>
     <script src="src/js/models/app-model.js"></script>
     <script src="src/js/views/app-view.js"></script>
     <script src="src/js/views/view-manager.js"></script>

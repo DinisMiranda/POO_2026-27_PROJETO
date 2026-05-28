@@ -1,10 +1,11 @@
 class AppController {
-  constructor(authModel, appModel, appView, viewManager, modalManager) {
+  constructor(authModel, appModel, appView, viewManager, modalManager, chatbotModel) {
     this.authModel = authModel;
     this.appModel = appModel;
     this.appView = appView;
     this.viewManager = viewManager;
     this.modalManager = modalManager;
+    this.chatbotModel = chatbotModel;
     this.modal = null;
   }
 
@@ -81,6 +82,12 @@ class AppController {
         }
       }, 20000);
     });
+
+    this.appView.bindChatSubmit((message) => {
+      this.appView.appendChatMessage({ author: "user", text: message });
+      const reply = this.chatbotModel.respond(message);
+      this.appView.appendChatMessage({ author: "bot", text: reply });
+    });
   }
 }
 
@@ -89,6 +96,7 @@ const appController = new AppController(
   new AppModel(),
   new AppView(),
   new ViewManager(),
-  new ModalManager()
+  new ModalManager(),
+  new ChatbotModel()
 );
 appController.init();

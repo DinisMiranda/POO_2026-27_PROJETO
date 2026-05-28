@@ -11,6 +11,9 @@ class AppView {
       breathingStatus: document.getElementById("breathingStatus"),
       userLabel: document.getElementById("userLabel"),
       logoutBtn: document.getElementById("logoutBtn"),
+      chatForm: document.getElementById("chatForm"),
+      chatInput: document.getElementById("chatInput"),
+      chatLog: document.getElementById("chatLog"),
     };
   }
 
@@ -74,5 +77,30 @@ class AppView {
   bindLogout(handler) {
     const { logoutBtn } = this.getElements();
     logoutBtn.addEventListener("click", handler);
+  }
+
+  appendChatMessage({ author, text }) {
+    const { chatLog } = this.getElements();
+    if (!chatLog) return;
+
+    const item = document.createElement("p");
+    item.className = author === "user" ? "text-indigo-800" : "text-slate-700";
+    item.textContent = `${author === "user" ? "Tu" : "Zenify"}: ${text}`;
+    chatLog.appendChild(item);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  bindChatSubmit(handler) {
+    const { chatForm } = this.getElements();
+    if (!chatForm) return;
+
+    chatForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(chatForm);
+      const message = String(formData.get("chatInput") || "").trim();
+      if (!message) return;
+      handler(message);
+      chatForm.reset();
+    });
   }
 }
