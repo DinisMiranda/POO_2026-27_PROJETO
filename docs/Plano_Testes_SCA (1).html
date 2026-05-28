@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Testes SCA</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100vh; width: 100vw; overflow: hidden; background: #faf7f2; font-family: 'Segoe UI', Calibri, Arial, sans-serif; color: #1a1a2e; }
+
+/* ── DECK ── */
+.deck { width: 100vw; height: 100vh; position: relative; }
+.slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; pointer-events: none; overflow: hidden; background: #faf7f2; }
+.slide.active { opacity: 1; transform: translateY(0); pointer-events: all; }
+.slide .content { position: relative; z-index: 2; width: 100%; max-width: 1180px; padding: 0 3.5rem; }
+
+/* ── NAV ── */
+.nav { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); padding: 8px 20px; border-radius: 40px; border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 4px 20px rgba(46,64,87,0.12); }
+.nav-btn { width: 36px; height: 36px; border: none; background: rgba(46,64,87,0.08); color: #2e4057; border-radius: 50%; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+.nav-btn:hover { background: rgba(46,64,87,0.18); }
+.dots { display: flex; gap: 6px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(46,64,87,0.2); cursor: pointer; transition: background .3s, transform .3s; }
+.dot.active { background: #2e4057; transform: scale(1.35); }
+.counter { font-size: .75rem; color: #7a7a9d; min-width: 36px; text-align: center; }
+
+/* ── DECO ELEMENTS ── */
+.side-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 7px; background: #2e4057; z-index: 3; }
+.side-bar::after { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 3px; background: #c9825a; }
+.accent-line { width: 56px; height: 3px; background: linear-gradient(90deg, #2e4057, #c9825a); border-radius: 2px; margin-bottom: 1rem; }
+.section-label { font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #c9825a; margin-bottom: .5rem; }
+.tag { display: inline-block; background: rgba(46,64,87,0.09); color: #2e4057; font-size: .72rem; font-weight: 600; padding: .25rem .85rem; border-radius: 20px; }
+
+/* ── CARDS ── */
+.card { background: rgba(255,255,255,0.92); border: 1px solid rgba(0,0,0,0.07); border-radius: 14px; padding: 1.2rem 1.4rem; box-shadow: 0 2px 12px rgba(46,64,87,0.07); }
+.card-navy { border-left: 4px solid #2e4057; }
+.card-terra { border-left: 4px solid #c9825a; }
+.card-steel { border-left: 4px solid #8ba0b5; }
+
+/* ── TABLE ROWS ── */
+.tc-row { display: flex; align-items: center; gap: .8rem; padding: .5rem .8rem; border-radius: 8px; background: rgba(255,255,255,0.78); border: 1px solid rgba(0,0,0,0.05); margin-bottom: .35rem; font-size: .81rem; }
+.tc-id { font-weight: 700; color: #2e4057; min-width: 115px; font-size: .74rem; }
+.tc-name { flex: 1; color: #3d3d5c; }
+.badge-alta { background: #fee2e2; color: #991b1b; font-size: .68rem; font-weight: 700; padding: .18rem .55rem; border-radius: 20px; white-space: nowrap; }
+.badge-media { background: #fef9c3; color: #92400e; font-size: .68rem; font-weight: 700; padding: .18rem .55rem; border-radius: 20px; white-space: nowrap; }
+.tc-cycle { font-size: .72rem; color: #7a7a9d; min-width: 68px; text-align: right; }
+
+/* ── BLOBS ── */
+.blob { position: absolute; border-radius: 50%; filter: blur(68px); pointer-events: none; }
+@keyframes float-a { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-30px) scale(1.06)} }
+@keyframes float-b { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-25px,25px) scale(.94)} }
+@keyframes float-c { 0%,100%{transform:translate(0,0)} 50%{transform:translate(15px,20px)} }
+.blob-a { animation: float-a 14s ease-in-out infinite; }
+.blob-b { animation: float-b 18s ease-in-out infinite; }
+.blob-c { animation: float-c 22s ease-in-out infinite; }
+
+/* ── GRIDS ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+
+/* ── DARK SLIDE ── */
+.slide-dark { background: #2e4057 !important; }
+.slide-dark .content { color: white; }
+
+h1 { font-size: clamp(2.2rem,5vw,3.8rem); font-weight: 700; line-height: 1.1; color: #2e4057; letter-spacing: -.02em; }
+h2 { font-size: clamp(1.6rem,3.5vw,2.4rem); font-weight: 700; color: #2e4057; margin-bottom: .4rem; }
+h3 { font-size: .92rem; font-weight: 700; color: #2e4057; margin-bottom: .35rem; }
+p { font-size: .88rem; color: #3d3d5c; line-height: 1.65; }
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- SLIDE 1: CAPA -->
+<div class="slide active" data-i="1">
+  <div class="side-bar"></div>
+  <div class="blob blob-a" style="width:420px;height:420px;top:-80px;right:-60px;background:#c9825a;opacity:.09;z-index:1;"></div>
+  <div class="blob blob-b" style="width:300px;height:300px;bottom:-60px;left:60px;background:#2e4057;opacity:.07;z-index:1;"></div>
+  <div class="content" style="display:flex;align-items:center;gap:4rem;">
+    <div style="flex:1.2;">
+      <div class="section-label">Testes e Performance Web &nbsp;·&nbsp; 2025/2026</div>
+      <h1 style="margin-bottom:.5rem;">Relatório<br>Intermédio<br><span style="color:#c9825a;">Plano de Testes</span></h1>
+      <div class="accent-line"></div>
+      <p style="max-width:480px;margin-bottom:1.6rem;">Sistema de Controlo Ambiental — Planeamento e organização dos casos de teste funcionais e não funcionais no Jira/Xray.</p>
+      <div style="display:flex;gap:.7rem;flex-wrap:wrap;">
+        <span class="tag">Dinis Miranda</span>
+        <span class="tag">Sheldon</span>
+        <span class="tag">Guilherme</span>
+      </div>
+    </div>
+    <div style="flex:.7;background:#f0ebe2;border-radius:20px;padding:2.5rem;text-align:center;border-top:4px solid #2e4057;">
+      <div style="font-size:5rem;font-weight:900;color:#ddd5c8;line-height:1;">SCA</div>
+      <div style="font-size:.85rem;color:#7a7a9d;margin-top:.6rem;font-weight:600;">Sistema de Controlo Ambiental</div>
+      <div style="margin-top:1.4rem;display:flex;flex-direction:column;gap:.5rem;">
+        <div style="background:white;border-radius:8px;padding:.5rem .9rem;font-size:.78rem;color:#2e4057;font-weight:600;border-left:3px solid #2e4057;">REST API</div>
+        <div style="background:white;border-radius:8px;padding:.5rem .9rem;font-size:.78rem;color:#c9825a;font-weight:600;border-left:3px solid #c9825a;">Sensores IoT</div>
+        <div style="background:white;border-radius:8px;padding:.5rem .9rem;font-size:.78rem;color:#8ba0b5;font-weight:600;border-left:3px solid #8ba0b5;">Painel Web</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2: ÍNDICE -->
+<div class="slide" data-i="2">
+  <div class="side-bar"></div>
+  <div class="blob blob-b" style="width:320px;height:320px;top:-60px;right:-40px;background:#c9825a;opacity:.07;z-index:1;"></div>
+  <div class="content">
+    <div class="section-label">Conteúdo</div>
+    <h2>Índice da Apresentação</h2>
+    <div class="accent-line"></div>
+    <div class="grid-2" style="margin-top:1rem;gap:.85rem;">
+      <div class="card card-navy" style="display:flex;gap:.9rem;align-items:flex-start;">
+        <span style="font-size:1.9rem;font-weight:900;color:#c9825a;line-height:1;">01</span>
+        <div><h3>Introdução</h3><p style="font-size:.78rem;">Objetivos e contexto do projeto</p></div>
+      </div>
+      <div class="card card-navy" style="display:flex;gap:.9rem;align-items:flex-start;">
+        <span style="font-size:1.9rem;font-weight:900;color:#c9825a;line-height:1;">02</span>
+        <div><h3>Equipa &amp; Produto</h3><p style="font-size:.78rem;">Funções e descrição do SCA</p></div>
+      </div>
+      <div class="card card-navy" style="display:flex;gap:.9rem;align-items:flex-start;">
+        <span style="font-size:1.9rem;font-weight:900;color:#c9825a;line-height:1;">03</span>
+        <div><h3>Arquitetura &amp; Componentes</h3><p style="font-size:.78rem;">Camadas técnicas e componentes críticos</p></div>
+      </div>
+      <div class="card card-navy" style="display:flex;gap:.9rem;align-items:flex-start;">
+        <span style="font-size:1.9rem;font-weight:900;color:#c9825a;line-height:1;">04</span>
+        <div><h3>Estratégia de Testes</h3><p style="font-size:.78rem;">Ciclos, ferramentas e metodologia</p></div>
+      </div>
+      <div class="card card-navy" style="display:flex;gap:.9rem;align-items:flex-start;">
+        <span style="font-size:1.9rem;font-weight:900;color:#c9825a;line-height:1;">05</span>
+        <div><h3>Casos de Teste</h3><p style="font-size:.78rem;">Funcionais e não funcionais (TC001–TC015)</p></div>
+      </div>
+      <div class="card card-navy" style="display:flex;gap:.9rem;align-items:flex-start;">
+        <span style="font-size:1.9rem;font-weight:900;color:#c9825a;line-height:1;">06</span>
+        <div><h3>Critérios &amp; Limitações</h3><p style="font-size:.78rem;">Aceitação, estado atual e próximos passos</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: INTRODUÇÃO -->
+<div class="slide" data-i="3">
+  <div class="side-bar"></div>
+  <div class="blob blob-a" style="width:280px;height:280px;top:-40px;right:-30px;background:#8ba0b5;opacity:.08;z-index:1;"></div>
+  <div class="content">
+    <div class="section-label">01 · Introdução</div>
+    <h2>Contexto e Objetivos</h2>
+    <div class="accent-line"></div>
+    <div class="grid-2" style="margin-top:.9rem;align-items:start;">
+      <div style="display:flex;flex-direction:column;gap:.9rem;">
+        <div class="card card-navy">
+          <h3>Âmbito da Entrega</h3>
+          <p>Entrega intermédia da UC <em>Testes e Performance Web</em>, integrada com Projeto II e Programação Web II.</p>
+        </div>
+        <div class="card card-terra">
+          <h3>Objetivo Principal</h3>
+          <p>Definir e organizar o plano de testes com recurso ao Jira/Xray: Test Plan, ciclos Unit Tests e UAT.</p>
+        </div>
+      </div>
+      <div class="card card-steel">
+        <h3 style="margin-bottom:.8rem;">Requisitos do Enunciado</h3>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;">
+          <li style="display:flex;align-items:center;gap:.6rem;font-size:.84rem;color:#3d3d5c;"><span style="width:7px;height:7px;border-radius:50%;background:#c9825a;flex-shrink:0;"></span>Test Plan configurado no Jira/Xray</li>
+          <li style="display:flex;align-items:center;gap:.6rem;font-size:.84rem;color:#3d3d5c;"><span style="width:7px;height:7px;border-radius:50%;background:#c9825a;flex-shrink:0;"></span>2 ciclos de teste: Unit Tests e UAT</li>
+          <li style="display:flex;align-items:center;gap:.6rem;font-size:.84rem;color:#3d3d5c;"><span style="width:7px;height:7px;border-radius:50%;background:#c9825a;flex-shrink:0;"></span>Requisitos funcionais configurados</li>
+          <li style="display:flex;align-items:center;gap:.6rem;font-size:.84rem;color:#3d3d5c;"><span style="width:7px;height:7px;border-radius:50%;background:#c9825a;flex-shrink:0;"></span>Mínimo 5 requisitos não funcionais</li>
+          <li style="display:flex;align-items:center;gap:.6rem;font-size:.84rem;color:#3d3d5c;"><span style="width:7px;height:7px;border-radius:50%;background:#c9825a;flex-shrink:0;"></span>Prioridade, componente e ferramenta por teste</li>
+          <li style="display:flex;align-items:center;gap:.6rem;font-size:.84rem;color:#3d3d5c;"><span style="width:7px;height:7px;border-radius:50%;background:#c9825a;flex-shrink:0;"></span>Pré-condições, passos e resultados esperados</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: EQUIPA -->
+<div class="slide" data-i="4">
+  <div class="side-bar"></div>
+  <div class="blob blob-c" style="width:340px;height:340px;top:-50px;right:-50px;background:#2e4057;opacity:.06;z-index:1;"></div>
+  <div class="content">
+    <div class="section-label">02 · Equipa</div>
+    <h2>Definição da Equipa</h2>
+    <div class="accent-line"></div>
+    <div class="grid-3" style="margin-top:1rem;">
+      <div class="card" style="border-top:4px solid #2e4057;text-align:center;">
+        <div style="background:#f0ebe2;border-radius:8px;padding:.3rem .7rem;display:inline-block;font-size:.72rem;font-weight:700;color:#2e4057;margin-bottom:.8rem;">Test Manager / QA Lead</div>
+        <div style="font-size:1.3rem;font-weight:800;color:#2e4057;margin-bottom:.5rem;">Dinis Miranda</div>
+        <div style="width:36px;height:3px;background:#2e4057;border-radius:2px;margin:.5rem auto;"></div>
+        <p style="font-size:.8rem;text-align:left;">Organizar o plano de testes, gerir a estrutura no Jira/Xray, validar a cobertura dos requisitos e acompanhar o estado dos testes.</p>
+      </div>
+      <div class="card" style="border-top:4px solid #c9825a;text-align:center;">
+        <div style="background:#fef3e8;border-radius:8px;padding:.3rem .7rem;display:inline-block;font-size:.72rem;font-weight:700;color:#c9825a;margin-bottom:.8rem;">Performance Engineer / QA Técnico</div>
+        <div style="font-size:1.3rem;font-weight:800;color:#2e4057;margin-bottom:.5rem;">Sheldon</div>
+        <div style="width:36px;height:3px;background:#c9825a;border-radius:2px;margin:.5rem auto;"></div>
+        <p style="font-size:.8rem;text-align:left;">Testes técnicos de API e performance. Ferramentas: JMeter, Postman e Google Lighthouse.</p>
+      </div>
+      <div class="card" style="border-top:4px solid #8ba0b5;text-align:center;">
+        <div style="background:#edf2f7;border-radius:8px;padding:.3rem .7rem;display:inline-block;font-size:.72rem;font-weight:700;color:#4a6fa5;margin-bottom:.8rem;">Test Analyst / QA Funcional</div>
+        <div style="font-size:1.3rem;font-weight:800;color:#2e4057;margin-bottom:.5rem;">Guilherme</div>
+        <div style="width:36px;height:3px;background:#8ba0b5;border-radius:2px;margin:.5rem auto;"></div>
+        <p style="font-size:.8rem;text-align:left;">Casos de teste funcionais, validação de fluxos UAT e recolha de evidências de execução.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: PRODUTO -->
+<div class="slide" data-i="5">
+  <div class="side-bar"></div>
+  <div class="blob blob-a" style="width:280px;height:280px;top:-40px;right:-30px;background:#c9825a;opacity:.08;z-index:1;"></div>
+  <div class="content">
+    <div class="section-label">02 · Produto</div>
+    <h2>Sistema de Controlo Ambiental</h2>
+    <div class="accent-line"></div>
+    <div class="grid-2" style="margin-top:.9rem;align-items:start;">
+      <div style="display:flex;flex-direction:column;gap:.8rem;">
+        <p>Aplicação web para <strong>monitorização e controlo remoto</strong> de parâmetros ambientais domésticos, assente numa arquitetura cliente-servidor com REST API.</p>
+        <div class="card card-navy">
+          <h3>Objetivos do Projeto</h3>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem;margin-top:.5rem;">
+            <li style="display:flex;gap:.6rem;font-size:.82rem;color:#3d3d5c;"><span style="color:#c9825a;font-weight:700;">—</span>REST API robusta com Node.js/Express</li>
+            <li style="display:flex;gap:.6rem;font-size:.82rem;color:#3d3d5c;"><span style="color:#c9825a;font-weight:700;">—</span>Integração com sensores e atuadores IoT</li>
+            <li style="display:flex;gap:.6rem;font-size:.82rem;color:#3d3d5c;"><span style="color:#c9825a;font-weight:700;">—</span>Painel de controlo web (frontend)</li>
+            <li style="display:flex;gap:.6rem;font-size:.82rem;color:#3d3d5c;"><span style="color:#c9825a;font-weight:700;">—</span>Registo histórico de leituras e consumos</li>
+          </ul>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.65rem;">
+        <div class="card card-navy" style="display:flex;align-items:center;gap:.9rem;padding:.8rem 1rem;">
+          <div style="width:10px;height:10px;border-radius:50%;background:#2e4057;flex-shrink:0;"></div>
+          <div><div style="font-weight:700;font-size:.85rem;color:#2e4057;">Monitorização</div><div style="font-size:.76rem;color:#7a7a9d;">Temperatura e iluminação em tempo real</div></div>
+        </div>
+        <div class="card card-terra" style="display:flex;align-items:center;gap:.9rem;padding:.8rem 1rem;">
+          <div style="width:10px;height:10px;border-radius:50%;background:#c9825a;flex-shrink:0;"></div>
+          <div><div style="font-weight:700;font-size:.85rem;color:#2e4057;">Controlo de Dispositivos</div><div style="font-size:.76rem;color:#7a7a9d;">Controlo manual e automático de atuadores</div></div>
+        </div>
+        <div class="card card-steel" style="display:flex;align-items:center;gap:.9rem;padding:.8rem 1rem;">
+          <div style="width:10px;height:10px;border-radius:50%;background:#8ba0b5;flex-shrink:0;"></div>
+          <div><div style="font-weight:700;font-size:.85rem;color:#2e4057;">Histórico de Dados</div><div style="font-size:.76rem;color:#7a7a9d;">Consulta de leituras e ações anteriores</div></div>
+        </div>
+        <div class="card card-navy" style="display:flex;align-items:center;gap:.9rem;padding:.8rem 1rem;">
+          <div style="width:10px;height:10px;border-radius:50%;background:#2e4057;flex-shrink:0;"></div>
+          <div><div style="font-weight:700;font-size:.85rem;color:#2e4057;">Gestão de Utilizadores</div><div style="font-size:.76rem;color:#7a7a9d;">Painel de administração com permissões</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: ARQUITETURA -->
+<div class="slide" data-i="6">
+  <div class="side-bar"></div>
+  <div class="blob blob-b" style="width:280px;height:280px;top:-40px;right:-30px;background:#8ba0b5;opacity:.08;z-index:1;"></div>
+  <div class="content">
+    <div class="section-label">03 · Arquitetura</div>
+    <h2>Arquitetura do Sistema</h2>
+    <div class="accent-line"></div>
+    <div class="grid-3" style="margin-top:1rem;">
+      <div class="card card-navy"><h3>Frontend</h3><p style="font-size:.8rem;">Interface web para utilizadores e administradores — consulta de dados e controlo de dispositivos.</p></div>
+      <div class="card card-navy"><h3>Backend / REST API</h3><p style="font-size:.8rem;">Processa pedidos, aplica regras de negócio e devolve dados ao frontend.</p></div>
+      <div class="card card-navy"><h3>Base de Dados</h3><p style="font-size:.8rem;">Armazena utilizadores, sensores, leituras, histórico, consumos e ações.</p></div>
+      <div class="card card-terra"><h3>Sensores IoT</h3><p style="font-size:.8rem;">Recolha automática de dados ambientais: temperatura e iluminação.</p></div>
+      <div class="card card-terra"><h3>Atuadores</h3><p style="font-size:.8rem;">Dispositivos controláveis: iluminação, ventilação e outros equipamentos.</p></div>
+      <div class="card card-steel"><h3>Ferramentas de Teste</h3><p style="font-size:.8rem;">Jira, Xray, Postman, JMeter, Google Lighthouse e testes manuais.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: COMPONENTES CRÍTICOS (dark) -->
+<div class="slide slide-dark" data-i="7" style="background:#2e4057!important;">
+  <div style="position:absolute;top:0;left:0;right:0;height:4px;background:#c9825a;z-index:3;"></div>
+  <div class="blob blob-a" style="width:380px;height:380px;top:-60px;right:-50px;background:#c9825a;opacity:.11;z-index:1;"></div>
+  <div class="blob blob-b" style="width:280px;height:280px;bottom:-50px;left:-30px;background:#8ba0b5;opacity:.10;z-index:1;"></div>
+  <div class="content">
+    <div style="font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#c9825a;margin-bottom:.5rem;">03 · Componentes Críticos</div>
+    <h2 style="color:white;">O que precisamos de testar?</h2>
+    <div style="width:56px;height:3px;background:linear-gradient(90deg,#c9825a,#8ba0b5);border-radius:2px;margin:.8rem 0 1.2rem;"></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;">
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-top:3px solid #c9825a;border-radius:12px;padding:1rem;">
+        <div style="font-weight:700;font-size:.88rem;color:white;margin-bottom:.35rem;">Autenticação</div>
+        <div style="font-size:.74rem;color:rgba(255,255,255,0.55);">Garante acesso apenas a utilizadores autorizados.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-top:3px solid #c9825a;border-radius:12px;padding:1rem;">
+        <div style="font-weight:700;font-size:.88rem;color:white;margin-bottom:.35rem;">Dashboard</div>
+        <div style="font-size:.74rem;color:rgba(255,255,255,0.55);">Apresenta os dados ambientais ao utilizador.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-top:3px solid #c9825a;border-radius:12px;padding:1rem;">
+        <div style="font-weight:700;font-size:.88rem;color:white;margin-bottom:.35rem;">REST API</div>
+        <div style="font-size:.74rem;color:rgba(255,255,255,0.55);">Comunicação entre frontend, backend e dispositivos.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-top:3px solid #c9825a;border-radius:12px;padding:1rem;">
+        <div style="font-weight:700;font-size:.88rem;color:white;margin-bottom:.35rem;">Sensores</div>
+        <div style="font-size:.74rem;color:rgba(255,255,255,0.55);">Fundamentais para recolher dados ambientais.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-top:3px solid #8ba0b5;border-radius:12px;padding:1rem;">
+        <div style="font-weight:700;font-size:.88rem;color:white;margin-bottom:.35rem;">Atuadores</div>
+        <div style="font-size:.74rem;color:rgba(255,255,255,0.55);">Alteram o estado de dispositivos ambientais.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-top:3px solid #8ba0b5;border-radius:12px;padding:1rem;">
+        <div style="font-weight:700;font-size:.88rem;color:white;margin-bottom:.35rem;">Histórico</div>
+        <div style="font-size:.74rem;color:rgba(255,255,255,0.55);">Consulta de leituras e ações anteriores.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-top:3px solid #8ba0b5;border-radius:12px;padding:1rem;">
+        <div style="font-weight:700;font-size:.88rem;color:white;margin-bottom:.35rem;">Painel Admin</div>
+        <div style="font-size:.74rem;color:rgba(255,255,255,0.55);">Gestão de utilizadores, sensores e configurações.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-top:3px solid #8ba0b5;border-radius:12px;padding:1rem;">
+        <div style="font-weight:700;font-size:.88rem;color:white;margin-bottom:.35rem;">Segurança</div>
+        <div style="font-size:.74rem;color:rgba(255,255,255,0.55);">Impede acessos não autorizados a endpoints.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: ESTRATÉGIA -->
+<div class="slide" data-i="8">
+  <div class="side-bar"></div>
+  <div class="blob blob-c" style="width:300px;height:300px;top:-50px;right:-40px;background:#c9825a;opacity:.08;z-index:1;"></div>
+  <div class="content">
+    <div class="section-label">04 · Estratégia de Testes</div>
+    <h2>Estratégia de Testes</h2>
+    <div class="accent-line"></div>
+    <div class="grid-2" style="margin-top:.9rem;align-items:start;">
+      <div style="display:flex;flex-direction:column;gap:.8rem;">
+        <div class="card card-navy">
+          <h3>Ciclo: Unit Tests</h3>
+          <p style="margin:.4rem 0 .7rem;">Validação de funcionalidades isoladas, componentes específicos, endpoints, permissões e regras de negócio.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:.3rem;">
+            <span style="background:#e8f0fa;color:#2e4057;font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:10px;">6 Testes</span>
+            <span style="background:#e8f0fa;color:#2e4057;font-size:.7rem;padding:.2rem .6rem;border-radius:10px;">Postman</span>
+            <span style="background:#e8f0fa;color:#2e4057;font-size:.7rem;padding:.2rem .6rem;border-radius:10px;">JMeter</span>
+            <span style="background:#e8f0fa;color:#2e4057;font-size:.7rem;padding:.2rem .6rem;border-radius:10px;">Xray/Jira</span>
+          </div>
+        </div>
+        <div class="card card-terra">
+          <h3>Ciclo: UAT — Testes de Aceitação</h3>
+          <p style="margin:.4rem 0 .7rem;">Validação do ponto de vista do utilizador final, critérios de aceitação, usabilidade e compatibilidade.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:.3rem;">
+            <span style="background:#fef3e8;color:#c9825a;font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:10px;">9 Testes</span>
+            <span style="background:#fef3e8;color:#c9825a;font-size:.7rem;padding:.2rem .6rem;border-radius:10px;">Xray</span>
+            <span style="background:#fef3e8;color:#c9825a;font-size:.7rem;padding:.2rem .6rem;border-radius:10px;">Lighthouse</span>
+            <span style="background:#fef3e8;color:#c9825a;font-size:.7rem;padding:.2rem .6rem;border-radius:10px;">Manual</span>
+          </div>
+        </div>
+      </div>
+      <div class="card card-steel">
+        <h3 style="margin-bottom:.9rem;">Visão Geral do Plano</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem;">
+          <div style="background:#f0ebe2;border-radius:10px;padding:.8rem;text-align:center;">
+            <div style="font-size:2.4rem;font-weight:900;color:#2e4057;line-height:1;">15</div>
+            <div style="font-size:.7rem;color:#7a7a9d;margin-top:.2rem;">Total de Testes</div>
+          </div>
+          <div style="background:#f0ebe2;border-radius:10px;padding:.8rem;text-align:center;">
+            <div style="font-size:2.4rem;font-weight:900;color:#c9825a;line-height:1;">2</div>
+            <div style="font-size:.7rem;color:#7a7a9d;margin-top:.2rem;">Ciclos de Teste</div>
+          </div>
+        </div>
+        <div style="margin-bottom:.7rem;">
+          <div style="display:flex;justify-content:space-between;font-size:.78rem;color:#3d3d5c;margin-bottom:.3rem;"><span>Testes Funcionais (RF)</span><span style="font-weight:700;color:#2e4057;">10</span></div>
+          <div style="background:rgba(46,64,87,.12);border-radius:6px;height:8px;overflow:hidden;"><div style="width:67%;height:100%;background:linear-gradient(90deg,#2e4057,#8ba0b5);border-radius:6px;"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:.78rem;color:#3d3d5c;margin-bottom:.3rem;"><span>Testes Não Funcionais (RNF)</span><span style="font-weight:700;color:#c9825a;">5</span></div>
+          <div style="background:rgba(46,64,87,.12);border-radius:6px;height:8px;overflow:hidden;"><div style="width:33%;height:100%;background:linear-gradient(90deg,#c9825a,#e5b89a);border-radius:6px;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: TESTES FUNCIONAIS -->
+<div class="slide" data-i="9">
+  <div class="side-bar"></div>
+  <div class="content">
+    <div class="section-label">05 · Testes Funcionais</div>
+    <h2 style="margin-bottom:.3rem;">Casos de Teste — RF</h2>
+    <div class="accent-line"></div>
+    <div style="margin-top:.6rem;">
+      <div style="display:flex;align-items:center;gap:.8rem;padding:.4rem .8rem;background:#2e4057;border-radius:8px 8px 0 0;font-size:.74rem;font-weight:700;color:white;margin-bottom:1px;">
+        <span style="min-width:115px;">ID</span><span style="flex:1;">Caso de Teste</span><span style="min-width:72px;">Prioridade</span><span style="min-width:150px;">Componente</span><span style="min-width:68px;text-align:right;">Ciclo</span>
+      </div>
+      <div class="tc-row"><span class="tc-id">TC001-RF1</span><span class="tc-name">Validar login com credenciais válidas</span><span class="badge-alta">Alta</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">Forms/Auth</span><span class="tc-cycle">UAT</span></div>
+      <div class="tc-row" style="background:#f5f2ee;"><span class="tc-id">TC002-RF1</span><span class="tc-name">Validar erro com credenciais inválidas</span><span class="badge-alta">Alta</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">Forms/Auth</span><span class="tc-cycle">Unit Tests</span></div>
+      <div class="tc-row"><span class="tc-id">TC003-RF2</span><span class="tc-name">Verificar acesso à dashboard</span><span class="badge-alta">Alta</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">Dashboard/Frontend</span><span class="tc-cycle">UAT</span></div>
+      <div class="tc-row" style="background:#f5f2ee;"><span class="tc-id">TC004-RF3</span><span class="tc-name">Consultar dados de temperatura</span><span class="badge-alta">Alta</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">API/Sensores</span><span class="tc-cycle">Unit Tests</span></div>
+      <div class="tc-row"><span class="tc-id">TC005-RF4</span><span class="tc-name">Consultar estado da iluminação</span><span class="badge-media">Média</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">Dashboard/API</span><span class="tc-cycle">Unit Tests</span></div>
+      <div class="tc-row" style="background:#f5f2ee;"><span class="tc-id">TC006-RF5</span><span class="tc-name">Alterar estado de dispositivo</span><span class="badge-alta">Alta</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">API/Atuadores</span><span class="tc-cycle">UAT</span></div>
+      <div class="tc-row"><span class="tc-id">TC007-RF6</span><span class="tc-name">Consultar histórico de leituras</span><span class="badge-media">Média</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">Histórico/API/BD</span><span class="tc-cycle">UAT</span></div>
+      <div class="tc-row" style="background:#f5f2ee;"><span class="tc-id">TC008-RF7</span><span class="tc-name">Aceder ao painel de administração</span><span class="badge-alta">Alta</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">Admin/Auth</span><span class="tc-cycle">UAT</span></div>
+      <div class="tc-row"><span class="tc-id">TC009-RF8</span><span class="tc-name">Gerir utilizadores</span><span class="badge-media">Média</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">Admin/Forms/API</span><span class="tc-cycle">Unit Tests</span></div>
+      <div class="tc-row" style="background:#f5f2ee;"><span class="tc-id">TC010-RF9</span><span class="tc-name">Alterar modo operacional do sistema</span><span class="badge-alta">Alta</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">Sistema/API</span><span class="tc-cycle">UAT</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10: TESTES NÃO FUNCIONAIS -->
+<div class="slide" data-i="10">
+  <div class="side-bar"></div>
+  <div class="content">
+    <div class="section-label">05 · Testes Não Funcionais</div>
+    <h2 style="margin-bottom:.3rem;">Casos de Teste — RNF</h2>
+    <div class="accent-line"></div>
+    <div style="margin-top:.6rem;margin-bottom:1rem;">
+      <div style="display:flex;align-items:center;gap:.8rem;padding:.4rem .8rem;background:#2e4057;border-radius:8px 8px 0 0;font-size:.74rem;font-weight:700;color:white;margin-bottom:1px;">
+        <span style="min-width:115px;">ID</span><span style="flex:1;">Caso de Teste</span><span style="min-width:72px;">Prioridade</span><span style="min-width:150px;">Ferramenta</span><span style="min-width:68px;text-align:right;">Ciclo</span>
+      </div>
+      <div class="tc-row"><span class="tc-id">TC011-RNF1</span><span class="tc-name">Verificar tempo de resposta da API (&lt; 2s)</span><span class="badge-alta">Alta</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">JMeter/Postman</span><span class="tc-cycle">Unit Tests</span></div>
+      <div class="tc-row" style="background:#f5f2ee;"><span class="tc-id">TC012-RNF2</span><span class="tc-name">Verificar usabilidade da interface</span><span class="badge-media">Média</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">Teste manual/Xray</span><span class="tc-cycle">UAT</span></div>
+      <div class="tc-row"><span class="tc-id">TC013-RNF3</span><span class="tc-name">Verificar responsividade em mobile</span><span class="badge-media">Média</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">Google Lighthouse</span><span class="tc-cycle">UAT</span></div>
+      <div class="tc-row" style="background:#f5f2ee;"><span class="tc-id">TC014-RNF4</span><span class="tc-name">Verificar bloqueio de acesso sem autenticação</span><span class="badge-alta">Alta</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">Xray/Postman</span><span class="tc-cycle">Unit Tests</span></div>
+      <div class="tc-row"><span class="tc-id">TC015-RNF5</span><span class="tc-name">Verificar compatibilidade no Chrome e Edge</span><span class="badge-media">Média</span><span style="font-size:.76rem;color:#5a5a7a;min-width:150px;">Teste manual</span><span class="tc-cycle">UAT</span></div>
+    </div>
+    <div class="grid-3">
+      <div class="card card-navy" style="text-align:center;padding:.9rem;">
+        <div style="font-weight:700;color:#2e4057;font-size:.88rem;margin-bottom:.25rem;">Performance</div>
+        <div style="font-size:.74rem;color:#7a7a9d;">JMeter / Postman</div>
+      </div>
+      <div class="card card-terra" style="text-align:center;padding:.9rem;">
+        <div style="font-weight:700;color:#2e4057;font-size:.88rem;margin-bottom:.25rem;">Responsividade</div>
+        <div style="font-size:.74rem;color:#7a7a9d;">Google Lighthouse</div>
+      </div>
+      <div class="card card-steel" style="text-align:center;padding:.9rem;">
+        <div style="font-weight:700;color:#2e4057;font-size:.88rem;margin-bottom:.25rem;">Segurança de Acesso</div>
+        <div style="font-size:.74rem;color:#7a7a9d;">Xray / Postman</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11: CRITÉRIOS -->
+<div class="slide" data-i="11">
+  <div class="side-bar"></div>
+  <div class="content">
+    <div class="section-label">06 · Critérios de Aceitação</div>
+    <h2 style="margin-bottom:.3rem;">Critérios de Aceitação do Produto</h2>
+    <div class="accent-line"></div>
+    <div class="grid-2" style="margin-top:.8rem;align-items:start;">
+      <div>
+        <div style="background:#dc2626;color:white;font-size:.78rem;font-weight:700;padding:.35rem .8rem;border-radius:6px 6px 0 0;letter-spacing:.06em;">CRITICOS — ALTA PRIORIDADE</div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <div style="background:#fff5f5;border-left:3px solid #dc2626;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;"><span style="font-weight:700;color:#dc2626;min-width:95px;">TC001-RF1</span><span style="color:#1a1a2e;">Login com credenciais válidas</span></div>
+          <div style="background:white;border-left:3px solid #dc2626;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;"><span style="font-weight:700;color:#dc2626;min-width:95px;">TC002-RF1</span><span style="color:#1a1a2e;">Bloqueio de credenciais inválidas</span></div>
+          <div style="background:#fff5f5;border-left:3px solid #dc2626;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;"><span style="font-weight:700;color:#dc2626;min-width:95px;">TC003-RF2</span><span style="color:#1a1a2e;">Dashboard para utilizador autenticado</span></div>
+          <div style="background:white;border-left:3px solid #dc2626;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;"><span style="font-weight:700;color:#dc2626;min-width:95px;">TC004-RF3</span><span style="color:#1a1a2e;">Dados de temperatura apresentados</span></div>
+          <div style="background:#fff5f5;border-left:3px solid #dc2626;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;"><span style="font-weight:700;color:#dc2626;min-width:95px;">TC006-RF5</span><span style="color:#1a1a2e;">Alteração de estado de dispositivo</span></div>
+          <div style="background:white;border-left:3px solid #dc2626;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;"><span style="font-weight:700;color:#dc2626;min-width:95px;">TC008-RF7</span><span style="color:#1a1a2e;">Painel de admin apenas para admins</span></div>
+          <div style="background:#fff5f5;border-left:3px solid #dc2626;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;"><span style="font-weight:700;color:#dc2626;min-width:95px;">TC011-RNF1</span><span style="color:#1a1a2e;">API responde em menos de 2 segundos</span></div>
+          <div style="background:white;border-left:3px solid #dc2626;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;border-radius:0 0 6px 0;"><span style="font-weight:700;color:#dc2626;min-width:95px;">TC014-RNF4</span><span style="color:#1a1a2e;">Bloqueio de acesso sem autenticação</span></div>
+        </div>
+      </div>
+      <div>
+        <div style="background:#d97706;color:white;font-size:.78rem;font-weight:700;padding:.35rem .8rem;border-radius:6px 6px 0 0;letter-spacing:.06em;">NAO CRITICOS — MEDIA PRIORIDADE</div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <div style="background:#fffbeb;border-left:3px solid #d97706;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;"><span style="font-weight:700;color:#d97706;min-width:95px;">TC005-RF4</span><span style="color:#1a1a2e;">Estado da iluminação apresentado</span></div>
+          <div style="background:white;border-left:3px solid #d97706;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;"><span style="font-weight:700;color:#d97706;min-width:95px;">TC007-RF6</span><span style="color:#1a1a2e;">Consulta de histórico de leituras</span></div>
+          <div style="background:#fffbeb;border-left:3px solid #d97706;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;"><span style="font-weight:700;color:#d97706;min-width:95px;">TC009-RF8</span><span style="color:#1a1a2e;">Gestão de utilizadores pelo admin</span></div>
+          <div style="background:white;border-left:3px solid #d97706;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;"><span style="font-weight:700;color:#d97706;min-width:95px;">TC012-RNF2</span><span style="color:#1a1a2e;">Interface clara e simples</span></div>
+          <div style="background:#fffbeb;border-left:3px solid #d97706;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;"><span style="font-weight:700;color:#d97706;min-width:95px;">TC013-RNF3</span><span style="color:#1a1a2e;">Adaptação a dispositivos móveis</span></div>
+          <div style="background:white;border-left:3px solid #d97706;padding:.45rem .75rem;display:flex;gap:.7rem;align-items:center;font-size:.8rem;border-radius:0 0 6px 0;"><span style="font-weight:700;color:#d97706;min-width:95px;">TC015-RNF5</span><span style="color:#1a1a2e;">Compatibilidade Chrome e Edge</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12: LIMITAÇÕES -->
+<div class="slide" data-i="12">
+  <div class="side-bar"></div>
+  <div class="blob blob-b" style="width:280px;height:280px;top:-40px;right:-30px;background:#c9825a;opacity:.08;z-index:1;"></div>
+  <div class="content">
+    <div class="section-label">06 · Limitações e Estado Atual</div>
+    <h2>Estado Atual e Próximos Passos</h2>
+    <div class="accent-line"></div>
+    <div class="grid-2" style="margin-top:1rem;align-items:start;">
+      <div style="display:flex;flex-direction:column;gap:.9rem;">
+        <div class="card" style="border-left:4px solid #f59e0b;">
+          <h3>Testes em Estado Planeado</h3>
+          <p style="margin-top:.4rem;">Vários testes aguardam a conclusão do backend, REST API e base de dados para execução completa.</p>
+        </div>
+        <div class="card" style="border-left:4px solid #10b981;">
+          <h3>Executáveis Parcialmente</h3>
+          <p style="margin-top:.4rem;">Testes de interface, usabilidade, responsividade e compatibilidade podem ser executados com o frontend disponível.</p>
+        </div>
+        <div class="card card-steel">
+          <h3>Rastreabilidade Jira/Xray</h3>
+          <p style="margin-top:.4rem;">Foram usadas ligações do tipo <em>relates to</em> para manter a rastreabilidade entre testes, plano e ciclos.</p>
+        </div>
+      </div>
+      <div class="card card-navy">
+        <h3 style="margin-bottom:.9rem;">Próximos Passos</h3>
+        <div style="display:flex;flex-direction:column;gap:.6rem;">
+          <div style="display:flex;align-items:flex-start;gap:.8rem;padding:.65rem .85rem;background:#f0ebe2;border-radius:8px;">
+            <span style="font-weight:900;color:#c9825a;font-size:1rem;line-height:1.2;">1</span>
+            <span style="font-size:.84rem;color:#3d3d5c;">Concluir implementação do backend/API</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.8rem;padding:.65rem .85rem;background:#f0ebe2;border-radius:8px;">
+            <span style="font-weight:900;color:#c9825a;font-size:1rem;line-height:1.2;">2</span>
+            <span style="font-size:.84rem;color:#3d3d5c;">Executar os testes planeados</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.8rem;padding:.65rem .85rem;background:#f0ebe2;border-radius:8px;">
+            <span style="font-weight:900;color:#c9825a;font-size:1rem;line-height:1.2;">3</span>
+            <span style="font-size:.84rem;color:#3d3d5c;">Recolher evidências no Jira/Xray</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.8rem;padding:.65rem .85rem;background:#f0ebe2;border-radius:8px;">
+            <span style="font-weight:900;color:#c9825a;font-size:1rem;line-height:1.2;">4</span>
+            <span style="font-size:.84rem;color:#3d3d5c;">Registar e resolver defeitos encontrados</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13: CONCLUSÃO -->
+<div class="slide slide-dark" data-i="13" style="background:#2e4057!important;">
+  <div style="position:absolute;top:0;left:0;right:0;height:4px;background:#c9825a;z-index:3;"></div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:4px;background:#c9825a;z-index:3;"></div>
+  <div class="blob blob-a" style="width:420px;height:420px;top:-80px;right:-60px;background:#c9825a;opacity:.09;z-index:1;"></div>
+  <div class="blob blob-b" style="width:300px;height:300px;bottom:-60px;left:50px;background:#8ba0b5;opacity:.08;z-index:1;"></div>
+  <div class="content" style="text-align:center;">
+    <div style="font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#c9825a;margin-bottom:.6rem;">Fase Intermédia · Concluída</div>
+    <h2 style="color:white;font-size:clamp(1.8rem,4vw,3rem);margin-bottom:.5rem;">Plano de Testes<br><span style="color:#c9825a;">estruturado e pronto</span></h2>
+    <div style="width:56px;height:3px;background:linear-gradient(90deg,#c9825a,#8ba0b5);border-radius:2px;margin:1rem auto 1.6rem;"></div>
+    <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2rem;">
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #c9825a;border-radius:14px;padding:1.2rem 2rem;min-width:130px;">
+        <div style="font-size:2.8rem;font-weight:900;color:white;line-height:1;">15</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem;">Casos de Teste</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #c9825a;border-radius:14px;padding:1.2rem 2rem;min-width:130px;">
+        <div style="font-size:2.8rem;font-weight:900;color:#c9825a;line-height:1;">2</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem;">Ciclos</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid #8ba0b5;border-radius:14px;padding:1.2rem 2rem;min-width:130px;">
+        <div style="font-size:2.8rem;font-weight:900;color:#8ba0b5;line-height:1;">8</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem;">Componentes</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-top:3px solid white;border-radius:14px;padding:1.2rem 2rem;min-width:130px;">
+        <div style="font-size:2.8rem;font-weight:900;color:white;line-height:1;">3</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem;">Elementos</div>
+      </div>
+    </div>
+    <div style="font-size:.84rem;color:rgba(255,255,255,0.45);">Sistema de Controlo Ambiental &nbsp;·&nbsp; Testes e Performance Web &nbsp;·&nbsp; 2025/2026</div>
+    <div style="margin-top:.5rem;font-size:.84rem;color:rgba(255,255,255,0.35);">Dinis Miranda &nbsp;·&nbsp; Sheldon &nbsp;·&nbsp; Guilherme</div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- NAVEGAÇÃO -->
+<div class="nav">
+  <button class="nav-btn" onclick="go(-1)">&#8249;</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" onclick="go(1)">&#8250;</button>
+  <span class="counter" id="ctr">1 / 13</span>
+</div>
+
+<script>
+  let cur = 1;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const dotsEl = document.getElementById('dots');
+  const ctrEl = document.getElementById('ctr');
+
+  for (let i = 1; i <= total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 1 ? ' active' : '');
+    d.onclick = () => jump(i);
+    dotsEl.appendChild(d);
+  }
+
+  function jump(n) {
+    document.querySelector('.slide.active').classList.remove('active');
+    document.querySelector('[data-i="' + n + '"]').classList.add('active');
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i + 1 === n));
+    cur = n;
+    ctrEl.textContent = cur + ' / ' + total;
+  }
+
+  function go(dir) {
+    let n = cur + dir;
+    if (n < 1) n = total;
+    if (n > total) n = 1;
+    jump(n);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  });
+
+  let tx = 0;
+  document.addEventListener('touchstart', e => tx = e.touches[0].clientX);
+  document.addEventListener('touchend', e => { if (Math.abs(tx - e.changedTouches[0].clientX) > 50) go(tx > e.changedTouches[0].clientX ? 1 : -1); });
+</script>
+</body>
+</html>
