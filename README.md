@@ -17,7 +17,7 @@ src/js/
   data/      ← servicos (auth, activities, checkins)
   models/    ← UserProgress (classe) + funcoes puras
   views/     ← modulos funcionais (DOM no topo)
-  entries/   ← arranque por pagina (login.js, app.js, …)
+  controllers/   ← arranque por pagina (login.js, app.js, …)
 ```
 
 Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/design-inclusivo.md](docs/design-inclusivo.md)
@@ -28,8 +28,8 @@ Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/design
 - `login.html` / `register.html` - autenticacao
 - `app.html` - area do utilizador
 - `admin.html` - gestao de atividades (requer JSON Server)
-- `src/js/entries/` - ponto de entrada de cada pagina
-- `mock/db.json` - dados do JSON Server (sem `users` — ver persistencia)
+- `src/js/controllers/` - ponto de entrada de cada pagina
+- `db.json` - dados do JSON Server (sem `users` — ver persistencia)
 
 ## Arranque rapido
 
@@ -42,7 +42,7 @@ npx serve .
 2. Noutro terminal, levantar o mock API:
 
 ```bash
-npx json-server --watch mock/db.json --port 3000
+npx json-server --watch db.json --port 3000
 ```
 
 3. Abrir `http://localhost:3000` (ou a porta do `serve`) → `login.html` ou `register.html`.
