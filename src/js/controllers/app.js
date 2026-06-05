@@ -52,17 +52,27 @@ async function startApp(session) {
   bindMoodSubmit(async ({ level, note }) => {
     const today = new Date().toISOString().split("T")[0];
     await addCheckin({ date: today, level, note });
-    const recommendation = progress.applyCheckInReward({ level, today });
+
+    const { recommendation, streakAward } = progress.applyCheckInReward({ level, today });
     await saveStats(progress.toJSON());
     progress = await refreshDashboard();
 
     setRecommendation(recommendation);
     resetMoodForm();
 
-    modal?.show({
-      heading: "Check-in guardado",
-      message: "O teu registo foi guardado e a gamificacao foi atualizada.",
-    });
+    // Show a special modal when a new streak milestone is unlocked
+    if (streakAward?.isNew) {
+      const messages = {
+        title: `${streakAward.emoji} ${streakAward.label} desbloqueado!`,
+        message: buildStreakMessage(streakAward),
+      };
+      modal?.show({ heading: messages.title, message: messages.message });
+    } else {
+      modal?.show({
+        heading: "Check-in guardado",
+        message: "O teu registo foi guardado e a gamificacao foi atualizada.",
+      });
+    }
   });
 
   bindBreathingStart(() => {
@@ -91,6 +101,21 @@ async function startApp(session) {
     appendChatMessage({ author: "user", text: message });
     appendChatMessage({ author: "bot", text: respondToChat(message) });
   });
+}
+
+/**
+ * Returns a celebratory message for each streak milestone.
+ * @param {{ type: string, label: string, emoji: string }} award
+ */
+function buildStreakMessage(award) {
+  if (award.type === "title") {
+    return "Atingiste 1 ano de check-ins consecutivos. O titulo Zenith e permanente e nunca sera retirado. Parabens!";
+  }
+  if (award.label.startsWith("Zen Month")) {
+    const months = award.label.match(/(\d+)x/)?.[1] || "";
+    return `${months} ${months === "1" ? "mes" : "meses"} de streak! A medalha Zen Month mantem-se enquanto continuares consistente. +30 XP bónus.`;
+  }
+  return "7 dias seguidos de check-in! Medalha Calm Week ativa. Continua para chegar a Zen Month. +15 XP bonus.";
 }
 
 const session = requireAuth("user");
