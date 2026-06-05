@@ -5,6 +5,7 @@ const recommendationRule = document.getElementById("recommendationRule");
 const xpValue = document.getElementById("xpValue");
 const streakValue = document.getElementById("streakValue");
 const badgeValue = document.getElementById("badgeValue");
+const streakAwardEl = document.getElementById("streakAwardValue");
 const breathingBtn = document.getElementById("breathingBtn");
 const breathingStatus = document.getElementById("breathingStatus");
 const userLabel = document.getElementById("userLabel");
@@ -24,6 +25,9 @@ export function renderDashboard({ checkIns, progress }) {
   streakValue.textContent = String(stats.streak);
   badgeValue.textContent = progress.computeBadge();
 
+  // Streak award (medal or permanent title)
+  renderStreakAward(progress.computeStreakAward());
+
   historyList.innerHTML = "";
   checkIns
     .slice(-5)
@@ -34,6 +38,35 @@ export function renderDashboard({ checkIns, progress }) {
       item.textContent = `${entry.date} - humor ${entry.level}/5 - ${entry.note || "sem nota"}`;
       historyList.appendChild(item);
     });
+}
+
+/**
+ * Renders the streak award section.
+ * @param {object|null} award - result of progress.computeStreakAward()
+ */
+export function renderStreakAward(award) {
+  if (!streakAwardEl) return;
+
+  if (!award) {
+    streakAwardEl.textContent = "—";
+    streakAwardEl.className = "text-slate-400 text-sm";
+    return;
+  }
+
+  const text = `${award.emoji} ${award.label}`;
+
+  if (award.type === "title") {
+    // Permanent gold title
+    streakAwardEl.textContent = text;
+    streakAwardEl.className = "font-bold text-yellow-600 text-sm";
+  } else if (award.label.startsWith("Zen Month")) {
+    streakAwardEl.textContent = text;
+    streakAwardEl.className = "font-semibold text-indigo-700 text-sm";
+  } else {
+    // Calm Week
+    streakAwardEl.textContent = text;
+    streakAwardEl.className = "font-semibold text-emerald-700 text-sm";
+  }
 }
 
 export function setRecommendation({ text, rule }) {
