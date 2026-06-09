@@ -12,6 +12,8 @@ const userLabel = document.getElementById("userLabel");
 const logoutBtn = document.getElementById("logoutBtn");
 const chatForm = document.getElementById("chatForm");
 const chatLog = document.getElementById("chatLog");
+const chatInput = document.getElementById("chatInput");
+const chatSubmitBtn = document.getElementById("chatSubmitBtn");
 
 export function renderUser(session) {
   if (userLabel) userLabel.textContent = `${session.name} (${session.role})`;
@@ -113,6 +115,20 @@ export function appendChatMessage({ author, text }) {
   item.textContent = `${author === "user" ? "Tu" : "Zenify"}: ${text}`;
   chatLog.appendChild(item);
   chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+export function replaceLastChatMessage({ author, text }) {
+  if (!chatLog?.lastElementChild) return;
+
+  const item = chatLog.lastElementChild;
+  item.className = author === "user" ? "text-indigo-800" : "text-slate-700";
+  item.textContent = `${author === "user" ? "Tu" : "Zenify"}: ${text}`;
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+export function setChatPending(pending) {
+  if (chatInput) chatInput.disabled = pending;
+  if (chatSubmitBtn) chatSubmitBtn.disabled = pending;
 }
 
 export function bindChatSubmit(handler) {

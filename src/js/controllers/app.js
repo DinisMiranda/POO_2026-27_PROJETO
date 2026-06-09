@@ -2,6 +2,7 @@ import { requireAuth, clearSession } from "../data/auth-service.js";
 import { redirectToLogin } from "../data/navigation.js";
 import { addCheckin, getCheckins, getStats, saveStats } from "../data/app-service.js";
 import { UserProgress } from "../models/UserProgress.js";
+import { askAssistant } from "../data/chat-service.js";
 import { respondToChat } from "../models/chatbot.js";
 import {
   appendChatMessage,
@@ -11,8 +12,10 @@ import {
   bindMoodSubmit,
   renderDashboard,
   renderUser,
+  replaceLastChatMessage,
   resetMoodForm,
   setBreathingState,
+  setChatPending,
   setRecommendation,
 } from "../views/app-view.js";
 import { initViews } from "../views/view-manager.js";
@@ -97,9 +100,25 @@ async function startApp(session) {
     }, 20000);
   });
 
-  bindChatSubmit((message) => {
+  const chatHistory = [];
+
+  bindChatSubmit(async (message) => {
     appendChatMessage({ author: "user", text: message });
-    appendChatMessage({ author: "bot", text: respondToChat(message) });
+    appendChatMessage({ author: "bot", text: "A pensar..." });
+    setChatPending(true);
+
+    try {
+      const reply = await askAssistant(message, chatHistory);
+      chatHistory.push(
+        { role: "user", content: message },
+        { role: "assistant", content: reply }
+      );
+      replaceLastChatMessage({ author: "bot", text: reply });
+    } catch {
+      replaceLastChatMessage({ author: "bot", text: respondToChat(message) });
+    } finally {
+      setChatPending(false);
+    }
   });
 }
 

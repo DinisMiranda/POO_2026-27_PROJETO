@@ -124,7 +124,7 @@
       <section data-view="chatbot" class="hidden rounded-xl bg-white p-5 shadow md:col-span-3">
         <h2 class="mb-2 text-xl font-semibold">Assistente Zenify</h2>
         <p class="mb-4 text-sm text-slate-600">
-          Chatbot por regras fixas (if/else). Sem API externa.
+          Assistente com Ollama (local e gratuito). Se o Ollama estiver offline, usa regras fixas.
         </p>
         <div
           id="chatLog"
@@ -143,7 +143,7 @@
             autocomplete="off"
             required
           />
-          <button class="rounded-md bg-indigo-600 px-4 py-2 text-white" type="submit">Enviar</button>
+          <button id="chatSubmitBtn" class="rounded-md bg-indigo-600 px-4 py-2 text-white" type="submit">Enviar</button>
         </form>
       </section>
     </main>

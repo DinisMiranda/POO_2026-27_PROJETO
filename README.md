@@ -45,7 +45,9 @@ npx serve .
 npx json-server --watch db.json --port 3000
 ```
 
-3. Abrir `http://localhost:3000` (ou a porta do `serve`) → `login.html` ou `register.html`.
+3. (Opcional) Assistente com Ollama — ver [docs/chat-ollama.md](docs/chat-ollama.md).
+
+4. Abrir `http://localhost:3000` (ou a porta do `serve`) → `login.html` ou `register.html`.
 
 Credenciais admin (seed no localStorage na primeira execucao):
 
