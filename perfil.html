@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenify – Perfil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+   rel="stylesheet"
+  />
+  <link rel="stylesheet" href="src/css/zenify-app.css" />
+ </head>
+ <body data-zenify-page="perfil">
+  <div class="app">
+   <aside class="sidebar" data-zenify-sidebar></aside>
+   <main class="main">
+    <div class="topbar">
+     <div class="topbar-greeting">
+      <h1>Perfil</h1>
+      <p>Gere a tua conta e ve o teu progresso.</p>
+     </div>
+    </div>
+    <div class="page-stack">
+     <div class="card">
+      <div class="profile-header">
+       <div class="profile-avatar">MS</div>
+       <div>
+        <h3 style="margin: 0">Marta Silva</h3>
+        <p class="lead">marta.silva@estudante.pt</p>
+        <div
+         style="
+          display: flex;
+          gap: var(--space-2);
+          margin-top: var(--space-3);
+          flex-wrap: wrap;
+         "
+        >
+         <span class="stat-pill">240 XP</span>
+         <span class="stat-pill">Streak 12 dias</span>
+         <span class="stat-pill">Badge: Inicial</span>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="page-grid-2">
+      <div class="card">
+       <h3>Dados pessoais</h3>
+       <form action="#" method="post">
+        <div class="field">
+         <label for="name">Nome</label><input id="name" value="Marta Silva" />
+        </div>
+        <div class="field">
+         <label for="email">Email</label
+         ><input id="email" type="email" value="marta.silva@estudante.pt" />
+        </div>
+        <button class="btn-primary" type="submit">Guardar alteracoes</button>
+       </form>
+      </div>
+      <div class="card">
+       <h3>Medalhas e titulos</h3>
+       <div class="medals-grid" style="margin-top: var(--space-2)">
+        <div class="medal">
+         <div class="medal-icon" style="background: #ede8f8; color: #6a5a9a">
+          <svg
+           viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="2"
+          >
+           <circle cx="12" cy="8" r="4" />
+           <path d="M8 21l4-4 4 4" />
+          </svg>
+         </div>
+         <div class="medal-name">Calm Week</div>
+        </div>
+        <div class="medal">
+         <div class="medal-icon" style="background: #e8f0f8; color: #4a6a9a">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+           <path
+            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+           />
+          </svg>
+         </div>
+         <div class="medal-name">Zen Month x3</div>
+        </div>
+        <div class="medal">
+         <div class="medal-icon" style="background: #fef8e0; color: #c48a20">
+          <svg
+           viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="2"
+          >
+           <circle cx="12" cy="12" r="4" />
+           <path d="M12 2v2M12 20v2" />
+          </svg>
+         </div>
+         <div class="medal-name">Foco Diario</div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="card">
+      <h3>Sessao</h3>
+      <p class="lead">Terminar sessao neste dispositivo.</p>
+      <a
+       href="login.html"
+       class="btn-secondary"
+       style="margin-top: var(--space-4); display: inline-flex"
+       >Logout</a
+      >
+     </div>
+    </div>
+   </main>
+  </div>
+  <script type="module" src="src/js/zenify/sidebar.js"></script>
+ </body>
+</html>

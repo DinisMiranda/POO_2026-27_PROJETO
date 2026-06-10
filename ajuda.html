@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenify – Ajuda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+   rel="stylesheet"
+  />
+  <link rel="stylesheet" href="src/css/zenify-app.css" />
+ </head>
+ <body data-zenify-page="ajuda">
+  <div class="app">
+   <aside class="sidebar" data-zenify-sidebar></aside>
+   <main class="main">
+    <div class="topbar">
+     <div class="topbar-greeting">
+      <h1>Ajuda</h1>
+      <p>Perguntas frequentes e como usar o Zenify.</p>
+     </div>
+    </div>
+    <div class="page-stack">
+     <div class="card">
+      <h3>Comecar</h3>
+      <div class="faq-item">
+       <h4>Como faco o check-in diario?</h4>
+       <p>
+        Vai a <a href="zenify-registo.html">Registo</a>, escolhe o nivel de
+        humor (1-5), escreve uma nota opcional e carrega em Guardar check-in.
+       </p>
+      </div>
+      <div class="faq-item">
+       <h4>O que e o streak?</h4>
+       <p>
+        E o numero de dias seguidos com check-in. Mantem a consistencia para
+        desbloquear medalhas e ganhar XP extra.
+       </p>
+      </div>
+      <div class="faq-item">
+       <h4>Como funcionam os exercicios?</h4>
+       <p>
+        Em <a href="zenify-exercicios.html">Exercicios</a> escolhes uma
+        intervencao curta (respiracao, grounding, relaxamento). Ao concluir,
+        ganhas pontos de consistencia.
+       </p>
+      </div>
+     </div>
+     <div class="page-grid-2">
+      <div class="card">
+       <h3>Assistente</h3>
+       <p class="lead">
+        O assistente responde a perguntas sobre ansiedade academica, stress e
+        habitos de estudo. Com Ollama activo, as respostas sao geradas
+        localmente.
+       </p>
+       <a
+        href="app.html"
+        class="btn-secondary"
+        style="margin-top: var(--space-4); display: inline-flex"
+        >Abrir app classica</a
+       >
+      </div>
+      <div class="card">
+       <h3>Suporte</h3>
+       <p class="lead">
+        O Zenify nao substitui apoio psicologico profissional. Em caso de crise,
+        contacta os servicos de saude mental da tua instituicao.
+       </p>
+       <p
+        style="
+         font-size: var(--text-sm);
+         margin-top: var(--space-4);
+         color: var(--color-text-muted);
+        "
+       >
+        Email: suporte@zenify.local
+       </p>
+      </div>
+     </div>
+    </div>
+   </main>
+  </div>
+  <script type="module" src="src/js/zenify/sidebar.js"></script>
+ </body>
+</html>

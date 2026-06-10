@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenify – Registo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+   rel="stylesheet"
+  />
+  <link rel="stylesheet" href="src/css/zenify-app.css" />
+ </head>
+ <body data-zenify-page="registo">
+  <div class="app">
+   <aside class="sidebar" data-zenify-sidebar></aside>
+   <main class="main">
+    <div class="topbar">
+     <div class="topbar-greeting">
+      <h1>Diario de humor</h1>
+      <p>Regista como te sentes e acompanha o teu historico.</p>
+     </div>
+     <div class="topbar-actions">
+      <a href="zenify-perfil.html" class="avatar-btn"
+       ><div class="avatar">MS</div>
+       <span>MS</span></a
+      >
+     </div>
+    </div>
+    <div class="page-stack">
+     <div class="page-grid-2">
+      <div class="card">
+       <h3>Novo check-in</h3>
+       <p class="lead">Escala de 1 (muito mal) a 5 (muito bem).</p>
+       <form action="#" method="post">
+        <div class="field">
+         <label for="moodLevel">Nivel de humor</label>
+         <input
+          id="moodLevel"
+          name="moodLevel"
+          type="number"
+          min="1"
+          max="5"
+          value="3"
+          required
+         />
+        </div>
+        <div class="field">
+         <label for="moodNote">Nota do dia</label>
+         <textarea
+          id="moodNote"
+          name="moodNote"
+          placeholder="Como te sentes hoje?"
+         ></textarea>
+        </div>
+        <button class="btn-primary" type="submit">Guardar check-in</button>
+       </form>
+      </div>
+      <div class="card">
+       <h3>Recomendacao de hoje</h3>
+       <p class="lead">Com base no teu ultimo registo e no periodo do dia.</p>
+       <div class="stat-pill" style="margin-bottom: var(--space-4)">
+        Regra: humor moderado + tarde
+       </div>
+       <p style="font-size: var(--text-sm); line-height: 1.6">
+        Humor moderado: meditacao curta (5 min) e pausa digital de 20 minutos.
+       </p>
+       <a
+        href="zenify-exercicios.html"
+        class="btn-secondary"
+        style="margin-top: var(--space-5); display: inline-flex"
+        >Ver exercicio sugerido</a
+       >
+      </div>
+     </div>
+     <div class="card">
+      <h3>Historico recente</h3>
+      <div class="list-rows">
+       <div class="list-row">
+        <div><strong>2026-06-09</strong><br /><span>Humor 2/5 — mal</span></div>
+        <span class="stat-pill">Check-in</span>
+       </div>
+       <div class="list-row">
+        <div>
+         <strong>2026-06-08</strong><br /><span
+          >Humor 3/5 — dia longo de estudo</span
+         >
+        </div>
+        <span class="stat-pill">Check-in</span>
+       </div>
+       <div class="list-row">
+        <div>
+         <strong>2026-06-07</strong><br /><span>Humor 4/5 — sem nota</span>
+        </div>
+        <span class="stat-pill">Check-in</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </main>
+  </div>
+  <script type="module" src="src/js/zenify/sidebar.js"></script>
+ </body>
+</html>
