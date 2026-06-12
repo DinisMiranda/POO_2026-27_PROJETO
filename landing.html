@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="pt-PT">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenify | A tua mente, em equilíbrio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+   rel="stylesheet"
+  />
+  <link rel="stylesheet" href="src/css/landing.css" />
+ </head>
+ <body>
+  <a class="skip-link" href="#conteudo-principal">Saltar para o conteúdo</a>
+
+  <!-- HERO split layout -->
+  <section id="conteudo-principal" class="hero-section">
+   <!-- Esquerda verde -->
+   <div class="hero-left">
+    <div class="logo">
+     <svg
+      width="28"
+      height="28"
+      viewBox="0 0 28 28"
+      fill="none"
+      aria-hidden="true"
+     >
+      <circle cx="14" cy="14" r="13" stroke="#fff" stroke-width="1.5" />
+      <path
+       d="M14 8c0 0-4 3.5-4 7a4 4 0 0 0 8 0c0-3.5-4-7-4-7z"
+       fill="#fff"
+       opacity="0.35"
+      />
+      <path
+       d="M14 8c0 0 4 3.5 4 7"
+       stroke="#fff"
+       stroke-width="1.5"
+       stroke-linecap="round"
+      />
+      <path
+       d="M14 8c0 0-4 3.5-4 7"
+       stroke="#fff"
+       stroke-width="1.5"
+       stroke-linecap="round"
+      />
+     </svg>
+     <span>Zenify</span>
+    </div>
+
+    <div class="hero-headline">
+     <h1>A tua mente,<br /><em>Em equilíbrio.</em></h1>
+     <p class="hero-desc">
+      Zenify é a tua plataforma de bem-estar mental que combina tecnologia,
+      ciência e atenção plena para te ajudar a viver melhor todos os dias.
+     </p>
+     <button class="btn-hero" id="cta-comecar">Começar agora</button>
+    </div>
+
+    <div class="hero-social-proof">
+     <div class="avatars">
+      <div class="avatar av1">MS</div>
+      <div class="avatar av2">JC</div>
+      <div class="avatar av3">AR</div>
+      <div class="avatar av4">+</div>
+     </div>
+     <div class="social-text">
+      <div class="stars">★★★★★</div>
+      <p>Mais de <strong>50 mil pessoas</strong> transformam a sua vida.</p>
+     </div>
+    </div>
+   </div>
+
+   <!-- Direita branco – auth -->
+   <div class="hero-right" id="auth-panel">
+    <div class="auth-card">
+     <h2 class="auth-title" id="auth-heading">Bem-vindo(a)</h2>
+     <p class="auth-subtitle" id="auth-subheading">
+      Regista-te para acederes à tua área de equilíbrio.
+     </p>
+
+     <!-- Tabs -->
+     <div class="auth-tabs" role="tablist" aria-label="Autenticação">
+      <button
+       class="auth-tab"
+       id="tab-login"
+       role="tab"
+       aria-selected="false"
+       aria-controls="panel-login"
+      >
+       Entrar
+      </button>
+      <button
+       class="auth-tab active"
+       id="tab-register"
+       role="tab"
+       aria-selected="true"
+       aria-controls="panel-register"
+      >
+       Registar
+      </button>
+     </div>
+
+     <!-- Painel Register -->
+     <div
+      id="panel-register"
+      role="tabpanel"
+      aria-labelledby="tab-register"
+      class="auth-panel"
+     >
+      <form id="registerForm" novalidate>
+       <div class="field">
+        <label for="reg-name">Nome</label>
+        <input
+         id="reg-name"
+         name="name"
+         type="text"
+         placeholder="O teu nome"
+         autocomplete="name"
+         required
+        />
+       </div>
+       <div class="field">
+        <label for="reg-email">Email</label>
+        <input
+         id="reg-email"
+         name="email"
+         type="email"
+         placeholder="email@exemplo.pt"
+         autocomplete="email"
+         required
+        />
+       </div>
+       <div class="field">
+        <label for="reg-password">Password</label>
+        <input
+         id="reg-password"
+         name="password"
+         type="password"
+         placeholder="Mínimo 6 caracteres"
+         minlength="6"
+         autocomplete="new-password"
+         required
+        />
+       </div>
+       <div class="field">
+        <label for="reg-dob"
+         >Data de nascimento
+         <span class="field-optional">(opcional)</span></label
+        >
+        <input id="reg-dob" name="dob" type="date" autocomplete="bday" />
+       </div>
+       <p
+        id="registerError"
+        class="form-error hidden"
+        role="alert"
+        aria-live="assertive"
+       ></p>
+       <button type="submit" class="btn-auth" id="btn-register">
+        Registar
+       </button>
+      </form>
+      <div class="auth-divider"><span>ou</span></div>
+      <div class="auth-social">
+       <button class="btn-social" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+         <path
+          d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+          fill="#4285F4"
+         />
+         <path
+          d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+          fill="#34A853"
+         />
+         <path
+          d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+          fill="#FBBC05"
+         />
+         <path
+          d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+          fill="#EA4335"
+         />
+        </svg>
+        Continuar com Google
+       </button>
+       <button class="btn-social" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
+         <path
+          d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+         />
+        </svg>
+        Criar com Facebook
+       </button>
+      </div>
+     </div>
+
+     <!-- Painel Login -->
+     <div
+      id="panel-login"
+      role="tabpanel"
+      aria-labelledby="tab-login"
+      class="auth-panel"
+      hidden
+     >
+      <form id="loginForm" novalidate>
+       <div class="field">
+        <label for="login-email">Email</label>
+        <input
+         id="login-email"
+         name="email"
+         type="email"
+         placeholder="email@exemplo.pt"
+         autocomplete="email"
+         required
+        />
+       </div>
+       <div class="field">
+        <label for="login-password">Password</label>
+        <input
+         id="login-password"
+         name="password"
+         type="password"
+         placeholder="A tua password"
+         autocomplete="current-password"
+         required
+        />
+       </div>
+       <p
+        id="loginError"
+        class="form-error hidden"
+        role="alert"
+        aria-live="assertive"
+       ></p>
+       <button type="submit" class="btn-auth" id="btn-login">Entrar</button>
+      </form>
+      <div class="auth-divider"><span>ou</span></div>
+      <div class="auth-social">
+       <button class="btn-social" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+         <path
+          d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+          fill="#4285F4"
+         />
+         <path
+          d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+          fill="#34A853"
+         />
+         <path
+          d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+          fill="#FBBC05"
+         />
+         <path
+          d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+          fill="#EA4335"
+         />
+        </svg>
+        Entrar com Google
+       </button>
+       <button class="btn-social" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
+         <path
+          d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+         />
+        </svg>
+        Entrar com Facebook
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section">
+   <div class="section-intro">
+    <h2>O teu bem-estar, num só espaço</h2>
+    <p>
+     Ferramentas desenhadas para te conheceres melhor, que tens o tempo, o
+     desenvolvimento e hábitos que realmente fazem a diferença.
+    </p>
+   </div>
+   <div class="features-grid">
+    <div class="feature-card">
+     <div class="feature-icon">
+      <svg
+       viewBox="0 0 24 24"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="1.8"
+      >
+       <path
+        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+       />
+      </svg>
+     </div>
+     <h3>Acompanha o<br />teu estado mental</h3>
+     <p>Regista o teu humor e descobre padrões para te ajudar a melhorar.</p>
+    </div>
+    <div class="feature-card">
+     <div class="feature-icon">
+      <svg
+       viewBox="0 0 24 24"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="1.8"
+      >
+       <circle cx="12" cy="12" r="10" />
+       <polyline points="12 6 12 12 16 14" />
+      </svg>
+     </div>
+     <h3>Exercícios personalizados</h3>
+     <p>Meditação, respiração e exercícios baseados em evidência científica.</p>
+    </div>
+    <div class="feature-card">
+     <div class="feature-icon">
+      <svg
+       viewBox="0 0 24 24"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="1.8"
+      >
+       <path
+        d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
+       />
+       <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+       <line x1="12" y1="17" x2="12.01" y2="17" />
+      </svg>
+     </div>
+     <h3>Desafios &amp; hábitos</h3>
+     <p>
+      Com desafios diários para te motivares e construires com consistência.
+     </p>
+    </div>
+    <div class="feature-card">
+     <div class="feature-icon">
+      <svg
+       viewBox="0 0 24 24"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="1.8"
+      >
+       <line x1="18" y1="20" x2="18" y2="10" />
+       <line x1="12" y1="20" x2="12" y2="4" />
+       <line x1="6" y1="20" x2="6" y2="14" />
+      </svg>
+     </div>
+     <h3>Insights inteligentes</h3>
+     <p>Relatórios e estatísticas adaptados para acompanhar o teu progresso.</p>
+    </div>
+    <div class="feature-card">
+     <div class="feature-icon">
+      <svg
+       viewBox="0 0 24 24"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="1.8"
+      >
+       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+       <circle cx="9" cy="7" r="4" />
+       <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+       <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+     </div>
+     <h3>Comunidade segura</h3>
+     <p>
+      Liga-te a pessoas que partilham os mesmos objetivos e a mesma vontade.
+     </p>
+    </div>
+   </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="testimonial-section">
+   <div class="testimonial-inner">
+    <div class="testimonial-quote">
+     <svg
+      class="quote-icon"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+     >
+      <path
+       d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"
+      />
+     </svg>
+     <blockquote>
+      A Zenify mudou a forma como eu encaro os meus dias. Cada ferramenta faz
+      sentido, cada hábito que construí aqui torna-se mais real.
+     </blockquote>
+     <div class="testimonial-author">
+      <div class="author-avatar">MF</div>
+      <div>
+       <strong>Maria Ferreira</strong>
+       <span>Utilizadora há 6 meses</span>
+      </div>
+     </div>
+    </div>
+    <div class="testimonial-metrics">
+     <div class="metric">
+      <span class="metric-value">4.8</span>
+      <span class="metric-stars">★★★★★</span>
+      <span class="metric-label">Avaliação média</span>
+     </div>
+     <div class="metric-divider"></div>
+     <div class="metric">
+      <span class="metric-value">50k+</span>
+      <span class="metric-label">Utilizadores ativos</span>
+     </div>
+     <div class="metric-divider"></div>
+     <div class="metric">
+      <span class="metric-value">98%</span>
+      <span class="metric-label">Recomendam a app</span>
+     </div>
+    </div>
+   </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+   <div class="faq-inner">
+    <details class="faq-item" open>
+     <summary>A aplicação é gratuita?</summary>
+     <p>
+      Sim. O teu acesso não tem nenhum tipo de planos sem comprares na app.
+     </p>
+    </details>
+    <details class="faq-item">
+     <summary>Os meus dados estão seguros?</summary>
+     <p>
+      Sim. Utilizamos encriptação de nível bancário e nunca partilhamos os seus
+      dados.
+     </p>
+    </details>
+    <details class="faq-item">
+     <summary>Existe suporte técnico disponível 24/7?</summary>
+     <p>
+      Sim. Temos um Chatbot sempre disponível e também um suporte humano ao seu
+      dispor.
+     </p>
+    </details>
+    <details class="faq-item">
+     <summary>Há algum limite para o uso diário da aplicação?</summary>
+     <p>Não. Não existe qualquer tipo de limitação.</p>
+    </details>
+    <details class="faq-item">
+     <summary>Como faço para atualizar meus dados pessoais?</summary>
+     <p>Claro! Não há período de fidelização. Cancele quando quiser.</p>
+    </details>
+   </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="landing-footer">
+   <div class="footer-inner">
+    <div class="footer-brand">
+     <svg
+      width="22"
+      height="22"
+      viewBox="0 0 28 28"
+      fill="none"
+      aria-hidden="true"
+     >
+      <circle cx="14" cy="14" r="13" stroke="currentColor" stroke-width="1.5" />
+      <path
+       d="M14 8c0 0-4 3.5-4 7a4 4 0 0 0 8 0c0-3.5-4-7-4-7z"
+       fill="currentColor"
+       opacity="0.35"
+      />
+     </svg>
+     <span>Zenify</span>
+    </div>
+    <p class="footer-tagline">Equilíbrio mental todos os dias.</p>
+    <div class="footer-social">
+     <a href="#" aria-label="TikTok" class="footer-social-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+       <path
+        d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.13 6.29 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.73a8.19 8.19 0 0 0 4.79 1.53V6.79a4.85 4.85 0 0 1-1.02-.1z"
+       />
+      </svg>
+     </a>
+     <a href="#" aria-label="Instagram" class="footer-social-link">
+      <svg
+       width="18"
+       height="18"
+       viewBox="0 0 24 24"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="2"
+      >
+       <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+       <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+      </svg>
+     </a>
+     <a href="#" aria-label="LinkedIn" class="footer-social-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+       <path
+        d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"
+       />
+       <circle cx="4" cy="4" r="2" />
+      </svg>
+     </a>
+    </div>
+    <p class="footer-copy">© 2025 Zenify. Todos os direitos reservados.</p>
+   </div>
+  </footer>
+
+  <script type="module" src="src/js/controllers/landing.js"></script>
+ </body>
+</html>
