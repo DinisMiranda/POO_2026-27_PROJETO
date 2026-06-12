@@ -1,136 +1,173 @@
-export const LandingView = {
- tabLogin: document.getElementById("tab-login"),
- tabRegister: document.getElementById("tab-register"),
- panelLogin: document.getElementById("panel-login"),
- panelRegister: document.getElementById("panel-register"),
- loginForm: document.getElementById("loginForm"),
- registerForm: document.getElementById("registerForm"),
- btnLogin: document.getElementById("btn-login"),
- btnRegister: document.getElementById("btn-register"),
- btnCta: document.getElementById("cta-comecar"),
- loginError: document.getElementById("loginError"),
- registerError: document.getElementById("registerError"),
- authHeading: document.getElementById("auth-heading"),
- authSubheading: document.getElementById("auth-subheading"),
+import { LandingView as View } from "../views/landingView.js";
+import { UserModel as Model } from "../models/userModel.js";
 
- switchTab(tab) {
-  const isLogin = tab === "login";
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.com$/i;
 
-  this.tabLogin.classList.toggle("active", isLogin);
-  this.tabRegister.classList.toggle("active", !isLogin);
+function checkExistingSession() {
+ if (Model.getSession()) {
+  View.redirectToDashboard();
+ }
+}
 
-  this.tabLogin.setAttribute("aria-selected", String(isLogin));
-  this.tabRegister.setAttribute("aria-selected", String(!isLogin));
+function bindTabs() {
+ View.tabLogin?.addEventListener("click", () => View.switchTab("login"));
+ View.tabRegister?.addEventListener("click", () => View.switchTab("register"));
+}
 
-  this.panelLogin.hidden = !isLogin;
-  this.panelRegister.hidden = isLogin;
+function bindCta() {
+ View.btnCta?.addEventListener("click", () => {
+  View.switchTab("register");
+  View.scrollToAuth();
+ });
+}
 
-  if (isLogin) {
-   this.authHeading.textContent = "Bem-vindo(a) de volta";
-   this.authSubheading.textContent =
-    "Entra na tua conta para aceder à dashboard.";
-  } else {
-   this.authHeading.textContent = "Bem-vindo(a)";
-   this.authSubheading.textContent =
-    "Regista-te ou inicia sessão na tua área Zenify.";
-  }
+function validateLoginData(data) {
+ let valid = true;
 
-  this.clearErrors();
- },
+ if (!data.email) {
+  View.showFieldError("login-email", "O email é obrigatório.");
+  valid = false;
+ } else if (!EMAIL_REGEX.test(data.email)) {
+  View.showFieldError(
+   "login-email",
+   "O email deve seguir o formato nome@dominio.com.",
+  );
+  valid = false;
+ }
 
- showError(panel, message) {
-  const el = panel === "login" ? this.loginError : this.registerError;
-  el.textContent = message;
-  el.classList.remove("hidden");
- },
+ if (!data.password) {
+  View.showFieldError("login-password", "A password é obrigatória.");
+  valid = false;
+ }
 
- showFieldError(fieldId, message) {
-  const input = document.getElementById(fieldId);
-  const error = document.getElementById(`error-${fieldId}`);
+ return valid;
+}
 
-  if (input) {
-   input.classList.add("input-error");
-  }
+async function handleLogin(event) {
+ event.preventDefault();
+ View.clearErrors();
 
-  if (error) {
-   error.textContent = message;
-   error.classList.add("visible");
-  }
- },
+ const data = View.getLoginData();
 
- clearFieldError(fieldId) {
-  const input = document.getElementById(fieldId);
-  const error = document.getElementById(`error-${fieldId}`);
+ if (!validateLoginData(data)) {
+  return;
+ }
 
-  if (input) {
-   input.classList.remove("input-error");
-  }
+ View.setLoading(View.btnLogin, true);
 
-  if (error) {
-   error.textContent = "";
-   error.classList.remove("visible");
-  }
- },
+ try {
+  const user = await Model.login(data);
+  Model.saveSession(user);
+  View.redirectToDashboard();
+ } catch (error) {
+  View.showError("login", error.message);
+ } finally {
+  View.setLoading(View.btnLogin, false);
+ }
+}
 
- clearAllFieldErrors() {
-  const errors = document.querySelectorAll(".field-error");
-  const inputs = document.querySelectorAll(".field input");
+function validateRegisterData(data) {
+ let valid = true;
 
-  errors.forEach((el) => {
-   el.textContent = "";
-   el.classList.remove("visible");
+ if (!data.firstName) {
+  View.showFieldError("reg-first-name", "O primeiro nome é obrigatório.");
+  valid = false;
+ }
+
+ if (!data.lastName) {
+  View.showFieldError("reg-last-name", "O último nome é obrigatório.");
+  valid = false;
+ }
+
+ if (!data.email) {
+  View.showFieldError("reg-email", "O email é obrigatório.");
+  valid = false;
+ } else if (!EMAIL_REGEX.test(data.email)) {
+  View.showFieldError(
+   "reg-email",
+   "O email deve seguir o formato nome@dominio.com.",
+  );
+  valid = false;
+ }
+
+ if (!data.dob) {
+  View.showFieldError("reg-dob", "A data de nascimento é obrigatória.");
+  valid = false;
+ }
+
+ if (!data.password) {
+  View.showFieldError("reg-password", "A password é obrigatória.");
+  valid = false;
+ } else if (data.password.length < 6) {
+  View.showFieldError(
+   "reg-password",
+   "A password deve ter pelo menos 6 caracteres.",
+  );
+  valid = false;
+ }
+
+ return valid;
+}
+
+async function handleRegister(event) {
+ event.preventDefault();
+ View.clearErrors();
+
+ const data = View.getRegisterData();
+
+ if (!validateRegisterData(data)) {
+  View.showError(
+   "register",
+   "Corrige os campos assinalados antes de continuar.",
+  );
+  return;
+ }
+
+ View.setLoading(View.btnRegister, true);
+
+ try {
+  const user = await Model.register(data);
+  Model.saveSession(user);
+  View.redirectToDashboard();
+ } catch (error) {
+  View.showError("register", error.message);
+ } finally {
+  View.setLoading(View.btnRegister, false);
+ }
+}
+
+function bindFieldCleanup() {
+ const ids = [
+  "login-email",
+  "login-password",
+  "reg-first-name",
+  "reg-last-name",
+  "reg-email",
+  "reg-dob",
+  "reg-password",
+ ];
+
+ ids.forEach((id) => {
+  const input = document.getElementById(id);
+
+  input?.addEventListener("input", () => {
+   View.clearFieldError(id);
   });
 
-  inputs.forEach((input) => {
-   input.classList.remove("input-error");
+  input?.addEventListener("change", () => {
+   View.clearFieldError(id);
   });
- },
+ });
+}
 
- clearErrors() {
-  [this.loginError, this.registerError].forEach((el) => {
-   el.textContent = "";
-   el.classList.add("hidden");
-  });
+function init() {
+ checkExistingSession();
+ bindTabs();
+ bindCta();
+ bindFieldCleanup();
 
-  this.clearAllFieldErrors();
- },
+ View.loginForm?.addEventListener("submit", handleLogin);
+ View.registerForm?.addEventListener("submit", handleRegister);
+}
 
- setLoading(btn, loading) {
-  btn.disabled = loading;
-
-  if (btn.id === "btn-login") {
-   btn.textContent = loading ? "A entrar…" : "Entrar";
-  }
-
-  if (btn.id === "btn-register") {
-   btn.textContent = loading ? "A criar conta…" : "Registar";
-  }
- },
-
- redirectToDashboard() {
-  window.location.href = "dashboard.html";
- },
-
- scrollToAuth() {
-  document
-   .getElementById("auth-panel")
-   ?.scrollIntoView({ behavior: "smooth", block: "center" });
- },
-
- getLoginData() {
-  return {
-   email: document.getElementById("login-email").value.trim(),
-   password: document.getElementById("login-password").value,
-  };
- },
-
- getRegisterData() {
-  return {
-   firstName: document.getElementById("reg-first-name").value.trim(),
-   lastName: document.getElementById("reg-last-name").value.trim(),
-   email: document.getElementById("reg-email").value.trim(),
-   dob: document.getElementById("reg-dob").value,
-   password: document.getElementById("reg-password").value,
-  };
- },
-};
+init();

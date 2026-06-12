@@ -637,19 +637,15 @@ a {
   }
 }
 .field-error {
-  display: block;
-  min-height: 1rem;
-  margin-top: 0.45rem;
+  display: none;
+  margin-top: 0.35rem;
   font-size: 0.78rem;
   color: #c43d3d;
-  opacity: 0;
-  transform: translateY(-2px);
-  transition: opacity 160ms ease, transform 160ms ease;
+  line-height: 1.2;
 }
 
 .field-error.visible {
-  opacity: 1;
-  transform: translateY(0);
+  display: block;
 }
 
 .input-error {
@@ -657,6 +653,7 @@ a {
   background: #fff7f7 !important;
   box-shadow: 0 0 0 4px rgba(196, 61, 61, 0.12) !important;
 }
+
 
 .btn-auth {
   position: relative;
