@@ -1,87 +1,122 @@
-// views/landingView.js — View: manipulação do DOM na landing page
 export const LandingView = {
- // Tabs
  tabLogin: document.getElementById("tab-login"),
  tabRegister: document.getElementById("tab-register"),
  panelLogin: document.getElementById("panel-login"),
  panelRegister: document.getElementById("panel-register"),
-
- // Formulários
  loginForm: document.getElementById("loginForm"),
  registerForm: document.getElementById("registerForm"),
-
- // Botões
  btnLogin: document.getElementById("btn-login"),
  btnRegister: document.getElementById("btn-register"),
  btnCta: document.getElementById("cta-comecar"),
-
- // Erros
  loginError: document.getElementById("loginError"),
  registerError: document.getElementById("registerError"),
-
- // Textos do cabeçalho auth
  authHeading: document.getElementById("auth-heading"),
  authSubheading: document.getElementById("auth-subheading"),
 
- /** Troca entre os painéis Login / Register */
  switchTab(tab) {
   const isLogin = tab === "login";
+
   this.tabLogin.classList.toggle("active", isLogin);
   this.tabRegister.classList.toggle("active", !isLogin);
+
   this.tabLogin.setAttribute("aria-selected", String(isLogin));
   this.tabRegister.setAttribute("aria-selected", String(!isLogin));
+
   this.panelLogin.hidden = !isLogin;
   this.panelRegister.hidden = isLogin;
 
   if (isLogin) {
    this.authHeading.textContent = "Bem-vindo(a) de volta";
-   this.authSubheading.textContent = "Inicia sessão para acederes à tua área.";
+   this.authSubheading.textContent =
+    "Entra na tua conta para aceder à dashboard.";
   } else {
    this.authHeading.textContent = "Bem-vindo(a)";
    this.authSubheading.textContent =
-    "Regista-te para acederes à tua área de equilíbrio.";
+    "Regista-te ou inicia sessão na tua área Zenify.";
   }
+
   this.clearErrors();
  },
 
- /** Mostra erro no painel correto */
  showError(panel, message) {
   const el = panel === "login" ? this.loginError : this.registerError;
   el.textContent = message;
   el.classList.remove("hidden");
  },
 
- /** Limpa todos os erros */
+ showFieldError(fieldId, message) {
+  const input = document.getElementById(fieldId);
+  const error = document.getElementById(`error-${fieldId}`);
+
+  if (input) {
+   input.classList.add("input-error");
+  }
+
+  if (error) {
+   error.textContent = message;
+   error.classList.add("visible");
+  }
+ },
+
+ clearFieldError(fieldId) {
+  const input = document.getElementById(fieldId);
+  const error = document.getElementById(`error-${fieldId}`);
+
+  if (input) {
+   input.classList.remove("input-error");
+  }
+
+  if (error) {
+   error.textContent = "";
+   error.classList.remove("visible");
+  }
+ },
+
+ clearAllFieldErrors() {
+  const errors = document.querySelectorAll(".field-error");
+  const inputs = document.querySelectorAll(".field input");
+
+  errors.forEach((el) => {
+   el.textContent = "";
+   el.classList.remove("visible");
+  });
+
+  inputs.forEach((input) => {
+   input.classList.remove("input-error");
+  });
+ },
+
  clearErrors() {
   [this.loginError, this.registerError].forEach((el) => {
    el.textContent = "";
    el.classList.add("hidden");
   });
+
+  this.clearAllFieldErrors();
  },
 
- /** Estado loading do botão */
  setLoading(btn, loading) {
   btn.disabled = loading;
-  btn.textContent =
-   loading ?
-    btn.id === "btn-login" ?
-     "A entrar…"
-    : "A criar conta…"
-   : btn.id === "btn-login" ? "Entrar"
-   : "Registar";
+
+  if (btn.id === "btn-login") {
+   btn.textContent = loading ? "A entrar…" : "Entrar";
+  }
+
+  if (btn.id === "btn-register") {
+   btn.textContent = loading ? "A criar conta…" : "Registar";
+  }
  },
 
- /** Redireciona para a dashboard */
  redirectToDashboard() {
   window.location.href = "dashboard.html";
  },
 
- /** Scroll suave para o painel de auth */
  scrollToAuth() {
-  document.getElementById("auth-panel")?.scrollIntoView({ behavior: "smooth" });
+  document
+   .getElementById("auth-panel")
+   ?.scrollIntoView({ behavior: "smooth", block: "center" });
  },
 
- /** Devolve os dados do form de login */
  getLoginData() {
   return {
    email: document.getElementById("login-email").value.trim(),
@@ -89,13 +124,13 @@ export const LandingView = {
   };
  },
 
- /** Devolve os dados do form de register */
  getRegisterData() {
   return {
-   name: document.getElementById("reg-name").value.trim(),
+   firstName: document.getElementById("reg-first-name").value.trim(),
+   lastName: document.getElementById("reg-last-name").value.trim(),
    email: document.getElementById("reg-email").value.trim(),
-   password: document.getElementById("reg-password").value,
    dob: document.getElementById("reg-dob").value,
+   password: document.getElementById("reg-password").value,
   };
  },
 };
