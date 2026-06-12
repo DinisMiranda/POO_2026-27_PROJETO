@@ -122,8 +122,8 @@ a {
 
 .brand-mark {
   display: inline-flex;
-  font-size: 0.95rem;
-  font-weight: 800;
+  font-size: 2rem;
+  font-weight: 1000;
   letter-spacing: -0.03em;
   color: #0f2231;
 }
