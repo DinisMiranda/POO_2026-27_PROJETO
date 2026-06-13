@@ -5,6 +5,8 @@ import { ProgressModel } from "../models/progressModel.js";
 const user = UserModel.getSession();
 if (!user) window.location.href = "landing.html";
 
+const EMAIL_LOCK_DAYS = 30;
+
 // --- DOM ---
 const avatarEl = document.getElementById("profile-avatar");
 const nameEl = document.getElementById("profile-name");
@@ -24,6 +26,43 @@ const inpEmail = document.getElementById("inp-email");
 const formPerfil = document.getElementById("form-perfil");
 const btnLogout = document.getElementById("btn-logout");
 const toast = document.getElementById("toast");
+const emailLockNotice = document.getElementById("email-lock-notice");
+
+function getEmailUnlockDate(createdAt) {
+ const created = new Date(createdAt);
+ const unlock = new Date(created);
+ unlock.setDate(unlock.getDate() + EMAIL_LOCK_DAYS);
+ return unlock;
+}
+
+function canChangeEmail(u) {
+ if (!u.createdAt) return { allowed: true };
+ const unlock = getEmailUnlockDate(u.createdAt);
+ return { allowed: new Date() >= unlock, unlockDate: unlock };
+}
+
+function applyEmailLockUI() {
+ const lock = canChangeEmail(user);
+ if (!inpEmail) return;
+
+ if (!lock.allowed) {
+  inpEmail.readOnly = true;
+  inpEmail.classList.add("input-locked");
+  if (emailLockNotice) {
+   const dateStr = lock.unlockDate.toLocaleDateString("pt-PT", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+   });
+   emailLockNotice.textContent = `Não podes alterar o email até ${dateStr} (30 dias após a criação da conta).`;
+   emailLockNotice.hidden = false;
+  }
+ } else if (emailLockNotice) {
+  emailLockNotice.hidden = true;
+  inpEmail.readOnly = false;
+  inpEmail.classList.remove("input-locked");
+ }
+}
 
 // --- Helpers ---
 function getInitials(u) {
@@ -59,14 +98,15 @@ function fillUserInfo() {
 function renderXpBar(xp) {
  const xpPerLevel = 100;
  const level = ProgressModel.calcLevel(xp);
- const xpInLevel = xp % xpPerLevel;
+ const tierName = ProgressModel.getLevelTierName(level);
+ const xpInLevel = ProgressModel.getXpInLevel(xp);
  const pct = (xpInLevel / xpPerLevel) * 100;
 
  xpEl.textContent = `${xp} XP`;
- levelEl.textContent = `Nível ${level}`;
+ levelEl.textContent = tierName;
  xpBar.style.width = `${pct}%`;
  xpLabel.textContent = `${xpInLevel} / ${xpPerLevel} XP`;
- levelLabel.textContent = `Nível ${level} → ${level + 1}`;
+ levelLabel.textContent = `${tierName} · Nível ${level} → ${level + 1}`;
 }
 
 // --- Medalhas ---
@@ -128,20 +168,32 @@ formPerfil.addEventListener("submit", async (e) => {
  if (!firstName || !lastName || !email)
   return showToast("Preenche todos os campos.");
 
+ const emailChanged = email.toLowerCase() !== (user.email || "").toLowerCase();
+ if (emailChanged) {
+  const lock = canChangeEmail(user);
+  if (!lock.allowed) {
+   const dateStr = lock.unlockDate.toLocaleDateString("pt-PT", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+   });
+   return showToast(`Não podes alterar o email até ${dateStr}.`);
+  }
+ }
+
  try {
+  const payload = { firstName, lastName, name: `${firstName} ${lastName}` };
+  if (emailChanged) payload.email = email.toLowerCase();
+
   const res = await fetch(`http://localhost:3000/users/${user.id}`, {
    method: "PATCH",
    headers: { "Content-Type": "application/json" },
-   body: JSON.stringify({
-    firstName,
-    lastName,
-    name: `${firstName} ${lastName}`,
-    email,
-   }),
+   body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error();
   const updated = await res.json();
   UserModel.saveSession({ ...user, ...updated });
+  fillUserInfo();
   showToast("Perfil atualizado com sucesso! ✓");
  } catch {
   showToast("Erro ao guardar. Tenta novamente.");
@@ -157,6 +209,7 @@ btnLogout.addEventListener("click", () => {
 // --- Carregar tudo ---
 async function init() {
  fillUserInfo();
+ applyEmailLockUI();
 
  try {
   const [stats, progress, challengeDefs, medalDefs] = await Promise.all([

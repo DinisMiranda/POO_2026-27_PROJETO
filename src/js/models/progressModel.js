@@ -1,7 +1,30 @@
+import { getLevelTierName } from "../data/levelTiers.js";
+
 const API_BASE = "http://localhost:3000";
 
+function evaluateCondition(condition, stats, progress) {
+ if (!condition) return false;
+
+ if (condition.startsWith("streak_")) {
+  return (stats.longestStreak || 0) >= Number(condition.split("_")[1]);
+ }
+ if (condition.startsWith("checkins_")) {
+  return (stats.totalCheckins || 0) >= Number(condition.split("_")[1]);
+ }
+ if (condition.startsWith("xp_")) {
+  return (progress.xp || 0) >= Number(condition.split("_")[1]);
+ }
+ if (condition.startsWith("challenges_")) {
+  return (progress.completedChallenges || []).length >= Number(condition.split("_")[1]);
+ }
+ if (condition.startsWith("activities_")) {
+  return (progress.activityTypes || []).length >= Number(condition.split("_")[1]);
+ }
+
+ return false;
+}
+
 export const ProgressModel = {
- // Retorna (ou cria) o registo de progresso do utilizador
  async getProgress(userId) {
   const res = await fetch(`${API_BASE}/userProgress?userId=${userId}`);
   if (!res.ok) throw new Error("Erro ao obter progresso.");
@@ -17,9 +40,9 @@ export const ProgressModel = {
    level: 1,
    totalCheckins: 0,
    longestStreak: 0,
-   activityTypes: [], // tipos de atividades já feitas
-   completedChallenges: [], // ids de challengeDefinitions cumpridos
-   unlockedMedals: [], // ids de medalDefinitions desbloqueadas
+   activityTypes: [],
+   completedChallenges: [],
+   unlockedMedals: [],
    createdAt: new Date().toISOString(),
   };
   const res = await fetch(`${API_BASE}/userProgress`, {
@@ -53,12 +76,18 @@ export const ProgressModel = {
   return await res.json();
  },
 
- // Calcula level a partir de XP (cada 100 XP = 1 level)
  calcLevel(xp) {
   return Math.floor(xp / 100) + 1;
  },
 
- // Verifica se novos desafios foram cumpridos e atualiza
+ getLevelTierName(level) {
+  return getLevelTierName(level);
+ },
+
+ getXpInLevel(xp) {
+  return xp % 100;
+ },
+
  async syncChallenges(userId, stats) {
   const [progress, challenges] = await Promise.all([
    this.getProgress(userId),
@@ -74,8 +103,9 @@ export const ProgressModel = {
    let done = false;
    if (c.type === "checkin") done = stats.totalCheckins >= c.target;
    if (c.type === "streak") done = stats.longestStreak >= c.target;
-   if (c.type === "activities")
+   if (c.type === "activities") {
     done = (progress.activityTypes || []).length >= c.target;
+   }
 
    if (done) {
     newlyCompleted.push(c.id);
@@ -94,7 +124,6 @@ export const ProgressModel = {
   return { progress: updatedProgress, newlyCompleted };
  },
 
- // Verifica se novas medalhas foram desbloqueadas
  async syncMedals(userId, stats) {
   const [progress, medals] = await Promise.all([
    this.getProgress(userId),
@@ -105,14 +134,9 @@ export const ProgressModel = {
 
   for (const m of medals) {
    if (progress.unlockedMedals.includes(m.id)) continue;
-
-   let unlocked = false;
-   if (m.condition === "streak_7") unlocked = stats.longestStreak >= 7;
-   if (m.condition === "streak_30") unlocked = stats.longestStreak >= 30;
-   if (m.condition === "checkins_10") unlocked = stats.totalCheckins >= 10;
-   if (m.condition === "checkins_50") unlocked = stats.totalCheckins >= 50;
-
-   if (unlocked) newlyUnlocked.push(m.id);
+   if (evaluateCondition(m.condition, stats, progress)) {
+    newlyUnlocked.push(m.id);
+   }
   }
 
   if (newlyUnlocked.length === 0) return { progress, newlyUnlocked: [] };
@@ -122,5 +146,56 @@ export const ProgressModel = {
   });
 
   return { progress: updatedProgress, newlyUnlocked };
+ },
+
+ async claimChallenge(userId, challengeId, stats) {
+  const [progress, challenges] = await Promise.all([
+   this.getProgress(userId),
+   this.getChallengeDefinitions(),
+  ]);
+
+  const challenge = challenges.find((c) => c.id === challengeId);
+  if (!challenge) throw new Error("Desafio não encontrado.");
+  if (progress.completedChallenges.includes(challengeId)) {
+   return { progress, alreadyDone: true };
+  }
+
+  const newXp = progress.xp + challenge.xpReward;
+  const updatedProgress = await this.updateProgress(progress.id, {
+   completedChallenges: [...progress.completedChallenges, challengeId],
+   xp: newXp,
+   level: this.calcLevel(newXp),
+  });
+
+  return { progress: updatedProgress, challenge, alreadyDone: false };
+ },
+
+ async claimMedal(userId, medalId, stats) {
+  const [progress, medals] = await Promise.all([
+   this.getProgress(userId),
+   this.getMedalDefinitions(),
+  ]);
+
+  const medal = medals.find((m) => m.id === medalId);
+  if (!medal) throw new Error("Medalha não encontrada.");
+  if (progress.unlockedMedals.includes(medalId)) {
+   return { progress, alreadyDone: true };
+  }
+
+  const updatedProgress = await this.updateProgress(progress.id, {
+   unlockedMedals: [...progress.unlockedMedals, medalId],
+  });
+
+  return { progress: updatedProgress, medal, alreadyDone: false };
+ },
+
+ getPendingAchievements(progress, challengeDefs, medalDefs) {
+  const pendingChallenges = challengeDefs.filter(
+   (c) => !(progress.completedChallenges || []).includes(c.id),
+  );
+  const pendingMedals = medalDefs.filter(
+   (m) => !(progress.unlockedMedals || []).includes(m.id),
+  );
+  return { pendingChallenges, pendingMedals };
  },
 };

@@ -1,6 +1,7 @@
 import { LandingView as View } from "../views/landingView.js";
 import { initI18n, setPageTitle, t } from "../data/i18n.js";
 import { UserModel as Model } from "../models/userModel.js";
+import { bindNotificationButtons } from "../views/notifications-view.js";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
 
@@ -226,6 +227,36 @@ function bindFaqAccordion() {
  });
 }
 
+function bindLandingTopbar() {
+ bindNotificationButtons(document);
+
+ const session = Model.getSession();
+ const avatarEl = document.getElementById("landing-avatar");
+ const profileLink = document.getElementById("landing-profile-link");
+
+ if (!avatarEl || !profileLink) return;
+
+ if (session) {
+  const first = (session.firstName || "").trim();
+  const last = (session.lastName || "").trim();
+  avatarEl.textContent =
+   first && last ?
+    `${first[0]}${last[0]}`.toUpperCase()
+   : (session.name?.[0] || "Z").toUpperCase();
+  profileLink.href = "dashboard.html";
+  profileLink.setAttribute("aria-label", "Ir para dashboard");
+ } else {
+  avatarEl.textContent = "ZU";
+  profileLink.href = "#auth-panel";
+  profileLink.setAttribute("aria-label", "Ir para registo");
+  profileLink.addEventListener("click", (event) => {
+   event.preventDefault();
+   View.switchTab("register");
+   View.scrollToAuth();
+  });
+ }
+}
+
 function init() {
  initI18n();
  setPageTitle("page.title.landing");
@@ -235,6 +266,7 @@ function init() {
  bindCta();
  bindFieldCleanup();
  bindFaqAccordion();
+ bindLandingTopbar();
 
  View.loginForm?.addEventListener("submit", handleLogin);
  View.registerForm?.addEventListener("submit", handleRegister);

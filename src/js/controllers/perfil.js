@@ -5,7 +5,8 @@ import { ProgressModel } from "../models/progressModel.js";
 const user = UserModel.getSession();
 if (!user) window.location.href = "landing.html";
 
-// --- DOM ---
+const EMAIL_LOCK_DAYS = 30;
+
 const avatarEl = document.getElementById("profile-avatar");
 const nameEl = document.getElementById("profile-name");
 const emailEl = document.getElementById("profile-email");
@@ -24,8 +25,44 @@ const inpEmail = document.getElementById("inp-email");
 const formPerfil = document.getElementById("form-perfil");
 const btnLogout = document.getElementById("btn-logout");
 const toast = document.getElementById("toast");
+const emailLockNotice = document.getElementById("email-lock-notice");
 
-// --- Helpers ---
+function getEmailUnlockDate(createdAt) {
+ const created = new Date(createdAt);
+ const unlock = new Date(created);
+ unlock.setDate(unlock.getDate() + EMAIL_LOCK_DAYS);
+ return unlock;
+}
+
+function canChangeEmail(u) {
+ if (!u.createdAt) return { allowed: true };
+ const unlock = getEmailUnlockDate(u.createdAt);
+ return { allowed: new Date() >= unlock, unlockDate: unlock };
+}
+
+function applyEmailLockUI() {
+ const lock = canChangeEmail(user);
+ if (!inpEmail) return;
+
+ if (!lock.allowed) {
+  inpEmail.readOnly = true;
+  inpEmail.classList.add("input-locked");
+  if (emailLockNotice) {
+   const dateStr = lock.unlockDate.toLocaleDateString("pt-PT", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+   });
+   emailLockNotice.textContent = `Não podes alterar o email até ${dateStr} (30 dias após a criação da conta).`;
+   emailLockNotice.hidden = false;
+  }
+ } else if (emailLockNotice) {
+  emailLockNotice.hidden = true;
+  inpEmail.readOnly = false;
+  inpEmail.classList.remove("input-locked");
+ }
+}
+
 function getInitials(u) {
  const f = (u.firstName || "").trim();
  const l = (u.lastName || "").trim();
@@ -46,7 +83,6 @@ function showToast(msg, duration = 3000) {
  setTimeout(() => toast.classList.remove("show"), duration);
 }
 
-// --- Preencher campos estáticos ---
 function fillUserInfo() {
  if (avatarEl) avatarEl.textContent = getInitials(user);
  if (nameEl) nameEl.textContent = user.name || `${user.firstName} ${user.lastName}`;
@@ -56,21 +92,20 @@ function fillUserInfo() {
  if (inpEmail) inpEmail.value = user.email || "";
 }
 
-// --- Barra de XP ---
 function renderXpBar(xp) {
  const xpPerLevel = 100;
  const level = ProgressModel.calcLevel(xp);
- const xpInLevel = xp % xpPerLevel;
+ const tierName = ProgressModel.getLevelTierName(level);
+ const xpInLevel = ProgressModel.getXpInLevel(xp);
  const pct = (xpInLevel / xpPerLevel) * 100;
 
  if (xpEl) xpEl.textContent = `${xp} XP`;
- if (levelEl) levelEl.textContent = `Nível ${level}`;
+ if (levelEl) levelEl.textContent = tierName;
  if (xpBar) xpBar.style.width = `${pct}%`;
  if (xpLabel) xpLabel.textContent = `${xpInLevel} / ${xpPerLevel} XP`;
- if (levelLabel) levelLabel.textContent = `Nível ${level} → ${level + 1}`;
+ if (levelLabel) levelLabel.textContent = `${tierName} · Nível ${level} → ${level + 1}`;
 }
 
-// --- Medalhas ---
 function renderMedals(medalDefs, unlockedIds) {
  if (!medalsGrid) return;
  medalsGrid.innerHTML = "";
@@ -90,21 +125,18 @@ function renderMedals(medalDefs, unlockedIds) {
  }
 }
 
-// --- Desafios ---
 function renderChallenges(challengeDefs, completedIds, stats, progress) {
  if (!challengesList) return;
  challengesList.innerHTML = "";
 
  for (const c of challengeDefs) {
   const done = completedIds.includes(c.id);
-
   let current = 0;
   if (c.type === "checkin") current = stats.totalCheckins || 0;
   if (c.type === "streak") current = stats.longestStreak || 0;
   if (c.type === "activities") current = (progress.activityTypes || []).length;
 
   const pct = Math.min((current / c.target) * 100, 100);
-
   const item = document.createElement("div");
   item.className = `challenge-item${done ? " challenge-done" : ""}`;
   item.innerHTML = `
@@ -122,7 +154,6 @@ function renderChallenges(challengeDefs, completedIds, stats, progress) {
  }
 }
 
-// --- Guardar perfil ---
 formPerfil?.addEventListener("submit", async (e) => {
  e.preventDefault();
  const firstName = inpFirst?.value.trim() || "";
@@ -131,35 +162,46 @@ formPerfil?.addEventListener("submit", async (e) => {
  if (!firstName || !lastName || !email)
   return showToast("Preenche todos os campos.");
 
+ const emailChanged = email.toLowerCase() !== (user.email || "").toLowerCase();
+ if (emailChanged) {
+  const lock = canChangeEmail(user);
+  if (!lock.allowed) {
+   const dateStr = lock.unlockDate.toLocaleDateString("pt-PT", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+   });
+   return showToast(`Não podes alterar o email até ${dateStr}.`);
+  }
+ }
+
  try {
+  const payload = { firstName, lastName, name: `${firstName} ${lastName}` };
+  if (emailChanged) payload.email = email.toLowerCase();
+
   const res = await fetch(`http://localhost:3000/users/${user.id}`, {
    method: "PATCH",
    headers: { "Content-Type": "application/json" },
-   body: JSON.stringify({
-    firstName,
-    lastName,
-    name: `${firstName} ${lastName}`,
-    email,
-   }),
+   body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error();
   const updated = await res.json();
   UserModel.saveSession({ ...user, ...updated });
+  fillUserInfo();
   showToast("Perfil atualizado com sucesso! ✓");
  } catch {
   showToast("Erro ao guardar. Tenta novamente.");
  }
 });
 
-// --- Logout ---
 btnLogout?.addEventListener("click", () => {
  UserModel.clearSession();
  window.location.href = "landing.html";
 });
 
-// --- Carregar tudo ---
 async function init() {
  fillUserInfo();
+ applyEmailLockUI();
 
  try {
   const [stats, progress, challengeDefs, medalDefs] = await Promise.all([
@@ -181,7 +223,6 @@ async function init() {
    progress,
   );
 
-  // Sincroniza desafios e medalhas com o estado atual
   await Promise.all([
    ProgressModel.syncChallenges(user.id, stats),
    ProgressModel.syncMedals(user.id, stats),

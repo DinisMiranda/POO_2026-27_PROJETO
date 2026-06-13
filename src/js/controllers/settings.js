@@ -44,11 +44,6 @@ function initSettingsPage() {
 
  if (languageSelect) {
   languageSelect.value = getLanguage();
-
-  languageSelect.addEventListener("change", () => {
-   refreshPageLanguage(languageSelect.value);
-   showFeedback(t("settings.saved"));
-  });
  }
 
  saveButton?.addEventListener("click", () => {

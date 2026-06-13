@@ -1,5 +1,6 @@
 import { UserModel } from "../models/userModel.js";
 import { t } from "../data/i18n.js";
+import { bindNotificationButtons } from "./notifications-view.js";
 
 function getInitials(user) {
  if (!user) return "ZU";
@@ -22,16 +23,6 @@ function getInitials(user) {
  return "ZU";
 }
 
-function getDisplayName(user) {
- if (!user) return "";
-
- const first = (user.firstName || "").trim();
- const last = (user.lastName || "").trim();
- const fullName = `${first} ${last}`.trim();
-
- return fullName || (user.name || "").trim();
-}
-
 function getTopbarConfig(page) {
  const map = {
   hoje: {
@@ -42,27 +33,27 @@ function getTopbarConfig(page) {
   exercicios: {
    title: t("topbar.exercises.title"),
    subtitle: t("topbar.exercises.subtitle"),
-   showBell: false,
+   showBell: true,
   },
-  comunidade: {
+  diario: {
    title: t("topbar.community.title"),
    subtitle: t("topbar.community.subtitle"),
-   showBell: false,
+   showBell: true,
   },
   insights: {
    title: t("topbar.insights.title"),
    subtitle: t("topbar.insights.subtitle"),
-   showBell: false,
+   showBell: true,
   },
   perfil: {
    title: t("topbar.profile.title"),
    subtitle: t("topbar.profile.subtitle"),
-   showBell: false,
+   showBell: true,
   },
   configuracoes: {
    title: t("topbar.settings.title"),
    subtitle: t("topbar.settings.subtitle"),
-   showBell: false,
+   showBell: true,
   },
   ajuda: {
    title: t("topbar.help.title"),
@@ -75,26 +66,27 @@ function getTopbarConfig(page) {
   map[page] || {
    title: t("topbar.default.title"),
    subtitle: t("topbar.default.subtitle"),
-   showBell: false,
+   showBell: true,
   }
  );
 }
 
 function renderBell() {
  return `
-    <button class="notif-btn" aria-label="${t("topbar.notifications")}" type="button">
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
+    <button class="notif-btn" type="button" data-notif-trigger aria-label="${t("topbar.notifications")}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
       </svg>
     </button>
+  `;
+}
+
+function renderAvatar(initials) {
+ return `
+    <a href="./perfil.html" class="avatar-btn avatar-btn--circle" aria-label="${t("topbar.profileLabel")}">
+      <div class="avatar">${initials}</div>
+    </a>
   `;
 }
 
@@ -105,7 +97,6 @@ export function mountTopbar() {
  const page = document.body.dataset.zenifyPage || "";
  const user = UserModel.getSession();
  const initials = getInitials(user);
- const displayName = getDisplayName(user);
  const config = getTopbarConfig(page);
 
  host.className = "topbar";
@@ -117,13 +108,11 @@ export function mountTopbar() {
 
     <div class="topbar-actions">
       ${config.showBell ? renderBell() : ""}
-      <a href="./perfil.html" class="avatar-btn" aria-label="${t("topbar.profile")}">
-        <div class="avatar">${initials}</div>
-        <span>${displayName || t("topbar.profileLabel")}</span>
-      </a>
+      ${renderAvatar(initials)}
     </div>
   `;
+
+ bindNotificationButtons(host);
 }
 
-// Auto-mount ao importar
 mountTopbar();
