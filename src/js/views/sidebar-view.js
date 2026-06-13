@@ -9,56 +9,66 @@ const LOGO_SVG = `
 </svg>
 `;
 
-function getItems() {
- return [
-  { key: "hoje", href: "./dashboard.html", label: t("nav.today") },
-  { key: "exercicios", href: "./exercicios.html", label: t("nav.exercises") },
-  { key: "insights", href: "./insights.html", label: t("nav.insights") },
-  { key: "diario", href: "./diario.html", label: t("nav.journal") },
-  { key: "perfil", href: "./perfil.html", label: t("nav.profile") },
-  { key: "configuracoes", href: "./settings.html", label: t("nav.settings") },
-  { key: "ajuda", href: "./ajuda.html", label: t("nav.help") },
- ];
+function getMainItems() {
+  return [
+    { key: "hoje",      href: "./dashboard.html",  label: t("nav.today")     },
+    { key: "exercicios",href: "./exercicios.html",  label: t("nav.exercises") },
+    { key: "insights",  href: "./insights.html",    label: t("nav.insights")  },
+    { key: "diario",    href: "./diario.html",      label: t("nav.journal")   },
+    { key: "perfil",    href: "./perfil.html",      label: t("nav.profile")   },
+  ];
+}
+
+function getBottomItems() {
+  return [
+    { key: "configuracoes", href: "./settings.html", label: t("nav.settings") },
+    { key: "ajuda",         href: "./ajuda.html",    label: t("nav.help")     },
+  ];
 }
 
 function iconFor(key) {
- const icons = {
-  hoje: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18"/><path d="M12 3v18"/></svg>`,
-  exercicios: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>`,
-  insights: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"/><path d="M10 19V9"/><path d="M16 19V13"/><path d="M22 19V7"/></svg>`,
-  diario: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>`,
-  perfil: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21a8 8 0 1 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>`,
-  configuracoes: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.26.3.47.64.6 1 .1.32.15.66.15 1s-.05.68-.15 1c-.13.36-.34.7-.6 1z"/></svg>`,
-  ajuda: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>`,
- };
+  const icons = {
+    hoje: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18"/><path d="M12 3v18"/></svg>`,
+    exercicios: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>`,
+    insights: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"/><path d="M10 19V9"/><path d="M16 19V13"/><path d="M22 19V7"/></svg>`,
+    diario: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>`,
+    perfil: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21a8 8 0 1 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>`,
+    configuracoes: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.26.3.47.64.6 1 .1.32.15.66.15 1s-.05.68-.15 1c-.13.36-.34.7-.6 1z"/></svg>`,
+    ajuda: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>`,
+  };
+  return icons[key] || icons.hoje;
+}
 
- return icons[key] || icons.hoje;
+function renderLinks(items, activePage) {
+  return items
+    .map(
+      (item) => `
+        <a href="${item.href}" class="sidebar-link ${item.key === activePage ? "active" : ""}">
+          <span class="sidebar-icon">${iconFor(item.key)}</span>
+          <span>${item.label}</span>
+        </a>
+      `,
+    )
+    .join("");
 }
 
 export function mountZenifySidebar(activePage = "") {
- const host = document.querySelector("[data-zenify-sidebar]");
- if (!host) return;
+  const host = document.querySelector("[data-zenify-sidebar]");
+  if (!host) return;
 
- const items = getItems();
-
- host.className = "sidebar";
- host.innerHTML = `
+  host.className = "sidebar";
+  host.innerHTML = `
     <a href="./dashboard.html" class="sidebar-logo" style="text-decoration:none;color:#fff;">
       ${LOGO_SVG}
       <span>Zenify</span>
     </a>
 
     <nav class="sidebar-nav" aria-label="Primary">
-      ${items
-       .map(
-        (item) => `
-            <a href="${item.href}" class="sidebar-link ${item.key === activePage ? "active" : ""}">
-              <span class="sidebar-icon">${iconFor(item.key)}</span>
-              <span>${item.label}</span>
-            </a>
-          `,
-       )
-       .join("")}
+      ${renderLinks(getMainItems(), activePage)}
+    </nav>
+
+    <nav class="sidebar-nav sidebar-nav--bottom" aria-label="Secondary">
+      ${renderLinks(getBottomItems(), activePage)}
     </nav>
   `;
 }
