@@ -17,8 +17,19 @@ function writeLocalCheckins(userId, data) {
   localStorage.setItem(checkinsKey(userId), JSON.stringify(data));
 }
 
+const DEFAULT_STATS = {
+  xp: 0,
+  streak: 0,
+  lastDate: "",
+  streakStartDate: "",
+  permanentTitle: "",
+};
+
 function readLocalStats(userId) {
-  return JSON.parse(localStorage.getItem(statsKey(userId)) || '{"xp":0,"streak":0,"lastDate":""}');
+  const saved = localStorage.getItem(statsKey(userId));
+  if (!saved) return { ...DEFAULT_STATS };
+  // Merge with defaults so older saves without new fields are upgraded automatically
+  return { ...DEFAULT_STATS, ...JSON.parse(saved) };
 }
 
 function writeLocalStats(userId, data) {
@@ -66,12 +77,14 @@ export async function addCheckin(entry) {
 
 export async function getStats() {
   const session = getSession();
-  if (!session) return { xp: 0, streak: 0, lastDate: "" };
+  if (!session) return { ...DEFAULT_STATS };
 
   const response = await apiFetch(`/userStats?userId=${session.id}`);
   if (response?.ok) {
     const rows = await response.json();
-    const stats = rows[0] || { xp: 0, streak: 0, lastDate: "" };
+    const remote = rows[0] || {};
+    // Always merge with defaults so missing fields are filled in
+    const stats = { ...DEFAULT_STATS, ...remote };
     writeLocalStats(session.id, stats);
     return stats;
   }
