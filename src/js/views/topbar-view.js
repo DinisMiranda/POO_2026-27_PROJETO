@@ -1,4 +1,5 @@
 import { UserModel } from "../models/userModel.js";
+import { bindNotificationButtons } from "./notifications-view.js";
 
 function getInitials(user) {
  if (!user) return "ZU";
@@ -31,27 +32,27 @@ function getTopbarConfig(page) {
   exercicios: {
    title: "Exercícios",
    subtitle: "Escolhe práticas para respiração, foco e relaxamento.",
-   showBell: false,
+   showBell: true,
   },
-  comunidade: {
-   title: "Comunidade",
-   subtitle: "Liga-te a pessoas com objetivos semelhantes.",
-   showBell: false,
+  diario: {
+   title: "Diário",
+   subtitle: "Partilha experiências e motivação com outros estudantes.",
+   showBell: true,
   },
   insights: {
    title: "Insights",
    subtitle: "Padrões de humor, consistência e progresso.",
-   showBell: false,
+   showBell: true,
   },
   perfil: {
    title: "Perfil",
    subtitle: "Gere a tua conta e acompanha o teu progresso.",
-   showBell: false,
+   showBell: true,
   },
-  settings: {
+  configuracoes: {
    title: "Configurações",
    subtitle: "Ajusta preferências e opções da tua conta.",
-   showBell: false,
+   showBell: true,
   },
   ajuda: {
    title: "Ajuda",
@@ -64,26 +65,27 @@ function getTopbarConfig(page) {
   map[page] || {
    title: "Zenify",
    subtitle: "A tua área pessoal.",
-   showBell: false,
+   showBell: true,
   }
  );
 }
 
 function renderBell() {
  return `
-    <button class="notif-btn" aria-label="Notificações" type="button">
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
+    <button class="notif-btn" type="button" data-notif-trigger aria-label="Notificações">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
       </svg>
     </button>
+  `;
+}
+
+function renderAvatar(initials) {
+ return `
+    <a href="perfil.html" class="avatar-btn avatar-btn--circle" aria-label="Perfil">
+      <div class="avatar">${initials}</div>
+    </a>
   `;
 }
 
@@ -105,23 +107,11 @@ export function mountTopbar() {
 
     <div class="topbar-actions">
       ${config.showBell ? renderBell() : ""}
-
-      <a href="perfil.html" class="avatar-btn" aria-label="Perfil">
-        <div class="avatar">${initials}</div>
-        <span>${initials}</span>
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-      </a>
+      ${renderAvatar(initials)}
     </div>
   `;
+
+ bindNotificationButtons(host);
 }
 
 mountTopbar();

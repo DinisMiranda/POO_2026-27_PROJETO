@@ -54,87 +54,56 @@
      </div>
 
      <div class="card progress-card">
-      <div style="display: flex; align-items: center; gap: var(--space-2)">
-       <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="var(--color-primary)"
-        stroke-width="2"
-       >
-        <path d="M12 2L2 7l10 5 10-5-10-5z" />
-        <path d="M2 17l10 5 10-5" />
-        <path d="M2 12l10 5 10-5" />
-       </svg>
-       <h3>Progresso</h3>
+      <div class="level-block">
+       <p class="level-tier-name" id="level-tier-name">Despertar</p>
+       <p class="level-meta">
+        <span id="level-number">Nível 1</span>
+        <span id="level-xp-text">0 XP</span>
+       </p>
       </div>
+
+      <div class="xp-bar-wrap">
+       <div class="xp-bar" id="dashboard-xp-bar" style="width: 0%"></div>
+      </div>
+      <p class="xp-bar-label" id="dashboard-xp-label">0 / 100 XP</p>
+
+      <div class="checkin-row">
+       <button type="button" class="btn-checkin" id="btn-checkin">
+        Fazer check-in de hoje
+       </button>
+       <button type="button" class="btn-add-achievement" id="btn-add-achievement">
+        + Conquistas
+       </button>
+      </div>
+
+      <p class="checkin-feedback" id="checkin-feedback" aria-live="polite"></p>
 
       <div>
        <p class="streak-text">
         Streak: <strong><span id="streak-number">0</span></strong>
         <span id="streak-label">dias seguidos</span>
        </p>
-
        <div class="streak-dots" id="streak-dots"></div>
       </div>
 
-      <!-- Botão de check-in -->
-      <button type="button" class="btn-checkin" id="btn-checkin">
-       Fazer check-in de hoje
-      </button>
-
-      <!-- Feedback inline -->
-      <p class="checkin-feedback" id="checkin-feedback" aria-live="polite"></p>
-
       <div class="medals-section">
        <h4>Medalhas conquistadas</h4>
-       <div class="medals-grid">
-        <div class="medal">
-         <div class="medal-icon" style="background: #ede8f8; color: #6a5a9a">
-          <svg
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2"
-          >
-           <circle cx="12" cy="8" r="4" />
-           <path
-            d="M8 21l4-4 4 4M8 21H6a2 2 0 0 1-2-2v-1h16v1a2 2 0 0 1-2 2h-2"
-           />
-          </svg>
-         </div>
-         <div class="medal-name">Calm Week</div>
-         <div class="medal-sub">1 semana</div>
-        </div>
-        <div class="medal">
-         <div class="medal-icon" style="background: #e8f0f8; color: #4a6a9a">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-           <path
-            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-           />
-          </svg>
-         </div>
-         <div class="medal-name">Zen Month x3</div>
-         <div class="medal-sub">3 meses</div>
-        </div>
-        <div class="medal">
-         <div class="medal-icon" style="background: #fef8e0; color: #c48a20">
-          <svg
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2"
-          >
-           <circle cx="12" cy="12" r="4" />
-           <path
-            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"
-           />
-          </svg>
-         </div>
-         <div class="medal-name">Foco Diário</div>
-         <div class="medal-sub">10 dias</div>
-        </div>
+       <div class="medals-grid" id="dashboard-medals-grid"></div>
+      </div>
+     </div>
+
+     <div class="achievement-modal" id="achievement-modal" hidden>
+      <div class="achievement-modal-backdrop" data-achievement-close></div>
+      <div class="achievement-modal-panel" role="dialog" aria-labelledby="achievement-modal-title">
+       <header class="achievement-modal-header">
+        <h2 id="achievement-modal-title">Adicionar conquista</h2>
+        <button type="button" class="achievement-modal-close" data-achievement-close aria-label="Fechar">&times;</button>
+       </header>
+       <div class="achievement-modal-body">
+        <h3>Desafios pendentes</h3>
+        <div id="pending-challenges-list" class="achievement-list"></div>
+        <h3>Medalhas pendentes</h3>
+        <div id="pending-medals-list" class="achievement-list"></div>
        </div>
       </div>
      </div>

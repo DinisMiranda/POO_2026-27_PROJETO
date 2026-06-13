@@ -16,19 +16,15 @@
   <div class="app">
    <aside class="sidebar" data-zenify-sidebar></aside>
    <main class="main">
-    <div class="topbar">
-     <div class="topbar-greeting">
-      <h1>Configuracoes</h1>
-      <p>Personaliza notificacoes e preferencias da app.</p>
-     </div>
-    </div>
+    <header data-zenify-topbar></header>
     <div class="page-stack">
      <div class="card">
-      <h3>Notificacoes</h3>
+      <h3 data-i18n="settings.notifications">Notificacoes</h3>
       <div class="toggle-row">
        <div>
-        <strong>Lembrete de check-in diario</strong><br /><span
+        <strong data-i18n="settings.reminder">Lembrete de check-in diario</strong><br /><span
          style="font-size: var(--text-xs); color: var(--color-text-muted)"
+         data-i18n="settings.reminderHint"
          >Todos os dias as 20h</span
         >
        </div>
@@ -36,8 +32,9 @@
       </div>
       <div class="toggle-row">
        <div>
-        <strong>Sugestao preventiva</strong><br /><span
+        <strong data-i18n="settings.preventive">Sugestao preventiva</strong><br /><span
          style="font-size: var(--text-xs); color: var(--color-text-muted)"
+         data-i18n="settings.preventiveHint"
          >Antes de periodos de exames</span
         >
        </div>
@@ -45,8 +42,9 @@
       </div>
       <div class="toggle-row">
        <div>
-        <strong>Resumo semanal</strong><br /><span
+        <strong data-i18n="settings.weekly">Resumo semanal</strong><br /><span
          style="font-size: var(--text-xs); color: var(--color-text-muted)"
+         data-i18n="settings.weeklyHint"
          >Insights e progresso</span
         >
        </div>
@@ -54,34 +52,39 @@
       </div>
      </div>
      <div class="card">
-      <h3>Preferencias</h3>
+      <h3 data-i18n="settings.preferences">Preferencias</h3>
       <div class="field">
-       <label for="lang">Idioma</label>
+       <label for="lang" data-i18n="settings.language">Idioma</label>
        <select id="lang">
-        <option selected>Portugues</option>
-        <option>English</option>
+        <option value="pt">Portugues</option>
+        <option value="en">English</option>
        </select>
       </div>
       <div class="field">
-       <label for="reminderTime">Hora do lembrete</label>
+       <label for="reminderTime" data-i18n="settings.reminderTime">Hora do lembrete</label>
        <input id="reminderTime" type="time" value="20:00" />
       </div>
-      <button class="btn-primary" type="button">Guardar preferencias</button>
+      <button class="btn-primary" type="button" id="btn-save-settings" data-i18n="settings.save">
+       Guardar preferencias
+      </button>
+      <p class="settings-feedback" id="settings-feedback" role="status" aria-live="polite"></p>
      </div>
      <div class="card">
-      <h3>Privacidade</h3>
-      <p class="lead">
+      <h3 data-i18n="settings.privacy">Privacidade</h3>
+      <p class="lead" data-i18n="settings.privacyLead">
        Os teus check-ins ficam associados ao teu utilizador. A comunidade e
        opcional e anonima por defeito.
       </p>
       <div class="toggle-row">
-       <div><strong>Perfil visivel na comunidade</strong></div>
+       <div><strong data-i18n="settings.communityVisible">Perfil visivel na comunidade</strong></div>
        <input type="checkbox" aria-label="Perfil visivel" />
       </div>
      </div>
     </div>
    </main>
   </div>
-  <script type="module" src="./sidebar.js"></script>
+  <script type="module" src="src/js/views/sidebar-view.js"></script>
+  <script type="module" src="src/js/views/topbar-view.js"></script>
+  <script type="module" src="src/js/controllers/settings.js"></script>
  </body>
 </html>
