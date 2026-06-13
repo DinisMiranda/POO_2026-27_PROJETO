@@ -1,9 +1,8 @@
 import { UserModel } from "../models/userModel.js";
+import { API } from "../data/config.js";
+import { requireSession } from "../data/session.js";
 
-const API_BASE = "http://localhost:3000";
-
-const sessionUser = UserModel.getSession();
-if (!sessionUser) window.location.href = "landing.html";
+let sessionUser = null;
 
 const els = {
  avatar: document.getElementById("insight-avatar"),
@@ -94,12 +93,15 @@ function buildRecommendations(avgMood, streak) {
 }
 
 async function initInsights() {
+ sessionUser = await requireSession();
+ if (!sessionUser) return;
+
  ensureRequiredElements();
 
  const [statsList, progressList, moods] = await Promise.all([
-  fetchJson(`${API_BASE}/userStats?userId=${sessionUser.id}`),
-  fetchJson(`${API_BASE}/userProgress?userId=${sessionUser.id}`),
-  fetchJson(`${API_BASE}/moodLogs?userId=${sessionUser.id}`),
+  fetchJson(`${API}/userStats?userId=${sessionUser.id}`),
+  fetchJson(`${API}/userProgress?userId=${sessionUser.id}`),
+  fetchJson(`${API}/moodLogs?userId=${sessionUser.id}`),
  ]);
 
  const stats = statsList[0] || {};

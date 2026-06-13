@@ -20,19 +20,29 @@
       "id": "stats-bc36",
       "userId": "bc36",
       "streak": 12,
-      "lastCheckin": "2026-06-13",
-      "checkedInToday": true,
+      "lastCheckin": "2026-06-01",
+      "checkedInToday": false,
       "longestStreak": 12,
       "totalCheckins": 8,
       "createdAt": "2026-06-13T00:15:14.814Z"
+    },
+    {
+      "id": "523d",
+      "userId": 1781012145505,
+      "streak": 1,
+      "lastCheckin": "2026-06-13",
+      "checkedInToday": true,
+      "longestStreak": 1,
+      "totalCheckins": 1,
+      "createdAt": "2026-06-13T20:19:03.805Z"
     }
   ],
   "userProgress": [
     {
       "id": "progress-bc36",
       "userId": "bc36",
-      "xp": 240,
-      "level": 3,
+      "xp": 515,
+      "level": 6,
       "totalCheckins": 8,
       "longestStreak": 12,
       "activityTypes": [
@@ -45,26 +55,51 @@
         "c1",
         "c2",
         "c4",
-        "c5"
+        "c5",
+        "c13",
+        "c14",
+        "c15"
       ],
       "unlockedMedals": [
-        "m1"
+        "m1",
+        "m5",
+        "m6",
+        "m9",
+        "m11",
+        "m7",
+        "m8"
       ],
       "createdAt": "2026-06-13T00:00:00.000Z"
+    },
+    {
+      "id": "c238",
+      "userId": 1781012145505,
+      "xp": 50,
+      "level": 1,
+      "totalCheckins": 0,
+      "longestStreak": 0,
+      "activityTypes": [],
+      "completedChallenges": [
+        "c1"
+      ],
+      "unlockedMedals": [
+        "m5"
+      ],
+      "createdAt": "2026-06-13T20:19:03.826Z"
     }
   ],
   "moodLogs": [
     {
       "id": "mood1",
       "userId": "bc36",
-      "date": "2026-05-15",
-      "mood": 3
+      "date": "2026-05-27",
+      "mood": 3.2
     },
     {
       "id": "mood2",
       "userId": "bc36",
-      "date": "2026-05-22",
-      "mood": 3.1
+      "date": "2026-05-28",
+      "mood": 3.4
     },
     {
       "id": "mood3",
@@ -75,14 +110,26 @@
     {
       "id": "mood4",
       "userId": "bc36",
-      "date": "2026-06-05",
-      "mood": 3.4
+      "date": "2026-05-30",
+      "mood": 3.5
     },
     {
       "id": "mood5",
       "userId": "bc36",
-      "date": "2026-06-12",
+      "date": "2026-05-31",
+      "mood": 3.8
+    },
+    {
+      "id": "mood6",
+      "userId": "bc36",
+      "date": "2026-06-01",
       "mood": 3.6
+    },
+    {
+      "id": "mood7",
+      "userId": "bc36",
+      "date": "2026-06-02",
+      "mood": 3.9
     }
   ],
   "activities": [
@@ -141,45 +188,313 @@
     }
   ],
   "challengeDefinitions": [
-    { "id": "c1", "title": "Primeira vez", "description": "Faz o teu primeiro check-in.", "type": "checkin", "target": 1, "xpReward": 50, "icon": "🌱" },
-    { "id": "c2", "title": "Semana consistente", "description": "Faz check-in 7 dias seguidos.", "type": "streak", "target": 7, "xpReward": 150, "icon": "🔥" },
-    { "id": "c3", "title": "Mês de ouro", "description": "Faz check-in 30 dias seguidos.", "type": "streak", "target": 30, "xpReward": 500, "icon": "🏆" },
-    { "id": "c4", "title": "Explorador", "description": "Experimenta 3 tipos de exercícios diferentes.", "type": "activities", "target": 3, "xpReward": 100, "icon": "🧭" },
-    { "id": "c5", "title": "Dedicado", "description": "Completa 10 check-ins no total.", "type": "checkin", "target": 10, "xpReward": 200, "icon": "⭐" },
-    { "id": "c6", "title": "Veterano", "description": "Completa 50 check-ins no total.", "type": "checkin", "target": 50, "xpReward": 600, "icon": "💎" },
-    { "id": "c7", "title": "Respiração consciente", "description": "Completa 5 sessões de respiração.", "type": "activities", "target": 5, "xpReward": 120, "icon": "🌬️" },
-    { "id": "c8", "title": "Mente focada", "description": "Completa 5 meditações guiadas.", "type": "activities", "target": 5, "xpReward": 130, "icon": "🎯" },
-    { "id": "c9", "title": "Duas semanas zen", "description": "Mantém streak de 14 dias.", "type": "streak", "target": 14, "xpReward": 280, "icon": "🪷" },
-    { "id": "c10", "title": "Diário emocional", "description": "Regista humor 15 vezes.", "type": "checkin", "target": 15, "xpReward": 180, "icon": "📔" },
-    { "id": "c11", "title": "Polivalente", "description": "Experimenta todos os tipos de exercício.", "type": "activities", "target": 5, "xpReward": 250, "icon": "🌈" },
-    { "id": "c12", "title": "Centurião", "description": "Alcança 100 check-ins totais.", "type": "checkin", "target": 100, "xpReward": 900, "icon": "👑" },
-    { "id": "c13", "title": "Manhãs calmas", "description": "Faz check-in 5 dias seguidos antes das 10h.", "type": "streak", "target": 5, "xpReward": 110, "icon": "🌅" },
-    { "id": "c14", "title": "Recuperação", "description": "Volta à streak após uma pausa.", "type": "checkin", "target": 3, "xpReward": 75, "icon": "🔄" },
-    { "id": "c15", "title": "Comunidade ativa", "description": "Partilha 3 publicações na comunidade.", "type": "activities", "target": 3, "xpReward": 90, "icon": "💬" }
+    {
+      "id": "c1",
+      "title": "Primeira vez",
+      "description": "Faz o teu primeiro check-in.",
+      "type": "checkin",
+      "target": 1,
+      "xpReward": 50,
+      "icon": "🌱"
+    },
+    {
+      "id": "c2",
+      "title": "Semana consistente",
+      "description": "Faz check-in 7 dias seguidos.",
+      "type": "streak",
+      "target": 7,
+      "xpReward": 150,
+      "icon": "🔥"
+    },
+    {
+      "id": "c3",
+      "title": "Mês de ouro",
+      "description": "Faz check-in 30 dias seguidos.",
+      "type": "streak",
+      "target": 30,
+      "xpReward": 500,
+      "icon": "🏆"
+    },
+    {
+      "id": "c4",
+      "title": "Explorador",
+      "description": "Experimenta 3 tipos de exercícios diferentes.",
+      "type": "activities",
+      "target": 3,
+      "xpReward": 100,
+      "icon": "🧭"
+    },
+    {
+      "id": "c5",
+      "title": "Dedicado",
+      "description": "Completa 10 check-ins no total.",
+      "type": "checkin",
+      "target": 10,
+      "xpReward": 200,
+      "icon": "⭐"
+    },
+    {
+      "id": "c6",
+      "title": "Veterano",
+      "description": "Completa 50 check-ins no total.",
+      "type": "checkin",
+      "target": 50,
+      "xpReward": 600,
+      "icon": "💎"
+    },
+    {
+      "id": "c7",
+      "title": "Respiração consciente",
+      "description": "Completa 5 sessões de respiração.",
+      "type": "activities",
+      "target": 5,
+      "xpReward": 120,
+      "icon": "🌬️"
+    },
+    {
+      "id": "c8",
+      "title": "Mente focada",
+      "description": "Completa 5 meditações guiadas.",
+      "type": "activities",
+      "target": 5,
+      "xpReward": 130,
+      "icon": "🎯"
+    },
+    {
+      "id": "c9",
+      "title": "Duas semanas zen",
+      "description": "Mantém streak de 14 dias.",
+      "type": "streak",
+      "target": 14,
+      "xpReward": 280,
+      "icon": "🪷"
+    },
+    {
+      "id": "c10",
+      "title": "Diário emocional",
+      "description": "Regista humor 15 vezes.",
+      "type": "checkin",
+      "target": 15,
+      "xpReward": 180,
+      "icon": "📔"
+    },
+    {
+      "id": "c11",
+      "title": "Polivalente",
+      "description": "Experimenta todos os tipos de exercício.",
+      "type": "activities",
+      "target": 5,
+      "xpReward": 250,
+      "icon": "🌈"
+    },
+    {
+      "id": "c12",
+      "title": "Centurião",
+      "description": "Alcança 100 check-ins totais.",
+      "type": "checkin",
+      "target": 100,
+      "xpReward": 900,
+      "icon": "👑"
+    },
+    {
+      "id": "c13",
+      "title": "Manhãs calmas",
+      "description": "Faz check-in 5 dias seguidos antes das 10h.",
+      "type": "streak",
+      "target": 5,
+      "xpReward": 110,
+      "icon": "🌅"
+    },
+    {
+      "id": "c14",
+      "title": "Recuperação",
+      "description": "Volta à streak após uma pausa.",
+      "type": "checkin",
+      "target": 3,
+      "xpReward": 75,
+      "icon": "🔄"
+    },
+    {
+      "id": "c15",
+      "title": "Comunidade ativa",
+      "description": "Partilha 3 publicações na comunidade.",
+      "type": "activities",
+      "target": 3,
+      "xpReward": 90,
+      "icon": "💬"
+    }
   ],
   "medalDefinitions": [
-    { "id": "m1", "title": "Calm Week", "description": "Streak de 7 dias.", "condition": "streak_7", "icon": "🧘", "color": "#ede8f8", "textColor": "#6a5a9a" },
-    { "id": "m2", "title": "Zen Month", "description": "Streak de 30 dias.", "condition": "streak_30", "icon": "🌙", "color": "#e8f0f8", "textColor": "#4a6a9a" },
-    { "id": "m3", "title": "Foco Diário", "description": "10 check-ins totais.", "condition": "checkins_10", "icon": "☀️", "color": "#fef8e0", "textColor": "#c48a20" },
-    { "id": "m4", "title": "Maratonista", "description": "50 check-ins totais.", "condition": "checkins_50", "icon": "🏅", "color": "#e8f8ee", "textColor": "#2a7a4a" },
-    { "id": "m5", "title": "Primeiro Passo", "description": "Primeiro check-in registado.", "condition": "checkins_1", "icon": "👣", "color": "#f0f4ff", "textColor": "#4a5a9a" },
-    { "id": "m6", "title": "Respiração Mestre", "description": "100 XP acumulados.", "condition": "xp_100", "icon": "🌬️", "color": "#e6f7ff", "textColor": "#1a6a8a" },
-    { "id": "m7", "title": "Equilíbrio", "description": "250 XP acumulados.", "condition": "xp_250", "icon": "⚖️", "color": "#f3e8ff", "textColor": "#6a3a9a" },
-    { "id": "m8", "title": "Resiliência", "description": "500 XP acumulados.", "condition": "xp_500", "icon": "🛡️", "color": "#ffe8e8", "textColor": "#9a3a3a" },
-    { "id": "m9", "title": "Explorador Zen", "description": "3 tipos de exercícios experimentados.", "condition": "activities_3", "icon": "🧭", "color": "#e8fff4", "textColor": "#2a7a5a" },
-    { "id": "m10", "title": "Polivalente", "description": "5 tipos de exercícios experimentados.", "condition": "activities_5", "icon": "🌈", "color": "#fff0e8", "textColor": "#9a5a2a" },
-    { "id": "m11", "title": "Desafiante", "description": "3 desafios concluídos.", "condition": "challenges_3", "icon": "🎯", "color": "#eef0ff", "textColor": "#3a4a9a" },
-    { "id": "m12", "title": "Centurião", "description": "100 check-ins totais.", "condition": "checkins_100", "icon": "👑", "color": "#fff8e0", "textColor": "#8a6a10" },
-    { "id": "m13", "title": "Quinzena Calma", "description": "Streak de 14 dias.", "condition": "streak_14", "icon": "🪷", "color": "#f0fff8", "textColor": "#2a6a5a" },
-    { "id": "m14", "title": "Zenith", "description": "1000 XP acumulados.", "condition": "xp_1000", "icon": "✨", "color": "#1a2a4a", "textColor": "#ffffff" }
+    {
+      "id": "m1",
+      "title": "Calm Week",
+      "description": "Streak de 7 dias.",
+      "condition": "streak_7",
+      "icon": "🧘",
+      "color": "#ede8f8",
+      "textColor": "#6a5a9a"
+    },
+    {
+      "id": "m2",
+      "title": "Zen Month",
+      "description": "Streak de 30 dias.",
+      "condition": "streak_30",
+      "icon": "🌙",
+      "color": "#e8f0f8",
+      "textColor": "#4a6a9a"
+    },
+    {
+      "id": "m3",
+      "title": "Foco Diário",
+      "description": "10 check-ins totais.",
+      "condition": "checkins_10",
+      "icon": "☀️",
+      "color": "#fef8e0",
+      "textColor": "#c48a20"
+    },
+    {
+      "id": "m4",
+      "title": "Maratonista",
+      "description": "50 check-ins totais.",
+      "condition": "checkins_50",
+      "icon": "🏅",
+      "color": "#e8f8ee",
+      "textColor": "#2a7a4a"
+    },
+    {
+      "id": "m5",
+      "title": "Primeiro Passo",
+      "description": "Primeiro check-in registado.",
+      "condition": "checkins_1",
+      "icon": "👣",
+      "color": "#f0f4ff",
+      "textColor": "#4a5a9a"
+    },
+    {
+      "id": "m6",
+      "title": "Respiração Mestre",
+      "description": "100 XP acumulados.",
+      "condition": "xp_100",
+      "icon": "🌬️",
+      "color": "#e6f7ff",
+      "textColor": "#1a6a8a"
+    },
+    {
+      "id": "m7",
+      "title": "Equilíbrio",
+      "description": "250 XP acumulados.",
+      "condition": "xp_250",
+      "icon": "⚖️",
+      "color": "#f3e8ff",
+      "textColor": "#6a3a9a"
+    },
+    {
+      "id": "m8",
+      "title": "Resiliência",
+      "description": "500 XP acumulados.",
+      "condition": "xp_500",
+      "icon": "🛡️",
+      "color": "#ffe8e8",
+      "textColor": "#9a3a3a"
+    },
+    {
+      "id": "m9",
+      "title": "Explorador Zen",
+      "description": "3 tipos de exercícios experimentados.",
+      "condition": "activities_3",
+      "icon": "🧭",
+      "color": "#e8fff4",
+      "textColor": "#2a7a5a"
+    },
+    {
+      "id": "m10",
+      "title": "Polivalente",
+      "description": "5 tipos de exercícios experimentados.",
+      "condition": "activities_5",
+      "icon": "🌈",
+      "color": "#fff0e8",
+      "textColor": "#9a5a2a"
+    },
+    {
+      "id": "m11",
+      "title": "Desafiante",
+      "description": "3 desafios concluídos.",
+      "condition": "challenges_3",
+      "icon": "🎯",
+      "color": "#eef0ff",
+      "textColor": "#3a4a9a"
+    },
+    {
+      "id": "m12",
+      "title": "Centurião",
+      "description": "100 check-ins totais.",
+      "condition": "checkins_100",
+      "icon": "👑",
+      "color": "#fff8e0",
+      "textColor": "#8a6a10"
+    },
+    {
+      "id": "m13",
+      "title": "Quinzena Calma",
+      "description": "Streak de 14 dias.",
+      "condition": "streak_14",
+      "icon": "🪷",
+      "color": "#f0fff8",
+      "textColor": "#2a6a5a"
+    },
+    {
+      "id": "m14",
+      "title": "Zenith",
+      "description": "1000 XP acumulados.",
+      "condition": "xp_1000",
+      "icon": "✨",
+      "color": "#1a2a4a",
+      "textColor": "#ffffff"
+    }
   ],
   "levelDefinitions": [
-    { "minLevel": 1, "maxLevel": 2, "name": "Despertar", "nameEn": "Awakening" },
-    { "minLevel": 3, "maxLevel": 5, "name": "Explorador", "nameEn": "Explorer" },
-    { "minLevel": 6, "maxLevel": 9, "name": "Equilíbrio", "nameEn": "Balance" },
-    { "minLevel": 10, "maxLevel": 14, "name": "Resiliência", "nameEn": "Resilience" },
-    { "minLevel": 15, "maxLevel": 19, "name": "Maestria Zen", "nameEn": "Zen Mastery" },
-    { "minLevel": 20, "maxLevel": 99, "name": "Zenith", "nameEn": "Zenith" }
+    {
+      "minLevel": 1,
+      "maxLevel": 2,
+      "name": "Despertar",
+      "nameEn": "Awakening",
+      "id": "1c02"
+    },
+    {
+      "minLevel": 3,
+      "maxLevel": 5,
+      "name": "Explorador",
+      "nameEn": "Explorer",
+      "id": "cd36"
+    },
+    {
+      "minLevel": 6,
+      "maxLevel": 9,
+      "name": "Equilíbrio",
+      "nameEn": "Balance",
+      "id": "f8be"
+    },
+    {
+      "minLevel": 10,
+      "maxLevel": 14,
+      "name": "Resiliência",
+      "nameEn": "Resilience",
+      "id": "04d8"
+    },
+    {
+      "minLevel": 15,
+      "maxLevel": 19,
+      "name": "Maestria Zen",
+      "nameEn": "Zen Mastery",
+      "id": "ac9f"
+    },
+    {
+      "minLevel": 20,
+      "maxLevel": 99,
+      "name": "Zenith",
+      "nameEn": "Zenith",
+      "id": "e00d"
+    }
   ],
   "userNotifications": [
     {

@@ -1,6 +1,5 @@
-import { getLevelTierName } from "../data/levelTiers.js";
-
-const API_BASE = "http://localhost:3000";
+import { getLevelTierName as resolveLevelTierName } from "../data/levelTiers.js";
+import { API as API_BASE } from "../data/config.js";
 
 function evaluateCondition(condition, stats, progress) {
  if (!condition) return false;
@@ -81,7 +80,7 @@ export const ProgressModel = {
  },
 
  getLevelTierName(level) {
-  return getLevelTierName(level);
+  return resolveLevelTierName(level);
  },
 
  getXpInLevel(xp) {

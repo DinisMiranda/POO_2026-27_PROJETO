@@ -1,6 +1,6 @@
 import { redirectByRole, redirectToLogin } from "./navigation.js";
+import { API } from "./config.js";
 
-const API = "http://localhost:3000";
 const SESSION_KEY = "zenify_session";
 
 export function getSession() {

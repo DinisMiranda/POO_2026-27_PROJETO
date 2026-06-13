@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:3000";
+import { API as API_BASE } from "../data/config.js";
 
 const AI_TEMPLATES = [
  {

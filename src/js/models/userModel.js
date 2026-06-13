@@ -1,4 +1,13 @@
-const API_BASE = "http://localhost:3000";
+import { API } from "../data/config.js";
+
+const SESSION_KEY = "zenify_user";
+const LEGACY_SESSION_KEY = "zenify_session";
+
+function toSafeUser(user) {
+ if (!user) return null;
+ const { password: _pw, ...safeUser } = user;
+ return safeUser;
+}
 
 export const UserModel = {
  async register({ firstName, lastName, email, password, dob }) {
@@ -6,7 +15,7 @@ export const UserModel = {
   const normalizedPassword = password.trim();
 
   const checkRes = await fetch(
-   `${API_BASE}/users?email=${encodeURIComponent(normalizedEmail)}`,
+   `${API}/users?email=${encodeURIComponent(normalizedEmail)}`,
   );
 
   if (!checkRes.ok) {
@@ -33,7 +42,7 @@ export const UserModel = {
    createdAt: new Date().toISOString(),
   };
 
-  const res = await fetch(`${API_BASE}/users`, {
+  const res = await fetch(`${API}/users`, {
    method: "POST",
    headers: { "Content-Type": "application/json" },
    body: JSON.stringify(payload),
@@ -50,9 +59,8 @@ export const UserModel = {
   const normalizedEmail = email.trim().toLowerCase();
   const normalizedPassword = password.trim();
 
-  // 1. Confirmar se o email existe
   const emailRes = await fetch(
-   `${API_BASE}/users?email=${encodeURIComponent(normalizedEmail)}`,
+   `${API}/users?email=${encodeURIComponent(normalizedEmail)}`,
   );
 
   if (!emailRes.ok) {
@@ -67,7 +75,6 @@ export const UserModel = {
    throw new Error("Este email não existe na base de dados.");
   }
 
-  // 2. Confirmar password
   const matchedUser = usersByEmail.find(
    (user) => String(user.password).trim() === normalizedPassword,
   );
@@ -76,24 +83,66 @@ export const UserModel = {
    throw new Error("A password está incorreta.");
   }
 
-  const { password: _pw, ...safeUser } = matchedUser;
-  return safeUser;
+  return toSafeUser(matchedUser);
  },
 
  saveSession(user) {
-  sessionStorage.setItem("zenify_user", JSON.stringify(user));
+  const safeUser = toSafeUser(user);
+  if (!safeUser) return;
+
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify(safeUser));
+  localStorage.setItem(
+   LEGACY_SESSION_KEY,
+   JSON.stringify({
+    id: safeUser.id,
+    name:
+     safeUser.name ||
+     `${safeUser.firstName || ""} ${safeUser.lastName || ""}`.trim(),
+    email: safeUser.email,
+    role: safeUser.role,
+   }),
+  );
  },
 
  getSession() {
   try {
-   const raw = sessionStorage.getItem("zenify_user");
-   return raw ? JSON.parse(raw) : null;
+   const raw = sessionStorage.getItem(SESSION_KEY);
+   if (raw) return JSON.parse(raw);
+
+   const legacy = localStorage.getItem(LEGACY_SESSION_KEY);
+   return legacy ? JSON.parse(legacy) : null;
   } catch {
    return null;
   }
  },
 
  clearSession() {
-  sessionStorage.removeItem("zenify_user");
+  sessionStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(LEGACY_SESSION_KEY);
+ },
+
+ /** Garante que a sessão tem dados sincronizados com a db. */
+ async resolveSession() {
+  const session = this.getSession();
+  if (!session?.email) return session;
+
+  try {
+   const res = await fetch(
+    `${API}/users?email=${encodeURIComponent(session.email)}`,
+   );
+   if (!res.ok) return session;
+
+   const users = await res.json();
+   const match = users.find(
+    (u) => u.email.toLowerCase() === session.email.toLowerCase(),
+   );
+   if (!match) return session;
+
+   const safeUser = toSafeUser(match);
+   this.saveSession({ ...session, ...safeUser });
+   return safeUser;
+  } catch {
+   return session;
+  }
  },
 };

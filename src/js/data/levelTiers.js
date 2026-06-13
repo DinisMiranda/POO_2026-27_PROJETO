@@ -1,4 +1,4 @@
-import { getStoredLocale, LOCALES } from "./i18n.js";
+import { getLanguage } from "./i18n.js";
 
 export const LEVEL_TIERS = [
  { minLevel: 1, maxLevel: 2, name: "Despertar", nameEn: "Awakening" },
@@ -9,10 +9,10 @@ export const LEVEL_TIERS = [
  { minLevel: 20, maxLevel: Infinity, name: "Zenith", nameEn: "Zenith" },
 ];
 
-export function getLevelTierName(level, locale = getStoredLocale()) {
+export function getLevelTierName(level, locale = getLanguage()) {
  const tier = LEVEL_TIERS.find(
   (t) => level >= t.minLevel && level <= t.maxLevel,
  );
- if (!tier) return locale === LOCALES.en ? "Awakening" : "Despertar";
- return locale === LOCALES.en ? tier.nameEn : tier.name;
+ if (!tier) return locale === "en" ? "Awakening" : "Despertar";
+ return locale === "en" ? tier.nameEn : tier.name;
 }

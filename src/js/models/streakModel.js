@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:3000";
+import { API as API_BASE } from "../data/config.js";
 
 export const StreakModel = {
  /**
@@ -76,6 +76,10 @@ export const StreakModel = {
   const stats = await this.getStats(userId);
   const today = this._dateStr(new Date());
   const yesterday = this._dateStr(this._offsetDate(-1));
+
+  if (stats.lastCheckin > today) {
+   return { ...stats, checkedInToday: false, broken: false };
+  }
 
   if (stats.lastCheckin === today) {
    return { ...stats, checkedInToday: true, broken: false };

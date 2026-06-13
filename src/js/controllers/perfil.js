@@ -1,11 +1,12 @@
 import { UserModel } from "../models/userModel.js";
 import { StreakModel } from "../models/streakModel.js";
 import { ProgressModel } from "../models/progressModel.js";
-
-const user = UserModel.getSession();
-if (!user) window.location.href = "landing.html";
+import { requireSession } from "../data/session.js";
+import { API } from "../data/config.js";
 
 const EMAIL_LOCK_DAYS = 30;
+
+let activeUser = null;
 
 const avatarEl = document.getElementById("profile-avatar");
 const nameEl = document.getElementById("profile-name");
@@ -35,13 +36,15 @@ function getEmailUnlockDate(createdAt) {
 }
 
 function canChangeEmail(u) {
- if (!u.createdAt) return { allowed: true };
+ if (!u?.createdAt) return { allowed: true };
  const unlock = getEmailUnlockDate(u.createdAt);
  return { allowed: new Date() >= unlock, unlockDate: unlock };
 }
 
 function applyEmailLockUI() {
- const lock = canChangeEmail(user);
+ if (!activeUser) return;
+
+ const lock = canChangeEmail(activeUser);
  if (!inpEmail) return;
 
  if (!lock.allowed) {
@@ -64,10 +67,10 @@ function applyEmailLockUI() {
 }
 
 function getInitials(u) {
- const f = (u.firstName || "").trim();
- const l = (u.lastName || "").trim();
+ const f = (u?.firstName || "").trim();
+ const l = (u?.lastName || "").trim();
  if (f && l) return `${f[0]}${l[0]}`.toUpperCase();
- if (u.name) {
+ if (u?.name) {
   const parts = u.name.trim().split(/\s+/);
   return parts.length >= 2 ?
     `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
@@ -84,12 +87,17 @@ function showToast(msg, duration = 3000) {
 }
 
 function fillUserInfo() {
- if (avatarEl) avatarEl.textContent = getInitials(user);
- if (nameEl) nameEl.textContent = user.name || `${user.firstName} ${user.lastName}`;
- if (emailEl) emailEl.textContent = user.email;
- if (inpFirst) inpFirst.value = user.firstName || "";
- if (inpLast) inpLast.value = user.lastName || "";
- if (inpEmail) inpEmail.value = user.email || "";
+ if (!activeUser) return;
+
+ if (avatarEl) avatarEl.textContent = getInitials(activeUser);
+ if (nameEl) {
+  nameEl.textContent =
+   activeUser.name || `${activeUser.firstName || ""} ${activeUser.lastName || ""}`.trim();
+ }
+ if (emailEl) emailEl.textContent = activeUser.email || "—";
+ if (inpFirst) inpFirst.value = activeUser.firstName || "";
+ if (inpLast) inpLast.value = activeUser.lastName || "";
+ if (inpEmail) inpEmail.value = activeUser.email || "";
 }
 
 function renderXpBar(xp) {
@@ -156,15 +164,17 @@ function renderChallenges(challengeDefs, completedIds, stats, progress) {
 
 formPerfil?.addEventListener("submit", async (e) => {
  e.preventDefault();
+ if (!activeUser?.id) return;
+
  const firstName = inpFirst?.value.trim() || "";
  const lastName = inpLast?.value.trim() || "";
  const email = inpEmail?.value.trim() || "";
  if (!firstName || !lastName || !email)
   return showToast("Preenche todos os campos.");
 
- const emailChanged = email.toLowerCase() !== (user.email || "").toLowerCase();
+ const emailChanged = email.toLowerCase() !== (activeUser.email || "").toLowerCase();
  if (emailChanged) {
-  const lock = canChangeEmail(user);
+  const lock = canChangeEmail(activeUser);
   if (!lock.allowed) {
    const dateStr = lock.unlockDate.toLocaleDateString("pt-PT", {
     day: "numeric",
@@ -179,14 +189,15 @@ formPerfil?.addEventListener("submit", async (e) => {
   const payload = { firstName, lastName, name: `${firstName} ${lastName}` };
   if (emailChanged) payload.email = email.toLowerCase();
 
-  const res = await fetch(`http://localhost:3000/users/${user.id}`, {
+  const res = await fetch(`${API}/users/${activeUser.id}`, {
    method: "PATCH",
    headers: { "Content-Type": "application/json" },
    body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error();
   const updated = await res.json();
-  UserModel.saveSession({ ...user, ...updated });
+  activeUser = { ...activeUser, ...updated };
+  UserModel.saveSession(activeUser);
   fillUserInfo();
   showToast("Perfil atualizado com sucesso! ✓");
  } catch {
@@ -200,13 +211,16 @@ btnLogout?.addEventListener("click", () => {
 });
 
 async function init() {
+ activeUser = await requireSession();
+ if (!activeUser) return;
+
  fillUserInfo();
  applyEmailLockUI();
 
  try {
   const [stats, progress, challengeDefs, medalDefs] = await Promise.all([
-   StreakModel.getStats(user.id),
-   ProgressModel.getProgress(user.id),
+   StreakModel.getStats(activeUser.id),
+   ProgressModel.getProgress(activeUser.id),
    ProgressModel.getChallengeDefinitions(),
    ProgressModel.getMedalDefinitions(),
   ]);
@@ -224,11 +238,12 @@ async function init() {
   );
 
   await Promise.all([
-   ProgressModel.syncChallenges(user.id, stats),
-   ProgressModel.syncMedals(user.id, stats),
+   ProgressModel.syncChallenges(activeUser.id, stats),
+   ProgressModel.syncMedals(activeUser.id, stats),
   ]);
  } catch (err) {
   console.error("Erro ao carregar perfil:", err);
+  showToast("Não foi possível carregar os dados. Verifica se o json-server está ativo.");
  }
 }
 

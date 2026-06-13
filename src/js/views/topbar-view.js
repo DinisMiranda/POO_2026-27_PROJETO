@@ -90,19 +90,19 @@ function renderAvatar(initials) {
   `;
 }
 
-export function mountTopbar() {
+export async function mountTopbar() {
  const host = document.querySelector("[data-zenify-topbar]");
  if (!host) return;
 
  const page = document.body.dataset.zenifyPage || "";
- const user = UserModel.getSession();
+ const user = await UserModel.resolveSession();
  const initials = getInitials(user);
  const config = getTopbarConfig(page);
 
  host.className = "topbar";
  host.innerHTML = `
     <div class="topbar-greeting">
-      <h1>${config.title}</h1>
+      <h1>${user?.firstName ? `${config.title}, ${user.firstName}` : config.title}</h1>
       <p>${config.subtitle}</p>
     </div>
 
