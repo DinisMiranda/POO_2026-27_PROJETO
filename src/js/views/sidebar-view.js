@@ -62,3 +62,7 @@ export function mountZenifySidebar(activePage = "") {
     </nav>
   `;
 }
+
+// Auto-mount: lê a página activa do data-zenify-page do <body>
+const activePage = document.body?.dataset?.zenifyPage || "";
+mountZenifySidebar(activePage);

@@ -124,3 +124,6 @@ export function mountTopbar() {
     </div>
   `;
 }
+
+// Auto-mount ao importar
+mountTopbar();
