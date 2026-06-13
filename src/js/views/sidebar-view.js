@@ -1,4 +1,4 @@
-import { applyDocumentLanguage, t } from "../data/i18n.js";
+import { applyDocumentLanguage, applyTranslations, t } from "../data/i18n.js";
 
 applyDocumentLanguage();
 
@@ -82,4 +82,7 @@ export function mountZenifySidebar(activeKey) {
 }
 
 const active = document.body.dataset.zenifyPage;
-if (active) mountZenifySidebar(active);
+if (active) {
+ mountZenifySidebar(active);
+ applyTranslations();
+}

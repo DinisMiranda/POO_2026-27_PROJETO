@@ -1,3 +1,5 @@
+import { t } from "../data/i18n.js";
+
 export const LandingView = {
  tabLogin: document.getElementById("tab-login"),
  tabRegister: document.getElementById("tab-register"),
@@ -26,13 +28,11 @@ export const LandingView = {
   this.panelRegister.hidden = isLogin;
 
   if (isLogin) {
-   this.authHeading.textContent = "Bem-vindo(a) de volta";
-   this.authSubheading.textContent =
-    "Entra na tua conta para aceder à dashboard.";
+   this.authHeading.textContent = t("landing.auth.welcomeBack");
+   this.authSubheading.textContent = t("landing.auth.loginSubheading");
   } else {
-   this.authHeading.textContent = "Bem-vindo(a)";
-   this.authSubheading.textContent =
-    "Regista-te ou inicia sessão na tua área Zenify.";
+   this.authHeading.textContent = t("landing.auth.welcome");
+   this.authSubheading.textContent = t("landing.auth.registerSubheading");
   }
 
   this.clearErrors();

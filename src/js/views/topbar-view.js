@@ -1,5 +1,5 @@
 import { UserModel } from "../models/userModel.js";
-import { applyDocumentLanguage, t } from "../data/i18n.js";
+import { applyDocumentLanguage, applyTranslations, t } from "../data/i18n.js";
 
 applyDocumentLanguage();
 
@@ -140,6 +140,8 @@ export function mountTopbar() {
       </a>
     </div>
   `;
+
+ applyTranslations();
 }
 
 mountTopbar();

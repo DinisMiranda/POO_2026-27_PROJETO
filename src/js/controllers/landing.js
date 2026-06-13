@@ -1,4 +1,5 @@
 import { LandingView as View } from "../views/landingView.js";
+import { applyTranslations, t } from "../data/i18n.js";
 import { UserModel as Model } from "../models/userModel.js";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
@@ -31,18 +32,18 @@ function validateLoginData(data) {
  let valid = true;
 
  if (!data.email) {
-  View.showFieldError("login-email", "O email é obrigatório.");
+  View.showFieldError("login-email", t("landing.error.loginEmailRequired"));
   valid = false;
  } else if (!EMAIL_REGEX.test(data.email)) {
-  View.showFieldError(
-   "login-email",
-   "O email deve seguir um formato válido, por exemplo nome@dominio.pt.",
-  );
+  View.showFieldError("login-email", t("landing.error.loginEmailInvalid"));
   valid = false;
  }
 
  if (!data.password) {
-  View.showFieldError("login-password", "A password é obrigatória.");
+  View.showFieldError(
+   "login-password",
+   t("landing.error.loginPasswordRequired"),
+  );
   valid = false;
  }
 
@@ -76,38 +77,44 @@ function validateRegisterData(data) {
  let valid = true;
 
  if (!data.firstName) {
-  View.showFieldError("reg-first-name", "O primeiro nome é obrigatório.");
-  valid = false;
- }
-
- if (!data.lastName) {
-  View.showFieldError("reg-last-name", "O último nome é obrigatório.");
-  valid = false;
- }
-
- if (!data.email) {
-  View.showFieldError("reg-email", "O email é obrigatório.");
-  valid = false;
- } else if (!EMAIL_REGEX.test(data.email)) {
   View.showFieldError(
-   "reg-email",
-   "O email deve seguir o formato nome@dominio.com.",
+   "reg-first-name",
+   t("landing.error.registerFirstNameRequired"),
   );
   valid = false;
  }
 
+ if (!data.lastName) {
+  View.showFieldError(
+   "reg-last-name",
+   t("landing.error.registerLastNameRequired"),
+  );
+  valid = false;
+ }
+
+ if (!data.email) {
+  View.showFieldError("reg-email", t("landing.error.registerEmailRequired"));
+  valid = false;
+ } else if (!EMAIL_REGEX.test(data.email)) {
+  View.showFieldError("reg-email", t("landing.error.registerEmailInvalid"));
+  valid = false;
+ }
+
  if (!data.dob) {
-  View.showFieldError("reg-dob", "A data de nascimento é obrigatória.");
+  View.showFieldError("reg-dob", t("landing.error.registerDobRequired"));
   valid = false;
  }
 
  if (!data.password) {
-  View.showFieldError("reg-password", "A password é obrigatória.");
+  View.showFieldError(
+   "reg-password",
+   t("landing.error.registerPasswordRequired"),
+  );
   valid = false;
  } else if (data.password.length < 6) {
   View.showFieldError(
    "reg-password",
-   "A password deve ter pelo menos 6 caracteres.",
+   t("landing.error.registerPasswordLength"),
   );
   valid = false;
  }
@@ -122,10 +129,7 @@ async function handleRegister(event) {
  const data = View.getRegisterData();
 
  if (!validateRegisterData(data)) {
-  View.showError(
-   "register",
-   "Corrige os campos assinalados antes de continuar.",
-  );
+  View.showError("register", t("landing.error.fixFields"));
   return;
  }
 
@@ -231,6 +235,5 @@ function init() {
 
  View.loginForm?.addEventListener("submit", handleLogin);
  View.registerForm?.addEventListener("submit", handleRegister);
+ applyTranslations();
 }
-
-init();

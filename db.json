@@ -3,8 +3,8 @@
     {
       "id": "bc36",
       "firstName": "Dinis",
-      "lastName": "Miranda",
-      "name": "Dinis Miranda",
+      "lastName": "Goveia",
+      "name": "Dinis Goveia",
       "email": "dinis@gmail.com",
       "password": "dinismiranda",
       "dob": "2020-12-12",
@@ -35,18 +35,55 @@
       "level": 3,
       "totalCheckins": 8,
       "longestStreak": 12,
-      "activityTypes": ["respiracao", "meditacao", "diario", "movimento"],
-      "completedChallenges": ["c1", "c2", "c4", "c5"],
-      "unlockedMedals": ["m1"],
+      "activityTypes": [
+        "respiracao",
+        "meditacao",
+        "diario",
+        "movimento"
+      ],
+      "completedChallenges": [
+        "c1",
+        "c2",
+        "c4",
+        "c5"
+      ],
+      "unlockedMedals": [
+        "m1"
+      ],
       "createdAt": "2026-06-13T00:00:00.000Z"
     }
   ],
   "moodLogs": [
-    { "id": "mood1", "userId": "bc36", "date": "2026-05-15", "mood": 3.0 },
-    { "id": "mood2", "userId": "bc36", "date": "2026-05-22", "mood": 3.1 },
-    { "id": "mood3", "userId": "bc36", "date": "2026-05-29", "mood": 3.0 },
-    { "id": "mood4", "userId": "bc36", "date": "2026-06-05", "mood": 3.4 },
-    { "id": "mood5", "userId": "bc36", "date": "2026-06-12", "mood": 3.6 }
+    {
+      "id": "mood1",
+      "userId": "bc36",
+      "date": "2026-05-15",
+      "mood": 3
+    },
+    {
+      "id": "mood2",
+      "userId": "bc36",
+      "date": "2026-05-22",
+      "mood": 3.1
+    },
+    {
+      "id": "mood3",
+      "userId": "bc36",
+      "date": "2026-05-29",
+      "mood": 3
+    },
+    {
+      "id": "mood4",
+      "userId": "bc36",
+      "date": "2026-06-05",
+      "mood": 3.4
+    },
+    {
+      "id": "mood5",
+      "userId": "bc36",
+      "date": "2026-06-12",
+      "mood": 3.6
+    }
   ],
   "activities": [
     {
