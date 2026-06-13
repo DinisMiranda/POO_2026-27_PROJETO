@@ -10,15 +10,33 @@ const LOGO_SVG = `
 `;
 
 function getItems() {
- return [
-  { key: "hoje", href: "./dashboard.html", label: t("nav.today") },
-  { key: "exercicios", href: "./exercicios.html", label: t("nav.exercises") },
-  { key: "insights", href: "./insights.html", label: t("nav.insights") },
-  { key: "diario", href: "./diario.html", label: t("nav.journal") },
-  { key: "perfil", href: "./perfil.html", label: t("nav.profile") },
-  { key: "configuracoes", href: "./settings.html", label: t("nav.settings") },
-  { key: "ajuda", href: "./ajuda.html", label: t("nav.help") },
- ];
+ return {
+  main: [
+   { key: "hoje", href: "./dashboard.html", label: t("nav.today") },
+   { key: "exercicios", href: "./exercicios.html", label: t("nav.exercises") },
+   { key: "insights", href: "./insights.html", label: t("nav.insights") },
+   { key: "diario", href: "./diario.html", label: t("nav.journal") },
+   { key: "perfil", href: "./perfil.html", label: t("nav.profile") },
+  ],
+  bottom: [
+   { key: "ajuda", href: "./ajuda.html", label: t("nav.help") },
+   { key: "configuracoes", href: "./settings.html", label: t("nav.settings") },
+  ],
+ };
+}
+
+function renderNavLinks(items, activePage) {
+ return items
+  .map(
+   (item) => `
+          <a href="${item.href}"
+             class="sidebar-link${item.key === activePage ? " active" : ""}"
+             ${item.key === activePage ? 'aria-current="page"' : ""}>
+            <span class="sidebar-icon" aria-hidden="true">${iconFor(item.key)}</span>
+            <span>${item.label}</span>
+          </a>`,
+  )
+  .join("");
 }
 
 function iconFor(key) {
@@ -47,18 +65,12 @@ export function mountZenifySidebar(activePage = "") {
       <span>Zenify</span>
     </a>
 
-    <nav class="sidebar-nav" aria-label="Primary">
-      ${items
-       .map(
-        (item) => `
-          <a href="${item.href}"
-             class="sidebar-link${item.key === activePage ? " active" : ""}"
-             ${item.key === activePage ? 'aria-current="page"' : ""}>
-            <span class="sidebar-icon" aria-hidden="true">${iconFor(item.key)}</span>
-            <span>${item.label}</span>
-          </a>`,
-       )
-       .join("")}
+    <nav class="sidebar-nav" aria-label="Principal">
+      ${renderNavLinks(items.main, activePage)}
+    </nav>
+
+    <nav class="sidebar-nav sidebar-nav--bottom" aria-label="Secundário">
+      ${renderNavLinks(items.bottom, activePage)}
     </nav>
   `;
 }
