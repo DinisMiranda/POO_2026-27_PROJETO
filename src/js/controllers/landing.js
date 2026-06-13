@@ -15,9 +15,15 @@ function bindTabs() {
 }
 
 function bindCta() {
- View.btnCta?.addEventListener("click", () => {
+ const scrollToRegister = () => {
   View.switchTab("register");
   View.scrollToAuth();
+ };
+
+ View.btnCta?.addEventListener("click", scrollToRegister);
+
+ document.querySelectorAll("[data-scroll-auth]").forEach((btn) => {
+  btn.addEventListener("click", scrollToRegister);
  });
 }
 
