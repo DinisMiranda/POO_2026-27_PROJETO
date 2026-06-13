@@ -1,14 +1,12 @@
 import {
- applyTranslations,
  getLanguage,
- setLanguage,
- t,
  initI18n,
+ setLanguage,
  setPageTitle,
+ t,
 } from "../data/i18n.js";
 import { mountAppShell } from "../views/app-shell.js";
 
-const pageKey = document.body.dataset.zenifyPage || "configuracoes";
 const languageSelect = document.getElementById("lang");
 const saveButton = document.getElementById("save-settings");
 const feedback = document.getElementById("settings-feedback");
@@ -57,8 +55,6 @@ function initSettingsPage() {
   refreshPageLanguage(languageSelect?.value || getLanguage());
   showFeedback(t("settings.saved"));
  });
-
- applyTranslations();
 }
 
 initSettingsPage();

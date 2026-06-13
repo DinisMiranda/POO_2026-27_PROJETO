@@ -236,8 +236,8 @@ function init() {
  bindFieldCleanup();
  bindFaqAccordion();
 
- View.formLogin?.addEventListener("submit", handleLogin);
- View.formRegister?.addEventListener("submit", handleRegister);
+ View.loginForm?.addEventListener("submit", handleLogin);
+ View.registerForm?.addEventListener("submit", handleRegister);
 }
 
 init();
