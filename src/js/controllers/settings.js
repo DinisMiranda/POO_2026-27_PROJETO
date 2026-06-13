@@ -6,8 +6,7 @@ import {
  initI18n,
  setPageTitle,
 } from "../data/i18n.js";
-import { mountTopbar } from "../views/topbar-view.js";
-import { mountZenifySidebar } from "../views/sidebar-view.js";
+import { mountAppShell } from "../views/app-shell.js";
 
 const pageKey = document.body.dataset.zenifyPage || "configuracoes";
 const languageSelect = document.getElementById("lang");
@@ -26,8 +25,7 @@ function showFeedback(message) {
 }
 
 function renderShell() {
- mountZenifySidebar(pageKey);
- mountTopbar();
+ mountAppShell();
 }
 
 function refreshPageLanguage(language) {
