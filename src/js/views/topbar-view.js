@@ -1,7 +1,5 @@
 import { UserModel } from "../models/userModel.js";
-import { applyDocumentLanguage, applyTranslations, t } from "../data/i18n.js";
-
-applyDocumentLanguage();
+import { t } from "../data/i18n.js";
 
 function getInitials(user) {
  if (!user) return "ZU";
@@ -107,14 +105,10 @@ export function mountTopbar() {
  const page = document.body.dataset.zenifyPage || "";
  const user = UserModel.getSession();
  const initials = getInitials(user);
- const config = getTopbarConfig(page);
  const displayName = getDisplayName(user);
+ const config = getTopbarConfig(page);
 
- if (page === "hoje" && displayName) {
-  config.title = `${t("topbar.today.title")}, ${displayName}`;
- }
-
- host.classList.add("topbar");
+ host.className = "topbar";
  host.innerHTML = `
     <div class="topbar-greeting">
       <h1>${config.title}</h1>
@@ -123,25 +117,10 @@ export function mountTopbar() {
 
     <div class="topbar-actions">
       ${config.showBell ? renderBell() : ""}
-
-      <a href="perfil.html" class="avatar-btn" aria-label="${t("topbar.profile")}">
+      <a href="./perfil.html" class="avatar-btn" aria-label="${t("topbar.profile")}">
         <div class="avatar">${initials}</div>
-        <span>${initials}</span>
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+        <span>${displayName || t("topbar.profileLabel")}</span>
       </a>
     </div>
   `;
-
- applyTranslations();
 }
-
-mountTopbar();

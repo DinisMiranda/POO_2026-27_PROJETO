@@ -3,10 +3,13 @@ import {
  getLanguage,
  setLanguage,
  t,
+ initI18n,
+ setPageTitle,
 } from "../data/i18n.js";
 import { mountTopbar } from "../views/topbar-view.js";
 import { mountZenifySidebar } from "../views/sidebar-view.js";
 
+const pageKey = document.body.dataset.zenifyPage || "configuracoes";
 const languageSelect = document.getElementById("lang");
 const saveButton = document.getElementById("save-settings");
 const feedback = document.getElementById("settings-feedback");
@@ -22,29 +25,42 @@ function showFeedback(message) {
  }, 2400);
 }
 
-function refreshLanguage(language) {
- setLanguage(language);
- applyTranslations();
- mountZenifySidebar(document.body.dataset.zenifyPage);
+function renderShell() {
+ mountZenifySidebar(pageKey);
  mountTopbar();
+}
+
+function refreshPageLanguage(language) {
+ setLanguage(language);
+ initI18n();
+ renderShell();
+ setPageTitle("page.title.settings");
 
  if (languageSelect) {
   languageSelect.value = getLanguage();
  }
 }
 
-if (languageSelect) {
- languageSelect.value = getLanguage();
+function initSettingsPage() {
+ initI18n();
+ renderShell();
+ setPageTitle("page.title.settings");
 
- languageSelect.addEventListener("change", () => {
-  refreshLanguage(languageSelect.value);
+ if (languageSelect) {
+  languageSelect.value = getLanguage();
+
+  languageSelect.addEventListener("change", () => {
+   refreshPageLanguage(languageSelect.value);
+   showFeedback(t("settings.saved"));
+  });
+ }
+
+ saveButton?.addEventListener("click", () => {
+  refreshPageLanguage(languageSelect?.value || getLanguage());
   showFeedback(t("settings.saved"));
  });
+
+ applyTranslations();
 }
 
-saveButton?.addEventListener("click", () => {
- refreshLanguage(languageSelect?.value || getLanguage());
- showFeedback(t("settings.saved"));
-});
-
-applyTranslations();
+initSettingsPage();

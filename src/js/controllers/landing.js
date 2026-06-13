@@ -1,5 +1,5 @@
 import { LandingView as View } from "../views/landingView.js";
-import { applyTranslations, t } from "../data/i18n.js";
+import { initI18n, setPageTitle, t } from "../data/i18n.js";
 import { UserModel as Model } from "../models/userModel.js";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
@@ -227,13 +227,17 @@ function bindFaqAccordion() {
 }
 
 function init() {
+ initI18n();
+ setPageTitle("page.title.landing");
+
  checkExistingSession();
  bindTabs();
  bindCta();
- bindFaqAccordion();
  bindFieldCleanup();
+ bindFaqAccordion();
 
- View.loginForm?.addEventListener("submit", handleLogin);
- View.registerForm?.addEventListener("submit", handleRegister);
- applyTranslations();
+ View.formLogin?.addEventListener("submit", handleLogin);
+ View.formRegister?.addEventListener("submit", handleRegister);
 }
+
+init();
