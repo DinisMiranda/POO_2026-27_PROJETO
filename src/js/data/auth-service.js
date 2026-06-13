@@ -1,77 +1,82 @@
 import { redirectByRole, redirectToLogin } from "./navigation.js";
 
-const USERS_KEY = "zenify_users";
+const API = "http://localhost:3000";
 const SESSION_KEY = "zenify_session";
 
-const seedUsers = [
-  { id: 1, name: "Administrador", email: "admin@zenify.local", password: "admin123", role: "admin" },
-];
-
-function readUsers() {
-  const saved = localStorage.getItem(USERS_KEY);
-  if (saved) return JSON.parse(saved);
-  localStorage.setItem(USERS_KEY, JSON.stringify(seedUsers));
-  return seedUsers;
-}
-
-function writeUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
-
 export function getSession() {
-  return JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+ return JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
 }
 
 export function setSession(user) {
-  localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+ localStorage.setItem(SESSION_KEY, JSON.stringify(user));
 }
 
 export function clearSession() {
-  localStorage.removeItem(SESSION_KEY);
+ localStorage.removeItem(SESSION_KEY);
 }
 
-export function registerUser({ name, email, password, role }) {
-  if (role !== "user") {
-    return { ok: false, message: "Nao e permitido criar contas de administrador." };
-  }
+export async function loginUser({ email, password }) {
+ const res = await fetch(`${API}/users?email=${encodeURIComponent(email)}`);
+ if (!res.ok) throw new Error("Erro ao contactar o servidor.");
+ const users = await res.json();
+ const match = users.find(
+  (u) =>
+   u.email.toLowerCase() === email.toLowerCase() && u.password === password,
+ );
+ if (!match) return { ok: false, message: "Credenciais inválidas." };
+ const session = {
+  id: match.id,
+  name: match.name ?? `${match.firstName ?? ""} ${match.lastName ?? ""}`.trim(),
+  email: match.email,
+  role: match.role,
+ };
+ setSession(session);
+ return { ok: true, session };
+}
 
-  const users = readUsers();
-  const alreadyExists = users.some((user) => user.email.toLowerCase() === email.toLowerCase());
-  if (alreadyExists) return { ok: false, message: "Ja existe uma conta com este email." };
-
-  const user = {
-    id: Date.now(),
-    name: name.trim(),
-    email: email.trim().toLowerCase(),
-    password,
-    role,
+export async function registerUser({ name, email, password, role }) {
+ if (role !== "user") {
+  return {
+   ok: false,
+   message: "Não é permitido criar contas de administrador.",
   };
-  users.push(user);
-  writeUsers(users);
-  return { ok: true, user };
+ }
+
+ const checkRes = await fetch(
+  `${API}/users?email=${encodeURIComponent(email)}`,
+ );
+ const existing = await checkRes.json();
+ if (existing.length > 0) {
+  return { ok: false, message: "Já existe uma conta com este email." };
+ }
+
+ const newUser = {
+  name: name.trim(),
+  email: email.trim().toLowerCase(),
+  password,
+  role,
+  createdAt: new Date().toISOString(),
+ };
+
+ const createRes = await fetch(`${API}/users`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(newUser),
+ });
+ if (!createRes.ok) throw new Error("Erro ao criar conta.");
+ const created = await createRes.json();
+ return { ok: true, user: created };
 }
 
-export function loginUser({ email, password }) {
-  const users = readUsers();
-  const match = users.find((user) => user.email.toLowerCase() === email.toLowerCase() && user.password === password);
-  if (!match) return { ok: false, message: "Credenciais invalidas." };
-
-  const session = { id: match.id, name: match.name, email: match.email, role: match.role };
-  setSession(session);
-  return { ok: true, session };
-}
-
-export function requireAuth(requiredRole) {
-  const session = getSession();
-  if (!session) {
-    redirectToLogin();
-    return null;
-  }
-
-  if (requiredRole && session.role !== requiredRole) {
-    redirectByRole(session.role);
-    return null;
-  }
-
-  return session;
+export async function requireAuth(requiredRole) {
+ const session = getSession();
+ if (!session) {
+  redirectToLogin();
+  return null;
+ }
+ if (requiredRole && session.role !== requiredRole) {
+  redirectByRole(session.role);
+  return null;
+ }
+ return session;
 }

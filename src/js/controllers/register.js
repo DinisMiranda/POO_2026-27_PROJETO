@@ -5,20 +5,25 @@ import {
  showError,
 } from "../views/auth-view.js";
 
-bindRegisterSubmit(({ name, email, password }) => {
+bindRegisterSubmit(async ({ name, email, password }) => {
  hideError("registerError");
- const result = registerUser({ name, email, password, role: "user" });
-
- if (!result.ok) {
-  showError("registerError", result.message);
-  return;
+ try {
+  const result = await registerUser({ name, email, password, role: "user" });
+  if (!result.ok) {
+   showError("registerError", result.message);
+   return;
+  }
+  setSession({
+   id: result.user.id,
+   name: result.user.name,
+   email: result.user.email,
+   role: result.user.role,
+  });
+  window.location.href = "./dashboard.html";
+ } catch {
+  showError(
+   "registerError",
+   "Não foi possível ligar ao servidor. Verifica se o json-server está ativo (npm start).",
+  );
  }
-
- setSession({
-  id: result.user.id,
-  name: result.user.name,
-  email: result.user.email,
-  role: result.user.role,
- });
- window.location.href = "../src/pages/dashboard.html";
 });

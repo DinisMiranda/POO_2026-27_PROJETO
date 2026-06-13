@@ -4,15 +4,22 @@ import { bindLoginSubmit, hideError, showError } from "../views/auth-view.js";
 
 const session = getSession();
 if (session) {
-  redirectByRole(session.role);
+ redirectByRole(session.role);
 } else {
-  bindLoginSubmit(({ email, password }) => {
-    hideError("loginError");
-    const result = loginUser({ email, password });
-    if (!result.ok) {
-      showError("loginError", result.message);
-      return;
-    }
-    redirectByRole(result.session.role);
-  });
+ bindLoginSubmit(async ({ email, password }) => {
+  hideError("loginError");
+  try {
+   const result = await loginUser({ email, password });
+   if (!result.ok) {
+    showError("loginError", result.message);
+    return;
+   }
+   redirectByRole(result.session.role);
+  } catch {
+   showError(
+    "loginError",
+    "Não foi possível ligar ao servidor. Verifica se o json-server está ativo (npm start).",
+   );
+  }
+ });
 }
