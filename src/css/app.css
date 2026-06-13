@@ -1523,6 +1523,27 @@ a.play-btn { text-decoration: none; }
   margin: 0;
 }
 
+.checkin-mood-lead {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-3);
+  line-height: 1.5;
+}
+
+.checkin-mood-label {
+  text-align: center;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  margin: var(--space-3) 0 0;
+  min-height: 1.25rem;
+}
+
+.btn-checkin--modal {
+  width: 100%;
+  margin-top: var(--space-4);
+}
+
 /* ── Achievement modal ── */
 .achievement-modal,
 .notif-modal {

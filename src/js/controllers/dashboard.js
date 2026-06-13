@@ -33,14 +33,26 @@ const challengeProgressFill = document.getElementById("challenge-progress-fill")
 const challengeProgressLabel = document.getElementById("challenge-progress-label");
 const challengePtsValue = document.getElementById("challenge-pts-value");
 const viewChallengeBtn = document.getElementById("btn-view-challenge");
+const checkinMoodModal = document.getElementById("checkin-mood-modal");
+const checkinMoodPicker = document.getElementById("checkin-mood-picker");
+const checkinMoodLabel = document.getElementById("checkin-mood-label");
+const confirmCheckinBtn = document.getElementById("btn-confirm-checkin");
 
 const DAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+const MOOD_LABELS = {
+ 1: "Muito baixo",
+ 2: "Baixo",
+ 3: "Neutro",
+ 4: "Bom",
+ 5: "Ótimo",
+};
 
 let currentStats = null;
 let humorChartInstance = null;
 let currentProgress = null;
 let challengeDefs = [];
 let medalDefs = [];
+let selectedCheckinMood = null;
 
 function renderProgress(progress) {
  const xp = progress.xp || 0;
@@ -130,6 +142,100 @@ async function fetchMoodLogs(userId) {
  const res = await apiFetch(`/moodLogs?userId=${userId}`);
  if (!res?.ok) return [];
  return res.json();
+}
+
+async function saveMoodForToday(userId, mood) {
+ const today = dateStr(new Date());
+ const logs = await fetchMoodLogs(userId);
+ const existing = logs.find((entry) => entry.date === today);
+
+ if (existing?.id) {
+  const res = await apiFetch(`/moodLogs/${existing.id}`, {
+   method: "PATCH",
+   headers: { "Content-Type": "application/json" },
+   body: JSON.stringify({ mood }),
+  });
+  if (!res?.ok) throw new Error("Erro ao atualizar humor.");
+  return;
+ }
+
+ const res = await apiFetch("/moodLogs", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ userId, date: today, mood }),
+ });
+ if (!res?.ok) throw new Error("Erro ao guardar humor.");
+}
+
+function resetCheckinMoodModal() {
+ selectedCheckinMood = null;
+ checkinMoodPicker?.querySelectorAll(".mood-pick").forEach((btn) => {
+  btn.classList.remove("is-selected");
+ });
+ if (checkinMoodLabel) {
+  checkinMoodLabel.textContent = "Escolhe um valor de 1 a 5";
+ }
+ if (confirmCheckinBtn) {
+  confirmCheckinBtn.disabled = true;
+  confirmCheckinBtn.textContent = "Registar check-in";
+ }
+}
+
+function openCheckinMoodModal() {
+ if (!checkinMoodModal) return;
+ resetCheckinMoodModal();
+ checkinMoodModal.hidden = false;
+}
+
+function closeCheckinMoodModal() {
+ if (!checkinMoodModal) return;
+ checkinMoodModal.hidden = true;
+ resetCheckinMoodModal();
+}
+
+async function refreshMoodDisplay() {
+ const moodLogs = await fetchMoodLogs(activeUser.id);
+ renderMentalState(moodLogs);
+ renderHumorChart(moodLogs);
+}
+
+async function completeCheckinWithMood(mood) {
+ if (!activeUser || mood == null) return;
+
+ confirmCheckinBtn.disabled = true;
+ confirmCheckinBtn.textContent = "A registar…";
+
+ try {
+  const result = await StreakModel.doCheckin(activeUser.id);
+
+  if (result.alreadyDone) {
+   showFeedback("Já fizeste check-in hoje!", "warning");
+   closeCheckinMoodModal();
+   return;
+  }
+
+  await saveMoodForToday(activeUser.id, mood);
+
+  currentStats = result;
+  renderStreak(result);
+  UserModel.saveSession({ ...activeUser, streak: result.streak });
+  await refreshProgressData();
+  await refreshMoodDisplay();
+
+  closeCheckinMoodModal();
+  showFeedback(
+   result.streak === 1 ?
+    "Check-in feito! Streak iniciada 🔥"
+   : `Check-in feito! Streak: ${result.streak} dias 🔥`,
+   "success",
+  );
+ } catch {
+  showFeedback("Erro ao registar o check-in. Tenta novamente.", "error");
+  if (confirmCheckinBtn) {
+   confirmCheckinBtn.disabled = selectedCheckinMood === null;
+   confirmCheckinBtn.textContent = "Registar check-in";
+  }
+ }
 }
 
 const FACE_SVG = {
@@ -445,33 +551,34 @@ async function loadStreak() {
  }
 }
 
-checkinBtn?.addEventListener("click", async () => {
- checkinBtn.disabled = true;
- checkinBtn.textContent = "A registar…";
-
- try {
-  const result = await StreakModel.doCheckin(activeUser.id);
-
-  if (result.alreadyDone) {
-   showFeedback("Já fizeste check-in hoje!", "warning");
-  } else {
-   showFeedback(
-    result.streak === 1 ?
-     "Check-in feito! Streak iniciada 🔥"
-    : `Check-in feito! Streak: ${result.streak} dias 🔥`,
-    "success",
-   );
-  }
-
-  currentStats = result;
-  renderStreak(result);
-  UserModel.saveSession({ ...activeUser, streak: result.streak });
-  await refreshProgressData();
- } catch {
-  showFeedback("Erro ao registar o check-in. Tenta novamente.", "error");
-  checkinBtn.disabled = false;
-  checkinBtn.textContent = "Fazer check-in de hoje";
+checkinBtn?.addEventListener("click", () => {
+ if (currentStats?.checkedInToday) {
+  showFeedback("Já fizeste check-in hoje!", "warning");
+  return;
  }
+ openCheckinMoodModal();
+});
+
+checkinMoodPicker?.addEventListener("click", (event) => {
+ const btn = event.target.closest(".mood-pick");
+ if (!btn) return;
+
+ selectedCheckinMood = Number(btn.dataset.mood);
+ checkinMoodPicker.querySelectorAll(".mood-pick").forEach((pick) => {
+  pick.classList.toggle("is-selected", pick === btn);
+ });
+ if (checkinMoodLabel) {
+  checkinMoodLabel.textContent = MOOD_LABELS[selectedCheckinMood] || "";
+ }
+ if (confirmCheckinBtn) confirmCheckinBtn.disabled = false;
+});
+
+confirmCheckinBtn?.addEventListener("click", () => {
+ completeCheckinWithMood(selectedCheckinMood);
+});
+
+checkinMoodModal?.querySelectorAll("[data-checkin-mood-close]").forEach((el) => {
+ el.addEventListener("click", closeCheckinMoodModal);
 });
 
 addAchievementBtn?.addEventListener("click", openAchievementModal);
@@ -544,9 +651,7 @@ pendingMedalsList?.addEventListener("click", async (event) => {
 
 async function loadHumorChart() {
  try {
-  const moodLogs = await fetchMoodLogs(activeUser.id);
-  renderMentalState(moodLogs);
-  renderHumorChart(moodLogs);
+  await refreshMoodDisplay();
  } catch (err) {
   console.error("Erro ao carregar grafico de humor:", err);
   renderMentalState([]);

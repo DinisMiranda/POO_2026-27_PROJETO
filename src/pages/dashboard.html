@@ -381,6 +381,30 @@
     </div>
    </main>
 
+   <div class="achievement-modal" id="checkin-mood-modal" hidden>
+    <div class="achievement-modal-backdrop" data-checkin-mood-close></div>
+    <div class="achievement-modal-panel" role="dialog" aria-labelledby="checkin-mood-title">
+     <header class="achievement-modal-header">
+      <h2 id="checkin-mood-title">Check-in de hoje</h2>
+      <button type="button" class="achievement-modal-close" data-checkin-mood-close aria-label="Fechar">&times;</button>
+     </header>
+     <div class="achievement-modal-body">
+      <p class="checkin-mood-lead">Como está a tua mente hoje?</p>
+      <div class="mood-picker" id="checkin-mood-picker">
+       <button type="button" class="mood-pick" data-mood="1">1</button>
+       <button type="button" class="mood-pick" data-mood="2">2</button>
+       <button type="button" class="mood-pick" data-mood="3">3</button>
+       <button type="button" class="mood-pick" data-mood="4">4</button>
+       <button type="button" class="mood-pick" data-mood="5">5</button>
+      </div>
+      <p class="checkin-mood-label" id="checkin-mood-label">Escolhe um valor de 1 a 5</p>
+      <button type="button" class="btn-checkin btn-checkin--modal" id="btn-confirm-checkin" disabled>
+       Registar check-in
+      </button>
+     </div>
+    </div>
+   </div>
+
    <div class="achievement-modal" id="achievement-modal" hidden>
     <div class="achievement-modal-backdrop" data-achievement-close></div>
     <div class="achievement-modal-panel" role="dialog" aria-labelledby="achievement-modal-title">
