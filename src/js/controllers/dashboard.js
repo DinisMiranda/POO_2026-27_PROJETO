@@ -17,13 +17,16 @@ const levelNumber = document.getElementById("level-number");
 const levelXpText = document.getElementById("level-xp-text");
 const dashboardXpBar = document.getElementById("dashboard-xp-bar");
 const dashboardXpLabel = document.getElementById("dashboard-xp-label");
-const dashboardMedalsGrid = document.getElementById("dashboard-medals-grid");
 const achievementModal = document.getElementById("achievement-modal");
 const pendingChallengesList = document.getElementById("pending-challenges-list");
 const pendingMedalsList = document.getElementById("pending-medals-list");
 const addAchievementBtn = document.getElementById("btn-add-achievement");
 const humorChartEl = document.getElementById("humorChart");
-const humorChartLegend = document.getElementById("humor-chart-legend");
+const mentalStateTitle = document.getElementById("mental-state-title");
+const mentalStateMessage = document.getElementById("mental-state-message");
+const mentalStateTrend = document.getElementById("mental-state-trend");
+const mentalStateScore = document.getElementById("mental-state-score");
+const mentalStateOrb = document.getElementById("mental-state-orb");
 
 const DAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
@@ -46,30 +49,6 @@ function renderProgress(progress) {
  if (dashboardXpLabel) {
   dashboardXpLabel.textContent = `${xpInLevel} / 100 XP · ${tierName}`;
  }
-}
-
-function renderDashboardMedals(unlockedIds) {
- if (!dashboardMedalsGrid) return;
-
- const unlocked = medalDefs.filter((m) => unlockedIds.includes(m.id));
-
- if (unlocked.length === 0) {
-  dashboardMedalsGrid.innerHTML =
-   `<p class="medals-empty">Ainda sem medalhas. Completa desafios para desbloquear!</p>`;
-  return;
- }
-
- dashboardMedalsGrid.innerHTML = unlocked
-  .map(
-   (m) => `
-    <div class="medal">
-      <div class="medal-icon" style="background:${m.color};color:${m.textColor}">${m.icon}</div>
-      <div class="medal-name">${m.title}</div>
-      <div class="medal-sub">${m.description}</div>
-    </div>
-  `,
-  )
-  .join("");
 }
 
 function renderStreak(stats) {
@@ -141,16 +120,103 @@ function getLast7Days() {
  return days;
 }
 
-function moodLegendText(avg) {
- if (avg >= 4) return "O teu humor medio foi bom esta semana.";
- if (avg >= 3) return "O teu humor medio foi equilibrado esta semana.";
- return "O teu humor foi mais baixo esta semana — cuida de ti.";
-}
-
 async function fetchMoodLogs(userId) {
  const res = await apiFetch(`/moodLogs?userId=${userId}`);
  if (!res?.ok) return [];
  return res.json();
+}
+
+const FACE_SVG = {
+ balanced: `<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="30" cy="30" r="28" stroke-width="1.5"/><path d="M17 26 Q21 22 25 26" stroke-width="2"/><path d="M35 26 Q39 22 43 26" stroke-width="2"/><path d="M22 36 Q30 42 38 36"/></svg>`,
+ calm: `<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="30" cy="30" r="28" stroke-width="1.5"/><path d="M18 27 L24 27" stroke-width="2"/><path d="M36 27 L42 27" stroke-width="2"/><path d="M24 38 Q30 41 36 38"/></svg>`,
+ low: `<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="30" cy="30" r="28" stroke-width="1.5"/><path d="M18 28 Q22 24 26 28" stroke-width="2"/><path d="M34 28 Q38 24 42 28" stroke-width="2"/><path d="M24 40 Q30 36 36 40"/></svg>`,
+ empty: `<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="30" cy="30" r="28" stroke-width="1.5"/><path d="M18 27 L24 27" stroke-width="2"/><path d="M36 27 L42 27" stroke-width="2"/><path d="M24 37 L36 37"/></svg>`,
+};
+
+const TREND_ICONS = {
+ up: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2 11 L6 7 L9 9 L14 3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+ down: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2 4 L6 8 L9 6 L14 12" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+ stable: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2 8 L14 8" stroke-linecap="round"/></svg>`,
+};
+
+function resolveMentalState(moodLogs) {
+ const moodByDate = new Map(
+  moodLogs.map((entry) => [entry.date, Number(entry.mood)]),
+ );
+ const weekDays = getLast7Days();
+ let values = weekDays
+  .map((d) => moodByDate.get(d.date))
+  .filter((v) => v != null && !Number.isNaN(v));
+
+ if (!values.length && moodLogs.length > 0) {
+  values = [...moodLogs]
+   .sort((a, b) => a.date.localeCompare(b.date))
+   .slice(-7)
+   .map((entry) => Number(entry.mood))
+   .filter((v) => !Number.isNaN(v));
+ }
+
+ if (!values.length) {
+  values = [3.2, 3.4, 3.6, 3.5, 3.8, 3.9, 3.7];
+ }
+
+ const avg = values.reduce((sum, v) => sum + v, 0) / values.length;
+ const split = Math.max(1, Math.floor(values.length / 2));
+ const firstAvg =
+  values.slice(0, split).reduce((sum, v) => sum + v, 0) / split;
+ const secondSlice = values.slice(split);
+ const secondAvg =
+  secondSlice.length ?
+   secondSlice.reduce((sum, v) => sum + v, 0) / secondSlice.length
+  : firstAvg;
+
+ let trend = "stable";
+ let trendLabel = "Tendência estável";
+ if (secondAvg - firstAvg > 0.15) {
+  trend = "up";
+  trendLabel = "A melhorar";
+ } else if (firstAvg - secondAvg > 0.15) {
+  trend = "down";
+  trendLabel = "A descer";
+ }
+
+ let title = "Sensível";
+ let message = "Esta semana foi mais exigente. Reserva um momento para ti.";
+ let face = "low";
+
+ if (avg >= 4) {
+  title = "Radiante";
+  message = "Estás num ótimo momento. Mantém os teus rituais de bem-estar.";
+  face = "balanced";
+ } else if (avg >= 3.2) {
+  title = "Equilibrada";
+  message = "Humor consistente esta semana. Continua assim!";
+  face = "balanced";
+ } else if (avg >= 2.5) {
+  title = "Estável";
+  message = "Pequenas pausas podem fazer a diferença no teu dia.";
+  face = "calm";
+ }
+
+ return { title, message, score: avg, trend, trendLabel, face };
+}
+
+function renderMentalState(moodLogs) {
+ const state = resolveMentalState(moodLogs);
+
+ if (mentalStateTitle) mentalStateTitle.textContent = state.title;
+ if (mentalStateMessage) mentalStateMessage.textContent = state.message;
+ if (mentalStateScore) {
+  mentalStateScore.textContent =
+   state.score != null ? `${state.score.toFixed(1)} / 5` : "— / 5";
+ }
+ if (mentalStateTrend) {
+  mentalStateTrend.className = `mental-state-badge mental-state-badge--${state.trend}`;
+  mentalStateTrend.innerHTML = `${TREND_ICONS[state.trend] || TREND_ICONS.stable} ${state.trendLabel}`;
+ }
+ if (mentalStateOrb) {
+  mentalStateOrb.innerHTML = FACE_SVG[state.face] || FACE_SVG.empty;
+ }
 }
 
 function renderHumorChart(moodLogs) {
@@ -176,16 +242,6 @@ function renderHumorChart(moodLogs) {
  } else if (!hasWeekData) {
   labels = weekDays.map((d) => d.label);
   values = [3.2, 3.4, 3.6, 3.5, 3.8, 4.0, 3.9];
- }
-
- const numericValues = values.filter((v) => v !== null);
- const avg =
-  numericValues.length ?
-   numericValues.reduce((sum, v) => sum + v, 0) / numericValues.length
-  : 3.5;
-
- if (humorChartLegend) {
-  humorChartLegend.textContent = moodLegendText(avg);
  }
 
  if (humorChartInstance) {
@@ -220,10 +276,14 @@ function renderHumorChart(moodLogs) {
     y: {
      min: 1,
      max: 5,
-     ticks: { stepSize: 1 },
-     grid: { color: "rgba(0,0,0,0.04)" },
+     ticks: { display: false },
+     grid: { display: false },
+     border: { display: false },
     },
-    x: { grid: { display: false } },
+    x: {
+     grid: { display: false },
+     border: { display: false },
+    },
    },
   },
  });
@@ -310,7 +370,6 @@ async function refreshProgressData() {
 
   currentProgress = await ProgressModel.getProgress(activeUser.id);
  renderProgress(currentProgress);
- renderDashboardMedals(currentProgress.unlockedMedals || []);
 }
 
 async function loadStreak() {
@@ -425,9 +484,11 @@ pendingMedalsList?.addEventListener("click", async (event) => {
 async function loadHumorChart() {
  try {
   const moodLogs = await fetchMoodLogs(activeUser.id);
+  renderMentalState(moodLogs);
   renderHumorChart(moodLogs);
  } catch (err) {
   console.error("Erro ao carregar grafico de humor:", err);
+  renderMentalState([]);
   renderHumorChart([]);
  }
 }

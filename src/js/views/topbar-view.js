@@ -2,27 +2,6 @@ import { UserModel } from "../models/userModel.js";
 import { t } from "../data/i18n.js";
 import { bindNotificationButtons } from "./notifications-view.js";
 
-function getInitials(user) {
- if (!user) return "ZU";
-
- const first = (user.firstName || "").trim();
- const last = (user.lastName || "").trim();
-
- if (first && last) {
-  return `${first[0]}${last[0]}`.toUpperCase();
- }
-
- if (user.name) {
-  const parts = user.name.trim().split(/\s+/);
-  if (parts.length >= 2) {
-   return `${parts[0][0]}${parts.at(-1)[0]}`.toUpperCase();
-  }
-  return parts[0][0].toUpperCase();
- }
-
- return "ZU";
-}
-
 function getTopbarConfig(page) {
  const map = {
   hoje: {
@@ -82,21 +61,12 @@ function renderBell() {
   `;
 }
 
-function renderAvatar(initials) {
- return `
-    <a href="./perfil.html" class="avatar-btn avatar-btn--circle" aria-label="${t("topbar.profileLabel")}">
-      <div class="avatar">${initials}</div>
-    </a>
-  `;
-}
-
 export async function mountTopbar() {
  const host = document.querySelector("[data-zenify-topbar]");
  if (!host) return;
 
  const page = document.body.dataset.zenifyPage || "";
  const user = await UserModel.resolveSession();
- const initials = getInitials(user);
  const config = getTopbarConfig(page);
 
  host.className = "topbar";
@@ -108,7 +78,6 @@ export async function mountTopbar() {
 
     <div class="topbar-actions">
       ${config.showBell ? renderBell() : ""}
-      ${renderAvatar(initials)}
     </div>
   `;
 
