@@ -27,6 +27,12 @@ const mentalStateMessage = document.getElementById("mental-state-message");
 const mentalStateTrend = document.getElementById("mental-state-trend");
 const mentalStateScore = document.getElementById("mental-state-score");
 const mentalStateOrb = document.getElementById("mental-state-orb");
+const challengeTitle = document.getElementById("challenge-title");
+const challengeDesc = document.getElementById("challenge-desc");
+const challengeProgressFill = document.getElementById("challenge-progress-fill");
+const challengeProgressLabel = document.getElementById("challenge-progress-label");
+const challengePtsValue = document.getElementById("challenge-pts-value");
+const viewChallengeBtn = document.getElementById("btn-view-challenge");
 
 const DAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
@@ -289,6 +295,56 @@ function renderHumorChart(moodLogs) {
  });
 }
 
+function getChallengeCurrent(challenge, stats, progress) {
+ if (challenge.type === "checkin") return stats?.totalCheckins || 0;
+ if (challenge.type === "streak") return stats?.streak || 0;
+ if (challenge.type === "activities") return (progress?.activityTypes || []).length;
+ return 0;
+}
+
+function getActiveChallenge() {
+ if (!currentProgress || !challengeDefs.length) return null;
+
+ const pending = challengeDefs.filter(
+  (c) => !currentProgress.completedChallenges.includes(c.id),
+ );
+ if (!pending.length) return null;
+
+ return pending.reduce((best, c) => {
+  const bestRatio = getChallengeCurrent(best, currentStats, currentProgress) / best.target;
+  const ratio = getChallengeCurrent(c, currentStats, currentProgress) / c.target;
+  return ratio > bestRatio ? c : best;
+ });
+}
+
+function renderChallengeCard() {
+ const challenge = getActiveChallenge();
+
+ if (!challenge || !currentStats) {
+  if (challengeTitle) challengeTitle.textContent = "Sem desafios ativos";
+  if (challengeDesc) {
+   challengeDesc.textContent = "Vê todos os desafios no teu perfil.";
+  }
+  if (challengeProgressFill) challengeProgressFill.style.width = "0%";
+  if (challengeProgressLabel) challengeProgressLabel.textContent = "—";
+  if (challengePtsValue) challengePtsValue.textContent = "— pts";
+  return;
+ }
+
+ const current = getChallengeCurrent(challenge, currentStats, currentProgress);
+ const capped = Math.min(current, challenge.target);
+ const pct = Math.min((current / challenge.target) * 100, 100);
+ const unit = challenge.type === "streak" ? " dias" : "";
+
+ if (challengeTitle) challengeTitle.textContent = challenge.title;
+ if (challengeDesc) challengeDesc.textContent = challenge.description;
+ if (challengeProgressFill) challengeProgressFill.style.width = `${pct}%`;
+ if (challengeProgressLabel) {
+  challengeProgressLabel.textContent = `${capped}/${challenge.target}${unit}`;
+ }
+ if (challengePtsValue) challengePtsValue.textContent = `${challenge.xpReward} pts`;
+}
+
 function showFeedback(message, type = "success") {
  if (!checkinFeedback) return;
 
@@ -370,6 +426,7 @@ async function refreshProgressData() {
 
   currentProgress = await ProgressModel.getProgress(activeUser.id);
  renderProgress(currentProgress);
+ renderChallengeCard();
 }
 
 async function loadStreak() {
@@ -418,6 +475,10 @@ checkinBtn?.addEventListener("click", async () => {
 });
 
 addAchievementBtn?.addEventListener("click", openAchievementModal);
+
+viewChallengeBtn?.addEventListener("click", () => {
+ window.location.href = "perfil.html#desafios";
+});
 
 achievementModal?.querySelectorAll("[data-achievement-close]").forEach((el) => {
  el.addEventListener("click", closeAchievementModal);

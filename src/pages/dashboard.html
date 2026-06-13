@@ -267,13 +267,13 @@
        </div>
        <div class="challenge-info">
         <h4>Desafio ativo</h4>
-        <h3>Desafio Zen: 7 dias de atencao plena</h3>
-        <p>Pratica atencao plena todos os dias durante 7 dias.</p>
+        <h3 id="challenge-title">—</h3>
+        <p id="challenge-desc">A carregar…</p>
         <div class="challenge-progress">
          <div class="progress-bar-wrap">
-          <div class="progress-bar-fill" style="width: 71.4%"></div>
+          <div class="progress-bar-fill" id="challenge-progress-fill" style="width: 0%"></div>
          </div>
-         <div class="progress-label">5/7 dias</div>
+         <div class="progress-label" id="challenge-progress-label">—</div>
         </div>
        </div>
       </div>
@@ -284,9 +284,9 @@
           d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
          />
         </svg>
-        200 pts
+        <span id="challenge-pts-value">— pts</span>
        </div>
-       <button class="btn-challenge" type="button">Ver desafio</button>
+       <button class="btn-challenge" type="button" id="btn-view-challenge">Ver desafio</button>
       </div>
      </div>
      </div>
