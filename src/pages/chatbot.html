@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenify – Assistente</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+   rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../css/app.css" />
+ </head>
+ <body data-zenify-page="chatbot">
+  <div class="app">
+   <aside class="sidebar" data-zenify-sidebar></aside>
+
+   <main class="main">
+    <header data-zenify-topbar></header>
+
+    <div class="page-stack chatbot-page">
+     <div class="card chatbot-card">
+      <div class="chatbot-header">
+       <h3>Assistente Zenify</h3>
+       <span id="chat-status" class="chat-status">A verificar ligação…</span>
+      </div>
+      <div id="chat-log" class="chat-log" role="log" aria-live="polite"></div>
+      <form id="chat-form" class="chat-form">
+       <input
+        id="chat-input"
+        name="message"
+        type="text"
+        placeholder="Escreve a tua mensagem…"
+        autocomplete="off"
+        maxlength="500"
+       />
+       <button type="submit" id="chat-submit" class="btn-primary">Enviar</button>
+      </form>
+     </div>
+    </div>
+   </main>
+  </div>
+
+  <script type="module" src="../js/views/sidebar-view.js"></script>
+  <script type="module" src="../js/views/topbar-view.js"></script>
+  <script type="module" src="../js/controllers/chatbot.js"></script>
+ </body>
+</html>

@@ -7,6 +7,7 @@ const DICTIONARY = {
   nav: {
    today: "Hoje",
    exercises: "Exercícios",
+   chatbot: "Assistente",
    insights: "Insights",
    journal: "Diário",
    profile: "Perfil",
@@ -22,6 +23,10 @@ const DICTIONARY = {
    exercises: {
     title: "Exercícios",
     subtitle: "Escolhe práticas para respiração, foco e relaxamento.",
+   },
+   chatbot: {
+    title: "Assistente",
+    subtitle: "Conversa sobre bem-estar, stress e hábitos saudáveis.",
    },
    community: {
     title: "Comunidade",
@@ -83,6 +88,7 @@ const DICTIONARY = {
     landing: "Zenify",
     dashboard: "Zenify – Hoje",
     exercises: "Zenify – Exercícios",
+    chatbot: "Zenify – Assistente",
     insights: "Zenify – Insights",
     journal: "Zenify – Diário",
     profile: "Zenify – Perfil",
@@ -146,6 +152,7 @@ const DICTIONARY = {
   nav: {
    today: "Today",
    exercises: "Exercises",
+   chatbot: "Assistant",
    insights: "Insights",
    journal: "Journal",
    profile: "Profile",
@@ -161,6 +168,10 @@ const DICTIONARY = {
    exercises: {
     title: "Exercises",
     subtitle: "Choose practices for breathing, focus and relaxation.",
+   },
+   chatbot: {
+    title: "Assistant",
+    subtitle: "Talk about wellbeing, stress and healthy habits.",
    },
    community: {
     title: "Community",
@@ -222,6 +233,7 @@ const DICTIONARY = {
     landing: "Zenify",
     dashboard: "Zenify – Today",
     exercises: "Zenify – Exercises",
+    chatbot: "Zenify – Assistant",
     insights: "Zenify – Insights",
     journal: "Zenify – Journal",
     profile: "Zenify – Profile",

@@ -14,6 +14,7 @@ function getItems() {
   main: [
    { key: "hoje", href: "./dashboard.html", label: t("nav.today") },
    { key: "exercicios", href: "./exercicios.html", label: t("nav.exercises") },
+   { key: "chatbot", href: "./chatbot.html", label: t("nav.chatbot") },
    { key: "insights", href: "./insights.html", label: t("nav.insights") },
    { key: "diario", href: "./diario.html", label: t("nav.journal") },
    { key: "perfil", href: "./perfil.html", label: t("nav.profile") },
@@ -43,6 +44,7 @@ function iconFor(key) {
  const icons = {
   hoje: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18"/><path d="M12 3v18"/></svg>`,
   exercicios: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>`,
+  chatbot: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
   insights: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"/><path d="M10 19V9"/><path d="M16 19V13"/><path d="M22 19V7"/></svg>`,
   diario: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>`,
   perfil: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21a8 8 0 1 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>`,

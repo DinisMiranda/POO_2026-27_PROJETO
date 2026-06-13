@@ -14,6 +14,11 @@ function getTopbarConfig(page) {
    subtitle: t("topbar.exercises.subtitle"),
    showBell: true,
   },
+  chatbot: {
+   title: t("topbar.chatbot.title"),
+   subtitle: t("topbar.chatbot.subtitle"),
+   showBell: true,
+  },
   diario: {
    title: t("topbar.community.title"),
    subtitle: t("topbar.community.subtitle"),

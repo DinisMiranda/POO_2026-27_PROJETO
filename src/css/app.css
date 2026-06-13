@@ -1522,6 +1522,125 @@ a.play-btn { text-decoration: none; }
   margin: 0;
 }
 
+/* ─── Chatbot ─── */
+.chatbot-page {
+  flex: 1;
+  min-height: 0;
+}
+
+.chatbot-card {
+  display: flex;
+  flex-direction: column;
+  min-height: min(72vh, 640px);
+  padding: 0;
+  overflow: hidden;
+}
+
+.chatbot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.chatbot-header h3 {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.chat-status {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.chat-status--online {
+  background: rgba(92, 186, 154, 0.15);
+  color: #2d6a4f;
+}
+
+.chat-status--offline {
+  background: var(--color-surface-offset);
+  color: var(--color-text-muted);
+}
+
+.chat-log {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-6);
+  min-height: 280px;
+}
+
+.chat-bubble {
+  max-width: 85%;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-xl);
+  line-height: 1.5;
+}
+
+.chat-bubble p {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+}
+
+.chat-bubble-author {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.75;
+}
+
+.chat-bubble--user {
+  align-self: flex-end;
+  background: #e8eaf8;
+  color: #2a2d5a;
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.chat-bubble--bot {
+  align-self: flex-start;
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border-bottom-left-radius: var(--radius-sm);
+}
+
+.chat-form {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6) var(--space-5);
+  border-top: 1px solid var(--color-border);
+}
+
+.chat-form input {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font: inherit;
+  font-size: var(--text-sm);
+  background: var(--color-surface);
+}
+
+.chat-form input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-bg);
+}
+
+.chat-form .btn-primary {
+  flex-shrink: 0;
+}
+
 .checkin-mood-lead {
   font-size: var(--text-sm);
   color: var(--color-text-muted);
