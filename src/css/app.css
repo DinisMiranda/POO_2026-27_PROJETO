@@ -477,6 +477,8 @@ a.play-btn { text-decoration: none; }
 .star-empty { color: #dce0e8; }
 
 .exercise-card-footer {
+  width: 100%;
+  border: none;
   border-top: 1px solid var(--color-border);
   padding: var(--space-3) var(--space-4);
   display: flex; align-items: center; justify-content: space-between;
@@ -484,9 +486,425 @@ a.play-btn { text-decoration: none; }
   background: var(--color-surface-2);
   cursor: pointer;
   transition: background var(--transition);
+  font-family: inherit;
 }
 .exercise-card-footer:hover { background: var(--color-surface-offset); }
 .exercise-card-footer svg { width: 14px; height: 14px; }
+
+.exercise-modal-panel { max-width: 480px; }
+.exercise-modal-meta {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+}
+.exercise-timer-wrap {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-5) 0;
+}
+.exercise-timer {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-primary-hover);
+  background: var(--color-surface-2);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4) var(--space-6);
+  min-width: 140px;
+  text-align: center;
+}
+.exercise-steps {
+  margin: var(--space-3) 0 var(--space-5);
+  padding-left: var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+.exercise-steps li + li { margin-top: var(--space-2); }
+.exercise-modal-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.exercise-modal-panel {
+  max-width: 520px;
+  width: calc(100% - 2rem);
+  max-height: min(90vh, 720px);
+  display: flex;
+  flex-direction: column;
+}
+
+.exercise-modal-meta {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+.exercise-modal-body {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 200px;
+}
+
+.exercise-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-border);
+}
+
+.exercise-modal-body .player-inner {
+  max-width: none;
+}
+
+.exercise-modal-body .breath-circle {
+  width: 140px;
+  height: 140px;
+}
+
+.exercise-modal-body .meditation-orb {
+  width: 90px;
+  height: 90px;
+}
+
+.exercise-modal-body .walk-step-btn {
+  width: 120px;
+  height: 120px;
+  padding: var(--space-4);
+}
+
+/* ─── Exercise player (legado ecrã inteiro — não usado) ─── */
+.exercise-player {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+}
+
+.exercise-player-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-8);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+}
+
+.exercise-player-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+}
+.exercise-player-back svg { width: 18px; height: 18px; }
+.exercise-player-back:hover { background: var(--color-surface-offset); color: var(--color-text); }
+
+.exercise-player-title-wrap h2 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+.exercise-player-title-wrap p {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.exercise-player-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-6) var(--space-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exercise-player-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-8);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+}
+
+.player-inner {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.player-intro {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-bottom: var(--space-5);
+}
+
+.player-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: var(--space-5) 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.player-timer {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--color-primary-hover);
+}
+
+.player-hint {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: var(--space-4);
+}
+
+/* Respiração 4-4 */
+.breath-stage {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-6) 0;
+}
+
+.breath-circle {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e8f5ef, #d4ede3);
+  border: 3px solid var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 4s ease-in-out, background 0.6s ease;
+  box-shadow: 0 8px 32px rgba(92, 186, 154, 0.2);
+}
+
+.breath-circle span {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-primary-hover);
+}
+
+.breath-circle--inhale { transform: scale(1.35); background: linear-gradient(135deg, #d4ede3, #b8e0cc); }
+.breath-circle--hold { transform: scale(1.35); background: linear-gradient(135deg, #c8e8d8, #a8d9be); }
+.breath-circle--exhale { transform: scale(1); background: linear-gradient(135deg, #e8f5ef, #d4ede3); }
+
+.player-inner .btn-primary {
+  width: 100%;
+  margin-top: var(--space-2);
+}
+
+/* Meditação */
+.meditation-stage {
+  text-align: center;
+  padding: var(--space-4) 0;
+}
+
+.meditation-orb {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto var(--space-5);
+  background: radial-gradient(circle at 30% 30%, #ede8f8, #c8b8e8);
+  animation: meditation-pulse 4s ease-in-out infinite;
+}
+
+@keyframes meditation-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+.meditation-prompt {
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-text);
+  min-height: 3.2em;
+  padding: 0 var(--space-2);
+}
+
+.meditation-progress {
+  height: 6px;
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+  margin-top: var(--space-5);
+  overflow: hidden;
+}
+
+.meditation-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #9a7ad8, #6a5a9a);
+  border-radius: var(--radius-full);
+  transition: width 1s linear;
+}
+
+/* Escaneamento corporal */
+.bodyscan-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.bodyscan-figure {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: center;
+}
+
+.bodyscan-zone {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  background: var(--color-surface-2);
+  border: 2px solid var(--color-border);
+  color: var(--color-text-muted);
+  transition: all 0.4s ease;
+}
+
+.bodyscan-zone.is-active {
+  background: #ede8f8;
+  border-color: #9a7ad8;
+  color: #6a5a9a;
+  transform: scale(1.08);
+}
+
+.bodyscan-active {
+  text-align: center;
+  padding: var(--space-4);
+  background: var(--color-surface-2);
+  border-radius: var(--radius-xl);
+}
+
+.bodyscan-active h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: #6a5a9a;
+}
+
+.bodyscan-active p {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+  line-height: 1.5;
+}
+
+/* Diário de gratidão */
+.gratitude-form .field span {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.gratitude-form textarea {
+  resize: vertical;
+  min-height: 56px;
+}
+
+.mood-picker {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.mood-pick {
+  flex: 1;
+  padding: var(--space-3);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-2);
+  font: inherit;
+  font-weight: 700;
+  font-size: var(--text-base);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mood-pick:hover { border-color: var(--color-primary); }
+.mood-pick.is-selected {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* Caminhada consciente */
+.walk-stage {
+  text-align: center;
+}
+
+.walk-path {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  min-height: 48px;
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  background: var(--color-surface-2);
+  border-radius: var(--radius-xl);
+}
+
+.walk-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  animation: walk-pop 0.3s ease;
+}
+
+@keyframes walk-pop {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+.walk-prompt {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-5);
+  line-height: 1.5;
+}
+
+.walk-step-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-8);
+  border: 3px solid var(--color-primary);
+  border-radius: 50%;
+  width: 140px;
+  height: 140px;
+  background: linear-gradient(135deg, #e8f5ef, #fff);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  color: var(--color-primary-hover);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.walk-step-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(92, 186, 154, 0.25);
+}
+
+.walk-step-btn:active { transform: scale(0.96); }
+.walk-step-icon { font-size: 2rem; }
 
 /* ─── Challenge ─── */
 .challenge-card {

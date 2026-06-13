@@ -188,6 +188,22 @@ export const ProgressModel = {
   return { progress: updatedProgress, medal, alreadyDone: false };
  },
 
+ async completeActivity(userId, activityType) {
+  const progress = await this.getProgress(userId);
+  const types = progress.activityTypes || [];
+  const isNewType = !types.includes(activityType);
+  const xpGain = 10;
+  const newXp = progress.xp + xpGain;
+
+  const updatedProgress = await this.updateProgress(progress.id, {
+   activityTypes: isNewType ? [...types, activityType] : types,
+   xp: newXp,
+   level: this.calcLevel(newXp),
+  });
+
+  return { progress: updatedProgress, xpGain, newType: isNewType };
+ },
+
  getPendingAchievements(progress, challengeDefs, medalDefs) {
   const pendingChallenges = challengeDefs.filter(
    (c) => !(progress.completedChallenges || []).includes(c.id),
