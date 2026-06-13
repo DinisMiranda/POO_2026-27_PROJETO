@@ -1,7 +1,7 @@
 import { LandingView as View } from "../views/landingView.js";
 import { UserModel as Model } from "../models/userModel.js";
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.com$/i;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
 
 function checkExistingSession() {
  if (Model.getSession()) {
@@ -30,7 +30,7 @@ function validateLoginData(data) {
  } else if (!EMAIL_REGEX.test(data.email)) {
   View.showFieldError(
    "login-email",
-   "O email deve seguir o formato nome@dominio.com.",
+   "O email deve seguir um formato válido, por exemplo nome@dominio.pt.",
   );
   valid = false;
  }

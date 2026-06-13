@@ -12,22 +12,11 @@
   />
   <link rel="stylesheet" href="src/css/app.css" />
  </head>
- <body data-zenify-page="comunidade">
+ <body data-zenify-page="diario">
   <div class="app">
    <aside class="sidebar" data-zenify-sidebar></aside>
    <main class="main">
-    <div class="topbar">
-     <div class="topbar-greeting">
-      <h1>Comunidade</h1>
-      <p>Partilha experiencias e motivacao com outros estudantes.</p>
-     </div>
-     <div class="topbar-actions">
-      <a href="perfil.html" class="avatar-btn"
-       ><div class="avatar">MS</div>
-       <span>MS</span></a
-      >
-     </div>
-    </div>
+    <header data-zenify-topbar></header>
     <div class="page-stack">
      <div class="card">
       <h3>Nova publicacao</h3>
@@ -87,6 +76,7 @@
     </div>
    </main>
   </div>
-  <script type="module" src="./sidebar.js"></script>
+  <script type="module" src="./src/js/views/sidebar-view.js"></script>
+  <script type="module" src="./src/js/views/topbar-view.js"></script>
  </body>
 </html>

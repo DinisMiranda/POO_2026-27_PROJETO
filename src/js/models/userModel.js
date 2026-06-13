@@ -2,8 +2,11 @@ const API_BASE = "http://localhost:3000";
 
 export const UserModel = {
  async register({ firstName, lastName, email, password, dob }) {
+  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedPassword = password.trim();
+
   const checkRes = await fetch(
-   `${API_BASE}/users?email=${encodeURIComponent(email)}`,
+   `${API_BASE}/users?email=${encodeURIComponent(normalizedEmail)}`,
   );
 
   if (!checkRes.ok) {
@@ -17,11 +20,11 @@ export const UserModel = {
   }
 
   const payload = {
-   firstName,
-   lastName,
+   firstName: firstName.trim(),
+   lastName: lastName.trim(),
    name: `${firstName} ${lastName}`.trim(),
-   email,
-   password,
+   email: normalizedEmail,
+   password: normalizedPassword,
    dob,
    role: "user",
    xp: 0,
@@ -44,21 +47,36 @@ export const UserModel = {
  },
 
  async login({ email, password }) {
-  const res = await fetch(
-   `${API_BASE}/users?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
+  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedPassword = password.trim();
+
+  // 1. Confirmar se o email existe
+  const emailRes = await fetch(
+   `${API_BASE}/users?email=${encodeURIComponent(normalizedEmail)}`,
   );
 
-  if (!res.ok) {
-   throw new Error("Erro ao comunicar com o servidor.");
+  if (!emailRes.ok) {
+   throw new Error(
+    "Load fail: não foi possível validar o email na base de dados.",
+   );
   }
 
-  const users = await res.json();
+  const usersByEmail = await emailRes.json();
 
-  if (users.length === 0) {
-   throw new Error("Email ou password incorretos.");
+  if (usersByEmail.length === 0) {
+   throw new Error("Este email não existe na base de dados.");
   }
 
-  const { password: _pw, ...safeUser } = users[0];
+  // 2. Confirmar password
+  const matchedUser = usersByEmail.find(
+   (user) => String(user.password).trim() === normalizedPassword,
+  );
+
+  if (!matchedUser) {
+   throw new Error("A password está incorreta.");
+  }
+
+  const { password: _pw, ...safeUser } = matchedUser;
   return safeUser;
  },
 

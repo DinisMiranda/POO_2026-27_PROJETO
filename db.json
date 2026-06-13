@@ -9,39 +9,192 @@
       "password": "dinismiranda",
       "dob": "2020-12-12",
       "role": "user",
-      "xp": 0,
-      "streak": 0,
+      "xp": 240,
+      "streak": 12,
       "badges": [],
       "createdAt": "2026-06-12T23:30:05.690Z"
     }
   ],
+  "userStats": [
+    {
+      "id": "stats-bc36",
+      "userId": "bc36",
+      "streak": 12,
+      "lastCheckin": "2026-06-13",
+      "checkedInToday": true,
+      "longestStreak": 12,
+      "totalCheckins": 8,
+      "createdAt": "2026-06-13T00:15:14.814Z"
+    }
+  ],
+  "userProgress": [
+    {
+      "id": "progress-bc36",
+      "userId": "bc36",
+      "xp": 240,
+      "level": 3,
+      "totalCheckins": 8,
+      "longestStreak": 12,
+      "activityTypes": ["respiracao", "meditacao", "diario", "movimento"],
+      "completedChallenges": ["c1", "c2", "c4", "c5"],
+      "unlockedMedals": ["m1"],
+      "createdAt": "2026-06-13T00:00:00.000Z"
+    }
+  ],
+  "moodLogs": [
+    { "id": "mood1", "userId": "bc36", "date": "2026-05-15", "mood": 3.0 },
+    { "id": "mood2", "userId": "bc36", "date": "2026-05-22", "mood": 3.1 },
+    { "id": "mood3", "userId": "bc36", "date": "2026-05-29", "mood": 3.0 },
+    { "id": "mood4", "userId": "bc36", "date": "2026-06-05", "mood": 3.4 },
+    { "id": "mood5", "userId": "bc36", "date": "2026-06-12", "mood": 3.6 }
+  ],
   "activities": [
-    { "id": "1", "title": "Respiração 4-4", "type": "respiracao", "duration": 5, "description": "Inspira 4 seg, retém 4 seg, expira 4 seg." },
-    { "id": "2", "title": "Meditação guiada 5 min", "type": "meditacao", "duration": 5, "description": "Fecho os olhos e sigo a voz." },
-    { "id": "3", "title": "Escaneamento corporal", "type": "relaxamento", "duration": 10, "description": "Percorre mentalmente cada parte do corpo." },
-    { "id": "4", "title": "Diário de gratidão", "type": "diario", "duration": 5, "description": "Escreve 3 coisas pelas quais és grato hoje." },
-    { "id": "5", "title": "Caminhada consciente 10 min", "type": "movimento", "duration": 10, "description": "Caminha devagar, presta atenção a cada passo." }
+    {
+      "id": "1",
+      "title": "Respiração 4-4",
+      "type": "respiracao",
+      "duration": 5,
+      "description": "Inspira 4 seg, retém 4 seg, expira 4 seg."
+    },
+    {
+      "id": "2",
+      "title": "Meditação guiada 5 min",
+      "type": "meditacao",
+      "duration": 5,
+      "description": "Fecho os olhos e sigo a voz."
+    },
+    {
+      "id": "3",
+      "title": "Escaneamento corporal",
+      "type": "relaxamento",
+      "duration": 10,
+      "description": "Percorre mentalmente cada parte do corpo."
+    },
+    {
+      "id": "4",
+      "title": "Diário de gratidão",
+      "type": "diario",
+      "duration": 5,
+      "description": "Escreve 3 coisas pelas quais és grato hoje."
+    },
+    {
+      "id": "5",
+      "title": "Caminhada consciente 10 min",
+      "type": "movimento",
+      "duration": 10,
+      "description": "Caminha devagar, presta atenção a cada passo."
+    }
   ],
   "checkins": [],
-  "userStats": [],
-  "userProgress": [],
   "tips": [
-    { "id": "1", "mood": "baixo", "content": "Faz 3 ciclos de respiração profunda e escreve uma nota curta no diário." },
-    { "id": "2", "mood": "medio", "content": "Experimenta uma pausa de 20 minutos sem notificações." },
-    { "id": "3", "mood": "alto", "content": "Mantém a consistência com uma caminhada curta." }
+    {
+      "id": "1",
+      "mood": "baixo",
+      "content": "Faz 3 ciclos de respiração profunda e escreve uma nota curta no diário."
+    },
+    {
+      "id": "2",
+      "mood": "medio",
+      "content": "Experimenta uma pausa de 20 minutos sem notificações."
+    },
+    {
+      "id": "3",
+      "mood": "alto",
+      "content": "Mantém a consistência com uma caminhada curta."
+    }
   ],
   "challengeDefinitions": [
-    { "id": "c1", "title": "Primeira vez", "description": "Faz o teu primeiro check-in.", "type": "checkin", "target": 1, "xpReward": 50, "icon": "🌱" },
-    { "id": "c2", "title": "Semana consistente", "description": "Faz check-in 7 dias seguidos.", "type": "streak", "target": 7, "xpReward": 150, "icon": "🔥" },
-    { "id": "c3", "title": "Mês de ouro", "description": "Faz check-in 30 dias seguidos.", "type": "streak", "target": 30, "xpReward": 500, "icon": "🏆" },
-    { "id": "c4", "title": "Explorador", "description": "Experimenta 3 tipos de exercícios diferentes.", "type": "activities", "target": 3, "xpReward": 100, "icon": "🧭" },
-    { "id": "c5", "title": "Dedicado", "description": "Completa 10 check-ins no total.", "type": "checkin", "target": 10, "xpReward": 200, "icon": "⭐" },
-    { "id": "c6", "title": "Veterano", "description": "Completa 50 check-ins no total.", "type": "checkin", "target": 50, "xpReward": 600, "icon": "💎" }
+    {
+      "id": "c1",
+      "title": "Primeira vez",
+      "description": "Faz o teu primeiro check-in.",
+      "type": "checkin",
+      "target": 1,
+      "xpReward": 50,
+      "icon": "🌱"
+    },
+    {
+      "id": "c2",
+      "title": "Semana consistente",
+      "description": "Faz check-in 7 dias seguidos.",
+      "type": "streak",
+      "target": 7,
+      "xpReward": 150,
+      "icon": "🔥"
+    },
+    {
+      "id": "c3",
+      "title": "Mês de ouro",
+      "description": "Faz check-in 30 dias seguidos.",
+      "type": "streak",
+      "target": 30,
+      "xpReward": 500,
+      "icon": "🏆"
+    },
+    {
+      "id": "c4",
+      "title": "Explorador",
+      "description": "Experimenta 3 tipos de exercícios diferentes.",
+      "type": "activities",
+      "target": 3,
+      "xpReward": 100,
+      "icon": "🧭"
+    },
+    {
+      "id": "c5",
+      "title": "Dedicado",
+      "description": "Completa 10 check-ins no total.",
+      "type": "checkin",
+      "target": 10,
+      "xpReward": 200,
+      "icon": "⭐"
+    },
+    {
+      "id": "c6",
+      "title": "Veterano",
+      "description": "Completa 50 check-ins no total.",
+      "type": "checkin",
+      "target": 50,
+      "xpReward": 600,
+      "icon": "💎"
+    }
   ],
   "medalDefinitions": [
-    { "id": "m1", "title": "Calm Week", "description": "Streak de 7 dias.", "condition": "streak_7", "icon": "🧘", "color": "#ede8f8", "textColor": "#6a5a9a" },
-    { "id": "m2", "title": "Zen Month", "description": "Streak de 30 dias.", "condition": "streak_30", "icon": "🌙", "color": "#e8f0f8", "textColor": "#4a6a9a" },
-    { "id": "m3", "title": "Foco Diário", "description": "10 check-ins totais.", "condition": "checkins_10", "icon": "☀️", "color": "#fef8e0", "textColor": "#c48a20" },
-    { "id": "m4", "title": "Maratonista", "description": "50 check-ins totais.", "condition": "checkins_50", "icon": "🏅", "color": "#e8f8ee", "textColor": "#2a7a4a" }
+    {
+      "id": "m1",
+      "title": "Calm Week",
+      "description": "Streak de 7 dias.",
+      "condition": "streak_7",
+      "icon": "🧘",
+      "color": "#ede8f8",
+      "textColor": "#6a5a9a"
+    },
+    {
+      "id": "m2",
+      "title": "Zen Month",
+      "description": "Streak de 30 dias.",
+      "condition": "streak_30",
+      "icon": "🌙",
+      "color": "#e8f0f8",
+      "textColor": "#4a6a9a"
+    },
+    {
+      "id": "m3",
+      "title": "Foco Diário",
+      "description": "10 check-ins totais.",
+      "condition": "checkins_10",
+      "icon": "☀️",
+      "color": "#fef8e0",
+      "textColor": "#c48a20"
+    },
+    {
+      "id": "m4",
+      "title": "Maratonista",
+      "description": "50 check-ins totais.",
+      "condition": "checkins_50",
+      "icon": "🏅",
+      "color": "#e8f8ee",
+      "textColor": "#2a7a4a"
+    }
   ]
 }

@@ -13,128 +13,103 @@
   <link rel="stylesheet" href="src/css/app.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
  </head>
+
  <body data-zenify-page="insights">
   <div class="app">
    <aside class="sidebar" data-zenify-sidebar></aside>
+
    <main class="main">
-    <div class="topbar">
-     <div class="topbar-greeting">
-      <h1>Insights</h1>
-      <p>Padroes de humor, consistencia e progresso.</p>
-     </div>
-     <div class="topbar-actions">
-      <a href="perfil.html" class="avatar-btn"
-       ><div class="avatar">MS</div>
-       <span>MS</span></a
-      >
-     </div>
-    </div>
+    <header data-zenify-topbar></header>
     <div class="page-stack">
      <div class="page-grid-3">
       <div class="card">
        <h3>XP total</h3>
        <p
+        id="insight-xp"
         style="
          font-size: var(--text-xl);
          font-weight: 700;
          color: var(--color-primary);
         "
        >
-        240
+        0
        </p>
-       <p class="lead">+20 esta semana</p>
+       <p class="lead" id="insight-xp-week">Sem dados semanais</p>
       </div>
+
       <div class="card">
-       <h3>Streak actual</h3>
-       <p style="font-size: var(--text-xl); font-weight: 700">12 dias</p>
-       <p class="lead">Melhor sequencia: 18 dias</p>
+       <h3>Streak atual</h3>
+       <p
+        id="insight-streak"
+        style="font-size: var(--text-xl); font-weight: 700"
+       >
+        0 dias
+       </p>
+       <p class="lead" id="insight-best-streak">Melhor sequência: 0 dias</p>
       </div>
+
       <div class="card">
-       <h3>Humor medio</h3>
-       <p style="font-size: var(--text-xl); font-weight: 700">3.2 / 5</p>
-       <p class="lead">Ultimos 30 dias</p>
+       <h3>Humor médio</h3>
+       <p id="insight-mood" style="font-size: var(--text-xl); font-weight: 700">
+        0.0 / 5
+       </p>
+       <p class="lead">Últimos 30 dias</p>
       </div>
      </div>
+
      <div class="page-grid-2">
       <div class="card humor-card" style="grid-column: auto">
-       <h3>Evolucao do humor (30 dias)</h3>
+       <h3>Evolução do humor</h3>
        <div class="chart-wrap" style="height: 220px">
         <canvas id="insightsChart"></canvas>
        </div>
       </div>
+
       <div class="card">
        <h3>Resumo semanal</h3>
        <div class="list-rows">
         <div class="list-row">
-         <div><strong>Check-ins</strong><br /><span>6 de 7 dias</span></div>
-         <span class="stat-pill">86%</span>
+         <div>
+          <strong>Check-ins</strong><br />
+          <span id="insight-weekly-checkins">0 de 7 dias</span>
+         </div>
+         <span class="stat-pill" id="insight-checkin-rate">0%</span>
         </div>
+
         <div class="list-row">
          <div>
-          <strong>Exercicios</strong><br /><span>4 sessoes completas</span>
+          <strong>Exercícios</strong><br />
+          <span id="insight-weekly-sessions">0 sessões completas</span>
          </div>
-         <span class="stat-pill">+20 XP</span>
+         <span class="stat-pill" id="insight-weekly-xp">+0 XP</span>
         </div>
+
         <div class="list-row">
          <div>
-          <strong>Periodo critico</strong><br /><span
-           >Quartas a tarde (humor baixo)</span
-          >
+          <strong>Período crítico</strong><br />
+          <span id="insight-critical-period">Sem dados suficientes</span>
          </div>
-         <span class="stat-pill">Padrao</span>
+         <span class="stat-pill">Padrão</span>
         </div>
        </div>
       </div>
      </div>
+
      <div class="card">
-      <h3>Recomendacoes personalizadas</h3>
-      <p class="lead">Com base no teu historico e contexto academico.</p>
-      <div class="list-rows" style="margin-top: var(--space-4)">
-       <div class="list-row">
-        <div>
-         <strong>Antes de exames</strong><br /><span
-          >Protocolo 90s: respiracao box + nota curta no diario</span
-         >
-        </div>
-        <a href="exercicios.html" class="btn-secondary">Abrir</a>
-       </div>
-       <div class="list-row">
-        <div>
-         <strong>Noites de estudo</strong><br /><span
-          >Exercicio de sono profundo apos desligar ecras</span
-         >
-        </div>
-        <a href="exercicios.html" class="btn-secondary">Abrir</a>
-       </div>
-      </div>
+      <h3>Recomendações personalizadas</h3>
+      <p class="lead">Com base no teu histórico e dados recentes.</p>
+      <div
+       class="list-rows"
+       id="insights-recs"
+       style="margin-top: var(--space-4)"
+      ></div>
      </div>
     </div>
    </main>
   </div>
-  <script type="module" src="./sidebar.js"></script>
-  <script>
-   new Chart(document.getElementById("insightsChart"), {
-    type: "bar",
-    data: {
-     labels: ["Sem 1", "Sem 2", "Sem 3", "Sem 4"],
-     datasets: [
-      {
-       data: [2.8, 3.1, 3.0, 3.4],
-       backgroundColor: "rgba(92,186,154,0.65)",
-       borderRadius: 8,
-      },
-     ],
-    },
-    options: {
-     responsive: true,
-     maintainAspectRatio: false,
-     plugins: { legend: { display: false } },
-     scales: {
-      y: { min: 1, max: 5, grid: { color: "rgba(0,0,0,0.04)" } },
-      x: { grid: { display: false } },
-     },
-    },
-   });
-  </script>
+
+  <script type="module" src="./src/js/views/sidebar-view.js"></script>
+  <script type="module" src="./src/js/views/topbar-view.js"></script>
+  <script type="module" src="src/js/controllers/insights.js"></script>
  </body>
 </html>
