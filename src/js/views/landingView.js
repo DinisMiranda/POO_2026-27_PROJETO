@@ -40,6 +40,7 @@ export const LandingView = {
 
  showError(panel, message) {
   const el = panel === "login" ? this.loginError : this.registerError;
+  if (!el) return;
   el.textContent = message;
   el.classList.remove("hidden");
  },
@@ -88,6 +89,7 @@ export const LandingView = {
 
  clearErrors() {
   [this.loginError, this.registerError].forEach((el) => {
+   if (!el) return;
    el.textContent = "";
    el.classList.add("hidden");
   });
@@ -96,6 +98,7 @@ export const LandingView = {
  },
 
  setLoading(btn, loading) {
+  if (!btn) return;
   btn.disabled = loading;
 
   if (btn.id === "btn-login") {
@@ -119,18 +122,18 @@ export const LandingView = {
 
  getLoginData() {
   return {
-   email: document.getElementById("login-email").value.trim(),
-   password: document.getElementById("login-password").value,
+   email: document.getElementById("login-email")?.value.trim() || "",
+   password: document.getElementById("login-password")?.value || "",
   };
  },
 
  getRegisterData() {
   return {
-   firstName: document.getElementById("reg-first-name").value.trim(),
-   lastName: document.getElementById("reg-last-name").value.trim(),
-   email: document.getElementById("reg-email").value.trim(),
-   dob: document.getElementById("reg-dob").value,
-   password: document.getElementById("reg-password").value,
+   firstName: document.getElementById("reg-first-name")?.value.trim() || "",
+   lastName: document.getElementById("reg-last-name")?.value.trim() || "",
+   email: document.getElementById("reg-email")?.value.trim() || "",
+   dob: document.getElementById("reg-dob")?.value || "",
+   password: document.getElementById("reg-password")?.value || "",
   };
  },
 };

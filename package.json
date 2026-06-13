@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "api": "npx json-server --watch db.json --port 3000",
+    "start": "npx json-server --watch db.json --port 3000",
     "chat-api": "node server/chat-api.js"
   },
   "dependencies": {

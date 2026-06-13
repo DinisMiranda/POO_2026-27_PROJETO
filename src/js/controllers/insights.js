@@ -43,7 +43,7 @@ async function fetchJson(url) {
 
 function ensureRequiredElements() {
  const missing = Object.entries(els)
-  .filter(([, value]) => !value)
+  .filter(([key, value]) => !value && key !== "avatar" && key !== "avatarText")
   .map(([key]) => key);
 
  if (missing.length) {
@@ -120,8 +120,8 @@ async function initInsights() {
  const criticalPeriod =
   avgMood < 3.2 ? "Quartas à tarde" : "Segundas ao fim do dia";
 
- els.avatar.textContent = initials(sessionUser);
- els.avatarText.textContent = initials(sessionUser);
+ if (els.avatar) els.avatar.textContent = initials(sessionUser);
+ if (els.avatarText) els.avatarText.textContent = initials(sessionUser);
  els.xp.textContent = String(xp);
  els.xpWeek.textContent = `+${weeklyXp} esta semana`;
  els.streak.textContent = `${streak} dias`;

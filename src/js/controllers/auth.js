@@ -121,7 +121,7 @@ async function handleLogin(e) {
 
   setTimeout(() => {
    window.location.href =
-    user.role === "admin" ? "admin.html" : "dashboard.html";
+    user.role === "admin" ? "./admin.html" : "./dashboard.html";
   }, 800);
  } catch (err) {
   showFeedback(

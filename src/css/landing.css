@@ -122,10 +122,17 @@ a {
 
 .brand-mark {
   display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
   font-size: 2rem;
   font-weight: 1000;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   color: #0f2231;
+}
+
+.brand-logo {
+  color: #2e6d9f;
+  flex: 0 0 auto;
 }
 
 .hero-copy {

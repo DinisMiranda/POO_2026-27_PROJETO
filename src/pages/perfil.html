@@ -4,25 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zenify – Perfil</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
    href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
    rel="stylesheet"
   />
-  <link rel="stylesheet" href="src/css/app.css" />
-  <link rel="stylesheet" href="src/css/perfil.css" />
+  <link rel="stylesheet" href="../css/app.css" />
+  <link rel="stylesheet" href="../css/perfil.css" />
  </head>
  <body data-zenify-page="perfil">
   <div class="app">
    <aside class="sidebar" data-zenify-sidebar></aside>
    <main class="main">
-    <div class="topbar">
-     <div class="topbar-greeting">
-      <h1>Perfil</h1>
-      <p>Gere a tua conta e acompanha o teu progresso.</p>
-     </div>
-    </div>
+    <header data-zenify-topbar></header>
 
     <div class="page-stack">
      <!-- HERO -->
@@ -112,7 +108,8 @@
 
   <div class="feedback-toast" id="toast"></div>
 
-  <script type="module" src="./sidebar.js"></script>
-  <script type="module" src="src/js/controllers/perfil.js"></script>
+  <script type="module" src="../js/views/sidebar-view.js"></script>
+  <script type="module" src="../js/views/topbar-view.js"></script>
+  <script type="module" src="../js/controllers/perfil.js"></script>
  </body>
 </html>

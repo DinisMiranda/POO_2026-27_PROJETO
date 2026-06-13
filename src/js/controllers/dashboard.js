@@ -2,7 +2,9 @@ import { UserModel } from "../models/userModel.js";
 import { StreakModel } from "../models/streakModel.js";
 
 const user = UserModel.getSession();
-if (!user) window.location.href = "landing.html";
+if (!user) {
+ window.location.href = "landing.html";
+}
 
 // ---------- DOM refs ----------
 const streakNumber = document.getElementById("streak-number");
@@ -39,12 +41,14 @@ if (greetingName && user) {
  greetingName.textContent = `Olá, ${user.firstName || "utilizador"}`;
 }
 
-const initials = getInitials(user);
+const initials = user ? getInitials(user) : "ZU";
 if (userAvatar) userAvatar.textContent = initials;
 if (userAvatarText) userAvatarText.textContent = initials;
 
 // ---------- Streak ----------
 async function loadStreak() {
+ if (!user) return;
+
  try {
   const stats = await StreakModel.syncStreak(user.id);
   renderStreak(stats);
@@ -123,6 +127,8 @@ function showFeedback(message, type = "success") {
 
 // ---------- Check-in click ----------
 checkinBtn?.addEventListener("click", async () => {
+ if (!user) return;
+
  checkinBtn.disabled = true;
  checkinBtn.textContent = "A registar…";
 

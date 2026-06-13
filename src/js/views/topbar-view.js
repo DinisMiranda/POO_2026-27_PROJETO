@@ -1,4 +1,7 @@
 import { UserModel } from "../models/userModel.js";
+import { applyDocumentLanguage, t } from "../data/i18n.js";
+
+applyDocumentLanguage();
 
 function getInitials(user) {
  if (!user) return "ZU";
@@ -21,49 +24,59 @@ function getInitials(user) {
  return "ZU";
 }
 
+function getDisplayName(user) {
+ if (!user) return "";
+
+ const first = (user.firstName || "").trim();
+ const last = (user.lastName || "").trim();
+ const fullName = `${first} ${last}`.trim();
+
+ return fullName || (user.name || "").trim();
+}
+
 function getTopbarConfig(page) {
  const map = {
   hoje: {
-   title: "Olá",
-   subtitle: "Que bom te ver por aqui.<br />Como está a tua mente hoje?",
+   title: t("topbar.today.title"),
+   subtitle: t("topbar.today.subtitle"),
    showBell: true,
   },
   exercicios: {
-   title: "Exercícios",
-   subtitle: "Escolhe práticas para respiração, foco e relaxamento.",
+   title: t("topbar.exercises.title"),
+   subtitle: t("topbar.exercises.subtitle"),
    showBell: false,
   },
   comunidade: {
-   title: "Comunidade",
-   subtitle: "Liga-te a pessoas com objetivos semelhantes.",
+   title: t("topbar.community.title"),
+   subtitle: t("topbar.community.subtitle"),
    showBell: false,
   },
   insights: {
-   title: "Insights",
-   subtitle: "Padrões de humor, consistência e progresso.",
+   title: t("topbar.insights.title"),
+   subtitle: t("topbar.insights.subtitle"),
    showBell: false,
   },
   perfil: {
-   title: "Perfil",
-   subtitle: "Gere a tua conta e acompanha o teu progresso.",
+   title: t("topbar.profile.title"),
+   subtitle: t("topbar.profile.subtitle"),
    showBell: false,
   },
-  settings: {
-   title: "Configurações",
-   subtitle: "Ajusta preferências e opções da tua conta.",
+  configuracoes: {
+   title: t("topbar.settings.title"),
+   subtitle: t("topbar.settings.subtitle"),
    showBell: false,
   },
   ajuda: {
-   title: "Ajuda",
-   subtitle: "Encontra respostas rápidas e suporte.",
+   title: t("topbar.help.title"),
+   subtitle: t("topbar.help.subtitle"),
    showBell: false,
   },
  };
 
  return (
   map[page] || {
-   title: "Zenify",
-   subtitle: "A tua área pessoal.",
+   title: t("topbar.default.title"),
+   subtitle: t("topbar.default.subtitle"),
    showBell: false,
   }
  );
@@ -71,7 +84,7 @@ function getTopbarConfig(page) {
 
 function renderBell() {
  return `
-    <button class="notif-btn" aria-label="Notificações" type="button">
+    <button class="notif-btn" aria-label="${t("topbar.notifications")}" type="button">
       <svg
         width="18"
         height="18"
@@ -95,6 +108,11 @@ export function mountTopbar() {
  const user = UserModel.getSession();
  const initials = getInitials(user);
  const config = getTopbarConfig(page);
+ const displayName = getDisplayName(user);
+
+ if (page === "hoje" && displayName) {
+  config.title = `${t("topbar.today.title")}, ${displayName}`;
+ }
 
  host.classList.add("topbar");
  host.innerHTML = `
@@ -106,7 +124,7 @@ export function mountTopbar() {
     <div class="topbar-actions">
       ${config.showBell ? renderBell() : ""}
 
-      <a href="perfil.html" class="avatar-btn" aria-label="Perfil">
+      <a href="perfil.html" class="avatar-btn" aria-label="${t("topbar.profile")}">
         <div class="avatar">${initials}</div>
         <span>${initials}</span>
         <svg
