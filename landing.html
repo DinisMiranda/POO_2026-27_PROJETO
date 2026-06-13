@@ -10,7 +10,7 @@
    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
    rel="stylesheet"
   />
-  <link rel="stylesheet" href="src/css/a11y.css" />
+  <link rel="stylesheet" href="src/css/af.css" />
   <link rel="stylesheet" href="src/css/landing.css" />
  </head>
  <body>
@@ -255,9 +255,10 @@
    <section class="review-section">
     <div class="review-card">
      <div class="review-content">
+      <span class="review-quote-mark" aria-hidden="true">“</span>
       <p class="review-quote">
-       “A Zenify ajudou-me a criar rotina e perceber melhor os meus dias. Hoje
-       sinto mais clareza, mais foco e mais equilíbrio.”
+       A Zenify ajudou-me a criar rotina e perceber melhor os meus dias. Hoje
+       sinto mais clareza, mais foco e mais equilíbrio.
       </p>
 
       <div class="review-meta">
@@ -278,59 +279,172 @@
      </div>
 
      <div class="review-visual">
-      <div class="review-circle"></div>
+      <img
+       class="review-photo"
+       src="src/assets/images/review-person.jpg"
+       alt="Utilizadora Zenify a sorrir"
+       width="360"
+       height="450"
+       loading="lazy"
+      />
      </div>
     </div>
    </section>
 
-   <section class="faq-section">
+   <section class="faq-section" id="faq-section">
     <div class="faq-inner">
-     <details class="faq-item" open>
+     <details class="faq-item">
       <summary>A aplicação é gratuita?</summary>
-      <p>
-       Sim. Podes criar conta e começar a usar a plataforma sem custos iniciais.
-      </p>
+      <div class="faq-body">
+       <div class="faq-body-inner">
+        <p>
+         Sim. Podes criar conta e começar a usar a plataforma sem custos iniciais.
+        </p>
+       </div>
+      </div>
      </details>
 
      <details class="faq-item">
       <summary>Os meus dados estão seguros?</summary>
-      <p>
-       Sim. Os teus dados ficam guardados na base de dados da aplicação e
-       protegidos pela lógica existente do projeto.
-      </p>
+      <div class="faq-body">
+       <div class="faq-body-inner">
+        <p>
+         Sim. Os teus dados ficam guardados na base de dados da aplicação e
+         protegidos pela lógica existente do projeto.
+        </p>
+       </div>
+      </div>
      </details>
 
      <details class="faq-item">
       <summary>Existe suporte técnico disponível 24/7?</summary>
-      <p>
-       Existe apoio contínuo e acompanhamento dentro da experiência da
-       plataforma.
-      </p>
+      <div class="faq-body">
+       <div class="faq-body-inner">
+        <p>
+         Existe apoio contínuo e acompanhamento dentro da experiência da
+         plataforma.
+        </p>
+       </div>
+      </div>
      </details>
 
      <details class="faq-item">
       <summary>Há algum limite para o uso diário da aplicação?</summary>
-      <p>Não. A utilização diária da aplicação não está limitada.</p>
+      <div class="faq-body">
+       <div class="faq-body-inner">
+        <p>Não. A utilização diária da aplicação não está limitada.</p>
+       </div>
+      </div>
      </details>
 
      <details class="faq-item">
       <summary>Como atualizo os meus dados pessoais?</summary>
-      <p>
-       Podes gerir os teus dados dentro da área pessoal depois de iniciares
-       sessão.
-      </p>
+      <div class="faq-body">
+       <div class="faq-body-inner">
+        <p>
+         Podes gerir os teus dados dentro da área pessoal depois de iniciares
+         sessão.
+        </p>
+       </div>
+      </div>
      </details>
     </div>
    </section>
   </main>
 
   <footer class="landing-footer">
-   <div class="footer-inner">
-    <div>
-     <strong>Zenify</strong>
-     <p>Equilíbrio mental todos os dias.</p>
+   <div class="footer-cta">
+    <div class="footer-cta-inner">
+     <div class="footer-cta-copy">
+      <p class="footer-cta-label">Pronto para começar?</p>
+      <h2>Da ansiedade académica ao equilíbrio diário.</h2>
+      <p class="footer-cta-desc">
+       Cria a tua conta em menos de um minuto e começa a acompanhar o teu
+       bem-estar com ferramentas pensadas para estudantes.
+      </p>
+     </div>
+     <button class="footer-cta-btn" type="button" data-scroll-auth>
+      Criar conta gratuita
+     </button>
     </div>
-    <p>© 2026 Zenify. Todos os direitos reservados.</p>
+   </div>
+
+   <div class="footer-main">
+    <div class="footer-grid">
+     <div class="footer-brand">
+      <a href="landing.html" class="footer-logo">Zenify</a>
+      <p class="footer-tagline">
+       Plataforma de bem-estar mental para estudantes universitários. Humor,
+       exercícios de calma e progresso num só lugar.
+      </p>
+      <div class="footer-social" aria-label="Redes sociais">
+       <a href="#" class="footer-social-link" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+         <rect x="2" y="2" width="20" height="20" rx="5"/>
+         <circle cx="12" cy="12" r="4"/>
+         <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+       </a>
+       <a href="#" class="footer-social-link" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+         <rect x="2" y="2" width="20" height="20" rx="3"/>
+         <path d="M8 11v5M8 8v.01M12 16v-5c0-1.1.9-2 2-2s2 .9 2 2v5"/>
+        </svg>
+       </a>
+       <a href="#" class="footer-social-link" aria-label="Email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+         <rect x="2" y="4" width="20" height="16" rx="2"/>
+         <path d="M2 7l10 7 10-7"/>
+        </svg>
+       </a>
+      </div>
+     </div>
+
+     <nav class="footer-col" aria-label="Plataforma">
+      <h3>Plataforma</h3>
+      <ul>
+       <li><a href="dashboard.html">Dashboard</a></li>
+       <li><a href="diario.html">Diário</a></li>
+       <li><a href="exercicios.html">Exercícios de calma</a></li>
+       <li><a href="insights.html">Insights</a></li>
+       <li><a href="perfil.html">Perfil</a></li>
+      </ul>
+     </nav>
+
+     <nav class="footer-col" aria-label="Recursos">
+      <h3>Recursos</h3>
+      <ul>
+       <li><a href="#faq-section">Perguntas frequentes</a></li>
+       <li><a href="ajuda.html">Centro de ajuda</a></li>
+       <li><a href="settings.html">Configurações</a></li>
+       <li><a href="perfil.html">Perfil</a></li>
+      </ul>
+     </nav>
+
+     <nav class="footer-col" aria-label="Legal">
+      <h3>Legal</h3>
+      <ul>
+       <li><a href="ajuda.html">Privacidade</a></li>
+       <li><a href="ajuda.html">Termos de utilização</a></li>
+       <li><a href="ajuda.html">Cookies</a></li>
+      </ul>
+      <p class="footer-disclaimer">
+       O Zenify não substitui acompanhamento médico ou psicológico
+       profissional.
+      </p>
+     </nav>
+    </div>
+
+    <div class="footer-bottom">
+     <p>© 2026 Zenify. Projeto académico POO 2026/27.</p>
+     <div class="footer-bottom-links">
+      <a href="ajuda.html">Suporte</a>
+      <span class="footer-dot" aria-hidden="true"></span>
+      <a href="legacy/app.html">App clássica</a>
+      <span class="footer-dot" aria-hidden="true"></span>
+      <a href="#conteudo-principal">Voltar ao topo</a>
+     </div>
+    </div>
    </div>
   </footer>
 
