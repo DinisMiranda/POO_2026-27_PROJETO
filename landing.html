@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="pt-PT">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenify</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+   rel="stylesheet"
+  />
+  <link rel="stylesheet" href="src/css/af.css" />
+  <link rel="stylesheet" href="src/css/landing.css" />
+ </head>
+ <body>
+  <a class="skip-link" href="#conteudo-principal">Saltar para o conteúdo</a>
+
+  <main id="conteudo-principal">
+   <section class="hero-section">
+    <div class="hero-left">
+     <div class="hero-topbar">
+      <span class="brand-mark">Zenify</span>
+     </div>
+
+     <div class="hero-copy">
+      <h1>A tua mente,<br /><span>Em equilíbrio.</span></h1>
+      <p>
+       Zenify é a tua plataforma de bem-estar mental que combina tecnologia,
+       ciência e atenção plena para te ajudar a viver melhor todos os dias.
+      </p>
+
+      <button class="cta-button" id="cta-comecar" type="button">
+       Começar agora
+      </button>
+
+      <div class="hero-proof">
+       <div class="proof-avatars" aria-hidden="true">
+        <span class="proof-avatar avatar-a">MA</span>
+        <span class="proof-avatar avatar-b">JS</span>
+        <span class="proof-avatar avatar-c">AF</span>
+       </div>
+       <div class="proof-text">
+        <strong>Junta-te a mais de 50 mil pessoas</strong>
+        <p>motivadas e em evolução.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+
+    <div class="hero-right" id="auth-panel">
+     <div class="auth-card">
+      <h2 id="auth-heading">Bem-vindo(a)</h2>
+      <p id="auth-subheading">
+       Regista-te ou inicia sessão na tua área Zenify.
+      </p>
+
+      <div class="auth-tabs" role="tablist" aria-label="Autenticação">
+       <button
+        id="tab-login"
+        class="auth-tab"
+        role="tab"
+        aria-selected="false"
+        aria-controls="panel-login"
+        type="button"
+       >
+        Entrar
+       </button>
+
+       <button
+        id="tab-register"
+        class="auth-tab active"
+        role="tab"
+        aria-selected="true"
+        aria-controls="panel-register"
+        type="button"
+       >
+        Registar
+       </button>
+      </div>
+
+      <section
+       id="panel-register"
+       class="auth-panel"
+       role="tabpanel"
+       aria-labelledby="tab-register"
+      >
+       <form id="registerForm" novalidate>
+        <div class="field-grid two-cols">
+         <div class="field">
+          <label for="reg-first-name">Primeiro nome</label>
+          <input
+           id="reg-first-name"
+           name="firstName"
+           type="text"
+           placeholder="Primeiro nome"
+           required
+          />
+          <small class="field-error" id="error-reg-first-name"></small>
+         </div>
+
+         <div class="field">
+          <label for="reg-last-name">Último nome</label>
+          <input
+           id="reg-last-name"
+           name="lastName"
+           type="text"
+           placeholder="Último nome"
+           required
+          />
+          <small class="field-error" id="error-reg-last-name"></small>
+         </div>
+        </div>
+
+        <div class="field">
+         <label for="reg-email">Email</label>
+         <input
+          id="reg-email"
+          name="email"
+          type="email"
+          placeholder="email@exemplo.pt"
+          autocomplete="email"
+          pattern="^[^\s@]+@[^\s@]+\.com$"
+          required
+         />
+         <small class="field-error" id="error-reg-email"></small>
+        </div>
+
+        <div class="field">
+         <label for="reg-dob">Data de nascimento</label>
+         <input id="reg-dob" name="dob" type="date" required />
+         <small class="field-error" id="error-reg-dob"></small>
+        </div>
+
+        <div class="field">
+         <label for="reg-password">Password</label>
+         <input
+          id="reg-password"
+          name="password"
+          type="password"
+          placeholder="Mínimo 6 caracteres"
+          minlength="6"
+          autocomplete="new-password"
+          required
+         />
+         <small class="field-error" id="error-reg-password"></small>
+        </div>
+
+        <p
+         id="registerError"
+         class="form-error hidden"
+         role="alert"
+         aria-live="assertive"
+        ></p>
+
+        <button type="submit" class="btn-auth" id="btn-register">
+         Registar
+        </button>
+       </form>
+      </section>
+
+      <section
+       id="panel-login"
+       class="auth-panel"
+       role="tabpanel"
+       aria-labelledby="tab-login"
+       hidden
+      >
+       <form id="loginForm" novalidate>
+        <div class="field">
+         <label for="login-email">Email</label>
+         <input
+          id="login-email"
+          name="email"
+          type="email"
+          placeholder="email@exemplo.pt"
+          autocomplete="email"
+          pattern="^[^\s@]+@[^\s@]+\.com$"
+          required
+         />
+         <small class="field-error" id="error-login-email"></small>
+        </div>
+
+        <div class="field">
+         <label for="login-password">Password</label>
+         <input
+          id="login-password"
+          name="password"
+          type="password"
+          placeholder="A tua password"
+          autocomplete="current-password"
+          required
+         />
+         <small class="field-error" id="error-login-password"></small>
+        </div>
+
+        <p
+         id="loginError"
+         class="form-error hidden"
+         role="alert"
+         aria-live="assertive"
+        ></p>
+
+        <button type="submit" class="btn-auth" id="btn-login">Entrar</button>
+       </form>
+      </section>
+     </div>
+    </div>
+   </section>
+
+   <section class="features-section">
+    <div class="section-intro">
+     <h2>O teu bem-estar, num só espaço</h2>
+     <p>
+      Ferramentas desenhadas para te conheceres melhor, criares hábitos
+      saudáveis e acompanhares a tua evolução com clareza.
+     </p>
+    </div>
+
+    <div class="features-grid">
+     <article class="feature-card">
+      <div class="feature-icon">♡</div>
+      <h3>Acompanha o teu estado mental</h3>
+      <p>Regista o teu humor e descobre padrões no teu dia a dia.</p>
+     </article>
+
+     <article class="feature-card">
+      <div class="feature-icon">◎</div>
+      <h3>Exercícios personalizados</h3>
+      <p>Meditação, respiração e rotinas curtas adaptadas ao teu momento.</p>
+     </article>
+
+     <article class="feature-card">
+      <div class="feature-icon">◌</div>
+      <h3>Desafios & hábitos</h3>
+      <p>Pequenos passos consistentes para evoluíres com motivação.</p>
+     </article>
+
+     <article class="feature-card">
+      <div class="feature-icon">▣</div>
+      <h3>Insights inteligentes</h3>
+      <p>Vê a tua progressão com dados simples e úteis para agir melhor.</p>
+     </article>
+
+     <article class="feature-card">
+      <div class="feature-icon">⌁</div>
+      <h3>Comunidade segura</h3>
+      <p>
+       Conecta-te com pessoas que partilham o mesmo objetivo de equilíbrio.
+      </p>
+     </article>
+    </div>
+   </section>
+
+   <section class="review-section">
+    <div class="review-card">
+     <div class="review-content">
+      <span class="review-quote-mark" aria-hidden="true">“</span>
+      <p class="review-quote">
+       A Zenify ajudou-me a criar rotina e perceber melhor os meus dias. Hoje
+       sinto mais clareza, mais foco e mais equilíbrio.
+      </p>
+
+      <div class="review-meta">
+       <div class="review-user">
+        <span class="review-avatar">MF</span>
+        <div>
+         <strong>Maria Ferreira</strong>
+         <p>Utilizadora há 6 meses</p>
+        </div>
+       </div>
+
+       <div class="review-stats">
+        <div><strong>4.8★</strong><span>Avaliação média</span></div>
+        <div><strong>50k+</strong><span>Utilizadores</span></div>
+        <div><strong>98%</strong><span>Recomendam</span></div>
+       </div>
+      </div>
+     </div>
+
+     <div class="review-visual">
+      <img
+       class="review-photo"
+       src="src/assets/images/review-person.jpg"
+       alt="Utilizadora Zenify a sorrir"
+       width="360"
+       height="450"
+       loading="lazy"
+      />
+     </div>
+    </div>
+   </section>
+
+   <section class="faq-section" id="faq-section">
+    <div class="faq-inner">
+     <details class="faq-item">
+      <summary>A aplicação é gratuita?</summary>
+      <div class="faq-body">
+       <div class="faq-body-inner">
+        <p>
+         Sim. Podes criar conta e começar a usar a plataforma sem custos iniciais.
+        </p>
+       </div>
+      </div>
+     </details>
+
+     <details class="faq-item">
+      <summary>Os meus dados estão seguros?</summary>
+      <div class="faq-body">
+       <div class="faq-body-inner">
+        <p>
+         Sim. Os teus dados ficam guardados na base de dados da aplicação e
+         protegidos pela lógica existente do projeto.
+        </p>
+       </div>
+      </div>
+     </details>
+
+     <details class="faq-item">
+      <summary>Existe suporte técnico disponível 24/7?</summary>
+      <div class="faq-body">
+       <div class="faq-body-inner">
+        <p>
+         Existe apoio contínuo e acompanhamento dentro da experiência da
+         plataforma.
+        </p>
+       </div>
+      </div>
+     </details>
+
+     <details class="faq-item">
+      <summary>Há algum limite para o uso diário da aplicação?</summary>
+      <div class="faq-body">
+       <div class="faq-body-inner">
+        <p>Não. A utilização diária da aplicação não está limitada.</p>
+       </div>
+      </div>
+     </details>
+
+     <details class="faq-item">
+      <summary>Como atualizo os meus dados pessoais?</summary>
+      <div class="faq-body">
+       <div class="faq-body-inner">
+        <p>
+         Podes gerir os teus dados dentro da área pessoal depois de iniciares
+         sessão.
+        </p>
+       </div>
+      </div>
+     </details>
+    </div>
+   </section>
+  </main>
+
+  <footer class="landing-footer">
+   <div class="footer-cta">
+    <div class="footer-cta-inner">
+     <div class="footer-cta-copy">
+      <p class="footer-cta-label">Pronto para começar?</p>
+      <h2>Da ansiedade académica ao equilíbrio diário.</h2>
+      <p class="footer-cta-desc">
+       Cria a tua conta em menos de um minuto e começa a acompanhar o teu
+       bem-estar com ferramentas pensadas para estudantes.
+      </p>
+     </div>
+     <button class="footer-cta-btn" type="button" data-scroll-auth>
+      Criar conta gratuita
+     </button>
+    </div>
+   </div>
+
+   <div class="footer-main">
+    <div class="footer-grid">
+     <div class="footer-brand">
+      <a href="landing.html" class="footer-logo">Zenify</a>
+      <p class="footer-tagline">
+       Plataforma de bem-estar mental para estudantes universitários. Humor,
+       exercícios de calma e progresso num só lugar.
+      </p>
+      <div class="footer-social" aria-label="Redes sociais">
+       <a href="#" class="footer-social-link" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+         <rect x="2" y="2" width="20" height="20" rx="5"/>
+         <circle cx="12" cy="12" r="4"/>
+         <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+       </a>
+       <a href="#" class="footer-social-link" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+         <rect x="2" y="2" width="20" height="20" rx="3"/>
+         <path d="M8 11v5M8 8v.01M12 16v-5c0-1.1.9-2 2-2s2 .9 2 2v5"/>
+        </svg>
+       </a>
+       <a href="#" class="footer-social-link" aria-label="Email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+         <rect x="2" y="4" width="20" height="16" rx="2"/>
+         <path d="M2 7l10 7 10-7"/>
+        </svg>
+       </a>
+      </div>
+     </div>
+
+     <nav class="footer-col" aria-label="Plataforma">
+      <h3>Plataforma</h3>
+      <ul>
+       <li><a href="dashboard.html">Dashboard</a></li>
+       <li><a href="diario.html">Diário</a></li>
+       <li><a href="exercicios.html">Exercícios de calma</a></li>
+       <li><a href="insights.html">Insights</a></li>
+       <li><a href="perfil.html">Perfil</a></li>
+      </ul>
+     </nav>
+
+     <nav class="footer-col" aria-label="Recursos">
+      <h3>Recursos</h3>
+      <ul>
+       <li><a href="#faq-section">Perguntas frequentes</a></li>
+       <li><a href="ajuda.html">Centro de ajuda</a></li>
+       <li><a href="settings.html">Configurações</a></li>
+       <li><a href="perfil.html">Perfil</a></li>
+      </ul>
+     </nav>
+
+     <nav class="footer-col" aria-label="Legal">
+      <h3>Legal</h3>
+      <ul>
+       <li><a href="ajuda.html">Privacidade</a></li>
+       <li><a href="ajuda.html">Termos de utilização</a></li>
+       <li><a href="ajuda.html">Cookies</a></li>
+      </ul>
+      <p class="footer-disclaimer">
+       O Zenify não substitui acompanhamento médico ou psicológico
+       profissional.
+      </p>
+     </nav>
+    </div>
+
+    <div class="footer-bottom">
+     <p>© 2026 Zenify. Projeto académico POO 2026/27.</p>
+     <div class="footer-bottom-links">
+      <a href="ajuda.html">Suporte</a>
+      <span class="footer-dot" aria-hidden="true"></span>
+      <a href="legacy/app.html">App clássica</a>
+      <span class="footer-dot" aria-hidden="true"></span>
+      <a href="#conteudo-principal">Voltar ao topo</a>
+     </div>
+    </div>
+   </div>
+  </footer>
+
+  <script type="module" src="src/js/controllers/landing.js"></script>
+ </body>
+</html>

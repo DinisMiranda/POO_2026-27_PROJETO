@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenify – Comunidade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+   rel="stylesheet"
+  />
+  <link rel="stylesheet" href="src/css/app.css" />
+ </head>
+ <body data-zenify-page="diario">
+  <div class="app">
+   <aside class="sidebar" data-zenify-sidebar></aside>
+   <main class="main">
+    <header data-zenify-topbar></header>
+    <div class="page-stack">
+     <div class="card">
+      <h3>Nova publicacao</h3>
+      <form action="#" method="post">
+       <div class="field">
+        <label for="postText">O que queres partilhar?</label>
+        <textarea
+         id="postText"
+         placeholder="Ex.: Completei 7 dias de check-in..."
+        ></textarea>
+       </div>
+       <button class="btn-primary" type="submit">Publicar</button>
+      </form>
+     </div>
+     <div class="page-grid-2">
+      <div class="community-post">
+       <h4>Rita — Engenharia</h4>
+       <p>
+        O exercicio box breathing ajudou-me antes da apresentacao de hoje.
+        Recomendo a quem fica nervoso em aulas praticas.
+       </p>
+       <div class="community-meta">
+        <span>Ha 2 horas</span><span>12 reacoes</span>
+       </div>
+      </div>
+      <div class="community-post">
+       <h4>Joao — Direito</h4>
+       <p>
+        Streak de 14 dias. O truque foi fazer o check-in logo apos o
+        pequeno-almoco.
+       </p>
+       <div class="community-meta">
+        <span>Ontem</span><span>8 reacoes</span>
+       </div>
+      </div>
+      <div class="community-post">
+       <h4>Ana — Psicologia</h4>
+       <p>
+        Alguem usa o grounding 5-4-3-2-1 na biblioteca? Funciona bem sem chamar
+        atencao.
+       </p>
+       <div class="community-meta">
+        <span>Ontem</span><span>5 comentarios</span>
+       </div>
+      </div>
+      <div class="community-post">
+       <h4>Desafio Zen</h4>
+       <p>
+        Semana de atencao plena: 34 estudantes ja completaram 5 de 7 dias.
+        Junta-te ao desafio no dashboard.
+       </p>
+       <div class="community-meta">
+        <span>Esta semana</span><span>Desafio activo</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </main>
+  </div>
+  <script type="module" src="./src/js/views/sidebar-view.js"></script>
+  <script type="module" src="./src/js/views/topbar-view.js"></script>
+ </body>
+</html>

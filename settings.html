@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenify – Configuracoes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+   rel="stylesheet"
+  />
+  <link rel="stylesheet" href="src/css/app.css" />
+ </head>
+ <body data-zenify-page="configuracoes">
+  <div class="app">
+   <aside class="sidebar" data-zenify-sidebar></aside>
+   <main class="main">
+    <div class="topbar">
+     <div class="topbar-greeting">
+      <h1>Configuracoes</h1>
+      <p>Personaliza notificacoes e preferencias da app.</p>
+     </div>
+    </div>
+    <div class="page-stack">
+     <div class="card">
+      <h3>Notificacoes</h3>
+      <div class="toggle-row">
+       <div>
+        <strong>Lembrete de check-in diario</strong><br /><span
+         style="font-size: var(--text-xs); color: var(--color-text-muted)"
+         >Todos os dias as 20h</span
+        >
+       </div>
+       <input type="checkbox" checked aria-label="Lembrete de check-in" />
+      </div>
+      <div class="toggle-row">
+       <div>
+        <strong>Sugestao preventiva</strong><br /><span
+         style="font-size: var(--text-xs); color: var(--color-text-muted)"
+         >Antes de periodos de exames</span
+        >
+       </div>
+       <input type="checkbox" checked aria-label="Sugestao preventiva" />
+      </div>
+      <div class="toggle-row">
+       <div>
+        <strong>Resumo semanal</strong><br /><span
+         style="font-size: var(--text-xs); color: var(--color-text-muted)"
+         >Insights e progresso</span
+        >
+       </div>
+       <input type="checkbox" aria-label="Resumo semanal" />
+      </div>
+     </div>
+     <div class="card">
+      <h3>Preferencias</h3>
+      <div class="field">
+       <label for="lang">Idioma</label>
+       <select id="lang">
+        <option selected>Portugues</option>
+        <option>English</option>
+       </select>
+      </div>
+      <div class="field">
+       <label for="reminderTime">Hora do lembrete</label>
+       <input id="reminderTime" type="time" value="20:00" />
+      </div>
+      <button class="btn-primary" type="button">Guardar preferencias</button>
+     </div>
+     <div class="card">
+      <h3>Privacidade</h3>
+      <p class="lead">
+       Os teus check-ins ficam associados ao teu utilizador. A comunidade e
+       opcional e anonima por defeito.
+      </p>
+      <div class="toggle-row">
+       <div><strong>Perfil visivel na comunidade</strong></div>
+       <input type="checkbox" aria-label="Perfil visivel" />
+      </div>
+     </div>
+    </div>
+   </main>
+  </div>
+  <script type="module" src="./sidebar.js"></script>
+ </body>
+</html>

@@ -16,5 +16,5 @@ bindRegisterSubmit(({ name, email, password }) => {
     email: result.user.email,
     role: result.user.role,
   });
-  window.location.href = "app.html";
+  window.location.href = "dashboard.html";
 });

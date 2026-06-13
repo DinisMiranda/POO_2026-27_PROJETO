@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenify – Perfil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+   rel="stylesheet"
+  />
+  <link rel="stylesheet" href="src/css/app.css" />
+  <link rel="stylesheet" href="src/css/perfil.css" />
+ </head>
+ <body data-zenify-page="perfil">
+  <div class="app">
+   <aside class="sidebar" data-zenify-sidebar></aside>
+   <main class="main">
+    <div class="topbar">
+     <div class="topbar-greeting">
+      <h1>Perfil</h1>
+      <p>Gere a tua conta e acompanha o teu progresso.</p>
+     </div>
+    </div>
+
+    <div class="page-stack">
+     <!-- HERO -->
+     <div class="card">
+      <div class="profile-hero">
+       <div class="profile-avatar-lg" id="profile-avatar">--</div>
+       <div class="profile-meta">
+        <h2 id="profile-name">—</h2>
+        <p id="profile-email">—</p>
+        <div class="stat-pills">
+         <span class="stat-pill accent" id="profile-xp">0 XP</span>
+         <span class="stat-pill accent" id="profile-level">Nível 1</span>
+         <span class="stat-pill" id="profile-streak">Streak 0 dias</span>
+         <span class="stat-pill" id="profile-checkins">0 check-ins</span>
+        </div>
+        <div style="margin-top: var(--space-3); max-width: 260px">
+         <div class="xp-bar-wrap">
+          <div class="xp-bar" id="xp-bar" style="width: 0%"></div>
+         </div>
+         <div class="level-row">
+          <span id="xp-label">0 / 100 XP</span>
+          <span id="level-label">Nível 1 → 2</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+
+     <div class="page-grid-2">
+      <!-- DADOS PESSOAIS -->
+      <div class="card">
+       <h3>Dados pessoais</h3>
+       <form id="form-perfil" style="margin-top: var(--space-4)">
+        <div class="field">
+         <label for="inp-firstName">Primeiro nome</label>
+         <input id="inp-firstName" type="text" />
+        </div>
+        <div class="field">
+         <label for="inp-lastName">Apelido</label>
+         <input id="inp-lastName" type="text" />
+        </div>
+        <div class="field">
+         <label for="inp-email">Email</label>
+         <input id="inp-email" type="email" />
+        </div>
+        <div
+         style="
+          display: flex;
+          gap: var(--space-3);
+          flex-wrap: wrap;
+          margin-top: var(--space-2);
+         "
+        >
+         <button class="btn-primary" type="submit">Guardar alterações</button>
+         <button class="btn-secondary" type="button" id="btn-logout">
+          Terminar sessão
+         </button>
+        </div>
+       </form>
+      </div>
+
+      <!-- MEDALHAS -->
+      <div class="card">
+       <h3>Medalhas</h3>
+       <p style="font-size: var(--text-sm); color: var(--color-text-muted)">
+        Medalhas desbloqueadas com base no teu progresso.
+       </p>
+       <div class="medals-grid" id="medals-grid">
+        <!-- preenchido via JS -->
+       </div>
+      </div>
+     </div>
+
+     <!-- DESAFIOS -->
+     <div class="card">
+      <h3>Desafios</h3>
+      <p style="font-size: var(--text-sm); color: var(--color-text-muted)">
+       Progresso atualizado automaticamente com os teus check-ins e atividades.
+      </p>
+      <div class="challenges-list" id="challenges-list">
+       <!-- preenchido via JS -->
+      </div>
+     </div>
+    </div>
+   </main>
+  </div>
+
+  <div class="feedback-toast" id="toast"></div>
+
+  <script type="module" src="./sidebar.js"></script>
+  <script type="module" src="src/js/controllers/perfil.js"></script>
+ </body>
+</html>

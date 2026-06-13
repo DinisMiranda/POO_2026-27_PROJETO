@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenify – Insights</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+   rel="stylesheet"
+  />
+  <link rel="stylesheet" href="src/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+ </head>
+
+ <body data-zenify-page="insights">
+  <div class="app">
+   <aside class="sidebar" data-zenify-sidebar></aside>
+
+   <main class="main">
+    <header data-zenify-topbar></header>
+    <div class="page-stack">
+     <div class="page-grid-3">
+      <div class="card">
+       <h3>XP total</h3>
+       <p
+        id="insight-xp"
+        style="
+         font-size: var(--text-xl);
+         font-weight: 700;
+         color: var(--color-primary);
+        "
+       >
+        0
+       </p>
+       <p class="lead" id="insight-xp-week">Sem dados semanais</p>
+      </div>
+
+      <div class="card">
+       <h3>Streak atual</h3>
+       <p
+        id="insight-streak"
+        style="font-size: var(--text-xl); font-weight: 700"
+       >
+        0 dias
+       </p>
+       <p class="lead" id="insight-best-streak">Melhor sequência: 0 dias</p>
+      </div>
+
+      <div class="card">
+       <h3>Humor médio</h3>
+       <p id="insight-mood" style="font-size: var(--text-xl); font-weight: 700">
+        0.0 / 5
+       </p>
+       <p class="lead">Últimos 30 dias</p>
+      </div>
+     </div>
+
+     <div class="page-grid-2">
+      <div class="card humor-card" style="grid-column: auto">
+       <h3>Evolução do humor</h3>
+       <div class="chart-wrap" style="height: 220px">
+        <canvas id="insightsChart"></canvas>
+       </div>
+      </div>
+
+      <div class="card">
+       <h3>Resumo semanal</h3>
+       <div class="list-rows">
+        <div class="list-row">
+         <div>
+          <strong>Check-ins</strong><br />
+          <span id="insight-weekly-checkins">0 de 7 dias</span>
+         </div>
+         <span class="stat-pill" id="insight-checkin-rate">0%</span>
+        </div>
+
+        <div class="list-row">
+         <div>
+          <strong>Exercícios</strong><br />
+          <span id="insight-weekly-sessions">0 sessões completas</span>
+         </div>
+         <span class="stat-pill" id="insight-weekly-xp">+0 XP</span>
+        </div>
+
+        <div class="list-row">
+         <div>
+          <strong>Período crítico</strong><br />
+          <span id="insight-critical-period">Sem dados suficientes</span>
+         </div>
+         <span class="stat-pill">Padrão</span>
+        </div>
+       </div>
+      </div>
+     </div>
+
+     <div class="card">
+      <h3>Recomendações personalizadas</h3>
+      <p class="lead">Com base no teu histórico e dados recentes.</p>
+      <div
+       class="list-rows"
+       id="insights-recs"
+       style="margin-top: var(--space-4)"
+      ></div>
+     </div>
+    </div>
+   </main>
+  </div>
+
+  <script type="module" src="./src/js/views/sidebar-view.js"></script>
+  <script type="module" src="./src/js/views/topbar-view.js"></script>
+  <script type="module" src="src/js/controllers/insights.js"></script>
+ </body>
+</html>
