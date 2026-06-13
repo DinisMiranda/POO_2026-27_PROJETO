@@ -10,7 +10,8 @@
    href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
    rel="stylesheet"
   />
-  <link rel="stylesheet" href="src/css/zenify-app.css" />
+  <link rel="stylesheet" href="src/css/app.css" />
+  <link rel="stylesheet" href="src/css/perfil.css" />
  </head>
  <body data-zenify-page="perfil">
   <div class="app">
@@ -19,102 +20,99 @@
     <div class="topbar">
      <div class="topbar-greeting">
       <h1>Perfil</h1>
-      <p>Gere a tua conta e ve o teu progresso.</p>
+      <p>Gere a tua conta e acompanha o teu progresso.</p>
      </div>
     </div>
+
     <div class="page-stack">
+     <!-- HERO -->
      <div class="card">
-      <div class="profile-header">
-       <div class="profile-avatar">MS</div>
-       <div>
-        <h3 style="margin: 0">Marta Silva</h3>
-        <p class="lead">marta.silva@estudante.pt</p>
+      <div class="profile-hero">
+       <div class="profile-avatar-lg" id="profile-avatar">--</div>
+       <div class="profile-meta">
+        <h2 id="profile-name">—</h2>
+        <p id="profile-email">—</p>
+        <div class="stat-pills">
+         <span class="stat-pill accent" id="profile-xp">0 XP</span>
+         <span class="stat-pill accent" id="profile-level">Nível 1</span>
+         <span class="stat-pill" id="profile-streak">Streak 0 dias</span>
+         <span class="stat-pill" id="profile-checkins">0 check-ins</span>
+        </div>
+        <div style="margin-top: var(--space-3); max-width: 260px">
+         <div class="xp-bar-wrap">
+          <div class="xp-bar" id="xp-bar" style="width: 0%"></div>
+         </div>
+         <div class="level-row">
+          <span id="xp-label">0 / 100 XP</span>
+          <span id="level-label">Nível 1 → 2</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+
+     <div class="page-grid-2">
+      <!-- DADOS PESSOAIS -->
+      <div class="card">
+       <h3>Dados pessoais</h3>
+       <form id="form-perfil" style="margin-top: var(--space-4)">
+        <div class="field">
+         <label for="inp-firstName">Primeiro nome</label>
+         <input id="inp-firstName" type="text" />
+        </div>
+        <div class="field">
+         <label for="inp-lastName">Apelido</label>
+         <input id="inp-lastName" type="text" />
+        </div>
+        <div class="field">
+         <label for="inp-email">Email</label>
+         <input id="inp-email" type="email" />
+        </div>
         <div
          style="
           display: flex;
-          gap: var(--space-2);
-          margin-top: var(--space-3);
+          gap: var(--space-3);
           flex-wrap: wrap;
+          margin-top: var(--space-2);
          "
         >
-         <span class="stat-pill">240 XP</span>
-         <span class="stat-pill">Streak 12 dias</span>
-         <span class="stat-pill">Badge: Inicial</span>
+         <button class="btn-primary" type="submit">Guardar alterações</button>
+         <button class="btn-secondary" type="button" id="btn-logout">
+          Terminar sessão
+         </button>
         </div>
-       </div>
-      </div>
-     </div>
-     <div class="page-grid-2">
-      <div class="card">
-       <h3>Dados pessoais</h3>
-       <form action="#" method="post">
-        <div class="field">
-         <label for="name">Nome</label><input id="name" value="Marta Silva" />
-        </div>
-        <div class="field">
-         <label for="email">Email</label
-         ><input id="email" type="email" value="marta.silva@estudante.pt" />
-        </div>
-        <button class="btn-primary" type="submit">Guardar alteracoes</button>
        </form>
       </div>
+
+      <!-- MEDALHAS -->
       <div class="card">
-       <h3>Medalhas e titulos</h3>
-       <div class="medals-grid" style="margin-top: var(--space-2)">
-        <div class="medal">
-         <div class="medal-icon" style="background: #ede8f8; color: #6a5a9a">
-          <svg
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2"
-          >
-           <circle cx="12" cy="8" r="4" />
-           <path d="M8 21l4-4 4 4" />
-          </svg>
-         </div>
-         <div class="medal-name">Calm Week</div>
-        </div>
-        <div class="medal">
-         <div class="medal-icon" style="background: #e8f0f8; color: #4a6a9a">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-           <path
-            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-           />
-          </svg>
-         </div>
-         <div class="medal-name">Zen Month x3</div>
-        </div>
-        <div class="medal">
-         <div class="medal-icon" style="background: #fef8e0; color: #c48a20">
-          <svg
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2"
-          >
-           <circle cx="12" cy="12" r="4" />
-           <path d="M12 2v2M12 20v2" />
-          </svg>
-         </div>
-         <div class="medal-name">Foco Diario</div>
-        </div>
+       <h3>Medalhas</h3>
+       <p style="font-size: var(--text-sm); color: var(--color-text-muted)">
+        Medalhas desbloqueadas com base no teu progresso.
+       </p>
+       <div class="medals-grid" id="medals-grid">
+        <!-- preenchido via JS -->
        </div>
       </div>
      </div>
+
+     <!-- DESAFIOS -->
      <div class="card">
-      <h3>Sessao</h3>
-      <p class="lead">Terminar sessao neste dispositivo.</p>
-      <a
-       href="login.html"
-       class="btn-secondary"
-       style="margin-top: var(--space-4); display: inline-flex"
-       >Logout</a
-      >
+      <h3>Desafios</h3>
+      <p style="font-size: var(--text-sm); color: var(--color-text-muted)">
+       Progresso atualizado automaticamente com os teus check-ins e atividades.
+      </p>
+      <div class="challenges-list" id="challenges-list">
+       <!-- preenchido via JS -->
+      </div>
      </div>
     </div>
    </main>
   </div>
-  <script type="module" src="src/js/zenify/sidebar.js"></script>
+
+  <div class="feedback-toast" id="toast"></div>
+
+  <script type="module" src="./sidebar.js"></script>
+  <script type="module" src="src/js/controllers/perfil.js"></script>
  </body>
 </html>

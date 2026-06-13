@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zenify – Hoje</title>
+  <title>Zenify</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -20,11 +20,12 @@
    <main class="main">
     <div class="topbar">
      <div class="topbar-greeting">
-      <h1>Ola, Marta</h1>
-      <p>Que bom te ver por aqui.<br />Como esta a tua mente hoje?</p>
+      <h1 id="greeting-name">Olá</h1>
+      <p>Que bom te ver por aqui.<br />Como está a tua mente hoje?</p>
      </div>
+
      <div class="topbar-actions">
-      <button class="notif-btn" aria-label="Notificacoes">
+      <button class="notif-btn" aria-label="Notificações">
        <svg
         width="18"
         height="18"
@@ -37,9 +38,10 @@
         <path d="M13.73 21a2 2 0 0 1-3.46 0" />
        </svg>
       </button>
-      <a href="zenify-perfil.html" class="avatar-btn" aria-label="Perfil">
-       <div class="avatar">MS</div>
-       <span>MS</span>
+
+      <a href="perfil.html" class="avatar-btn" aria-label="Perfil">
+       <div class="avatar" id="user-avatar">--</div>
+       <span id="user-avatar-text">--</span>
        <svg
         width="14"
         height="14"
@@ -103,67 +105,24 @@
        </svg>
        <h3>Progresso</h3>
       </div>
+
       <div>
-       <p class="streak-text">Streak: <strong>12 dias</strong> seguidos</p>
-       <div class="streak-dots">
-        <div class="dot dot-filled">
-         <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2">
-          <polyline points="2,6 5,9 10,3" />
-         </svg>
-        </div>
-        <div class="dot dot-filled">
-         <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2">
-          <polyline points="2,6 5,9 10,3" />
-         </svg>
-        </div>
-        <div class="dot dot-filled">
-         <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2">
-          <polyline points="2,6 5,9 10,3" />
-         </svg>
-        </div>
-        <div class="dot dot-filled">
-         <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2">
-          <polyline points="2,6 5,9 10,3" />
-         </svg>
-        </div>
-        <div class="dot dot-filled">
-         <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2">
-          <polyline points="2,6 5,9 10,3" />
-         </svg>
-        </div>
-        <div class="dot dot-filled">
-         <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2">
-          <polyline points="2,6 5,9 10,3" />
-         </svg>
-        </div>
-        <div class="dot dot-filled">
-         <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2">
-          <polyline points="2,6 5,9 10,3" />
-         </svg>
-        </div>
-        <div class="dot dot-filled">
-         <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2">
-          <polyline points="2,6 5,9 10,3" />
-         </svg>
-        </div>
-        <div class="dot dot-filled">
-         <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2">
-          <polyline points="2,6 5,9 10,3" />
-         </svg>
-        </div>
-        <div class="dot dot-filled">
-         <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2">
-          <polyline points="2,6 5,9 10,3" />
-         </svg>
-        </div>
-        <div class="dot dot-filled">
-         <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2">
-          <polyline points="2,6 5,9 10,3" />
-         </svg>
-        </div>
-        <div class="dot dot-empty"></div>
-       </div>
+       <p class="streak-text">
+        Streak: <strong><span id="streak-number">0</span></strong>
+        <span id="streak-label">dias seguidos</span>
+       </p>
+
+       <div class="streak-dots" id="streak-dots"></div>
       </div>
+
+      <!-- Botão de check-in -->
+      <button type="button" class="btn-checkin" id="btn-checkin">
+       Fazer check-in de hoje
+      </button>
+
+      <!-- Feedback inline -->
+      <p class="checkin-feedback" id="checkin-feedback" aria-live="polite"></p>
+
       <div class="medals-section">
        <h4>Medalhas conquistadas</h4>
        <div class="medals-grid">
@@ -209,7 +168,7 @@
            />
           </svg>
          </div>
-         <div class="medal-name">Foco Diario</div>
+         <div class="medal-name">Foco Diário</div>
          <div class="medal-sub">10 dias</div>
         </div>
        </div>
@@ -220,7 +179,7 @@
       <h3>Recomendado para ti</h3>
       <div class="exercises-grid">
        <a
-        href="zenify-exercicios.html"
+        href="exercicios.html"
         class="exercise-card"
         style="text-decoration: none; color: inherit"
        >
@@ -297,7 +256,7 @@
         </div>
        </a>
        <a
-        href="zenify-exercicios.html"
+        href="exercicios.html"
         class="exercise-card"
         style="text-decoration: none; color: inherit"
        >
@@ -454,7 +413,7 @@
          <p>Reduz o stress e acalma a mente</p>
          <div class="next-item-meta"><span>5 min</span><span>Stress</span></div>
         </div>
-        <a href="zenify-exercicios.html" class="play-btn" aria-label="Iniciar"
+        <a href="exercicios.html" class="play-btn" aria-label="Iniciar"
          ><svg viewBox="0 0 24 24" fill="currentColor">
           <polygon points="5 3 19 12 5 21 5 3" /></svg
         ></a>
@@ -475,7 +434,7 @@
          <p>Relaxamento para uma noite tranquila</p>
          <div class="next-item-meta"><span>10 min</span><span>Sono</span></div>
         </div>
-        <a href="zenify-exercicios.html" class="play-btn" aria-label="Iniciar"
+        <a href="exercicios.html" class="play-btn" aria-label="Iniciar"
          ><svg viewBox="0 0 24 24" fill="currentColor">
           <polygon points="5 3 19 12 5 21 5 3" /></svg
         ></a>
@@ -497,13 +456,13 @@
          <p>Foca-te no presente e melhora a concentracao</p>
          <div class="next-item-meta"><span>7 min</span><span>Foco</span></div>
         </div>
-        <a href="zenify-exercicios.html" class="play-btn" aria-label="Iniciar"
+        <a href="exercicios.html" class="play-btn" aria-label="Iniciar"
          ><svg viewBox="0 0 24 24" fill="currentColor">
           <polygon points="5 3 19 12 5 21 5 3" /></svg
         ></a>
        </div>
       </div>
-      <a href="zenify-exercicios.html" class="view-all"
+      <a href="exercicios.html" class="view-all"
        >Ver todos os exercicios</a
       >
      </div>
@@ -511,52 +470,7 @@
    </main>
   </div>
 
-  <script type="module" src="src/js/zenify/sidebar.js"></script>
-  <script>
-   const ctx = document.getElementById("humorChart").getContext("2d");
-   new Chart(ctx, {
-    type: "line",
-    data: {
-     labels: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
-     datasets: [
-      {
-       data: [3, 2, 3, 2.5, 3.5, 3.2, 4.2],
-       borderColor: "#7577d8",
-       backgroundColor: "rgba(117,119,216,0.08)",
-       borderWidth: 2,
-       pointBackgroundColor: "#7577d8",
-       pointRadius: 4,
-       fill: true,
-       tension: 0.3,
-      },
-     ],
-    },
-    options: {
-     responsive: true,
-     maintainAspectRatio: false,
-     plugins: { legend: { display: false } },
-     scales: {
-      y: {
-       min: 1,
-       max: 5,
-       ticks: {
-        stepSize: 1,
-        font: { size: 11, family: "Inter" },
-        color: "#a8abbe",
-        callback: (v) =>
-         ["", "Muito mal", "Mal", "Neutro", "Bem", "Muito bem"][v] || "",
-       },
-       grid: { color: "rgba(0,0,0,0.04)" },
-       border: { display: false },
-      },
-      x: {
-       ticks: { font: { size: 11, family: "Inter" }, color: "#a8abbe" },
-       grid: { display: false },
-       border: { display: false },
-      },
-     },
-    },
-   });
-  </script>
+  <script type="module" src="./sidebar.js"></script>
+  <script type="module" src="src/js/controllers/dashboard.js"></script>
  </body>
 </html>
