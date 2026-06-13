@@ -4,54 +4,74 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
 
 ## Stack
 
-- Frontend: HTML5, Tailwind CSS (CDN), JavaScript (ES modules)
-- Autenticacao: localStorage (Opcao B — utilizadores locais, documentado)
+- Frontend: HTML5, CSS custom (`src/css/`), JavaScript (ES modules)
+- Autenticacao: landing page + `userModel.js` (PR frontend) e auth localStorage (legacy)
 - API mock: JSON Server (`activities`, `checkins`, `userStats`)
+- Chat (main): Ollama via `server/chat-api.js` — ver [docs/chat-ollama.md](docs/chat-ollama.md)
 
-Ver [docs/persistencia.md](docs/persistencia.md) para a divisao exacta entre localStorage e JSON Server.
-
-## Arquitectura
+## Estrutura do projecto
 
 ```
-src/js/
-  data/      ← servicos (auth, activities, checkins)
-  models/    ← UserProgress (classe) + funcoes puras
-  views/     ← modulos funcionais (DOM no topo)
-  controllers/   ← arranque por pagina (login.js, app.js, …)
+/
+  index.html              → redirect para landing
+  landing.html            → entrada publica + login/registo
+  dashboard.html          → hoje (area autenticada)
+  registo.html            → diario de humor
+  exercicios.html         → exercicios de calma
+  insights.html           → estatisticas
+  comunidade.html         → feed
+  perfil.html             → perfil
+  settings.html           → configuracoes
+  ajuda.html              → FAQ
+  admin.html              → painel admin (MVP antigo)
+
+  legacy/                 → MVP Tailwind (app, login, register)
+  src/
+    css/
+      app.css             → layout dashboard + sidebar
+      landing.css         → landing page
+      auth.css            → formularios auth
+      af.css              → a11y (skip link, foco)
+    js/
+      controllers/        → arranque por pagina
+      views/              → DOM + eventos
+      models/             → dominio
+      data/               → servicos API/localStorage
+      zenify/sidebar.js   → navegacao lateral
+  server/chat-api.js      → proxy Ollama
+  db.json                 → JSON Server
+  docs/                   → documentacao
 ```
-
-Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/design-inclusivo.md](docs/design-inclusivo.md)
-
-## Estrutura
-
-- `index.html` - pagina publica (visitante)
-- `login.html` / `register.html` - autenticacao
-- `app.html` - area do utilizador
-- `admin.html` - gestao de atividades (requer JSON Server)
-- `src/js/controllers/` - ponto de entrada de cada pagina
-- `db.json` - dados do JSON Server (sem `users` — ver persistencia)
 
 ## Arranque rapido
 
-1. Servir o projecto com um servidor local (modulos ES6 nao funcionam em `file://`):
+1. Servir o projecto:
 
 ```bash
 npx serve .
 ```
 
-2. Noutro terminal, levantar o mock API:
+2. Mock API:
 
 ```bash
 npx json-server --watch db.json --port 3000
 ```
 
-3. (Opcional) Assistente com Ollama — ver [docs/chat-ollama.md](docs/chat-ollama.md).
+3. (Opcional) Chat Ollama — [docs/chat-ollama.md](docs/chat-ollama.md)
 
-4. Abrir `http://localhost:3000` (ou a porta do `serve`) → `login.html` ou `register.html`.
+4. Abrir `http://localhost:3000` → `landing.html`
 
-Credenciais admin (seed no localStorage na primeira execucao):
+## Fluxo utilizador (frontend PR)
+
+`landing.html` → login/registo → `dashboard.html` → restantes paginas via sidebar.
+
+## Legacy
+
+Paginas antigas em `legacy/` — ver [legacy/README.md](legacy/README.md).
+
+Credenciais admin seed (legacy localStorage):
 
 - email: `admin@zenify.local`
 - password: `admin123`
 
-Nota: contas de administrador nao podem ser criadas no registo. Utilizadores normais registam-se em `register.html`.
+Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/persistencia.md](docs/persistencia.md)
