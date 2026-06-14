@@ -112,14 +112,3 @@ Ver [docs/chat-ollama.md](docs/chat-ollama.md).
 ## Fluxo utilizador (frontend PR)
 
 `landing.html` → login/registo → `dashboard.html` → restantes paginas via sidebar.
-
-## Legacy
-
-Paginas antigas em `legacy/` — ver [legacy/README.md](legacy/README.md).
-
-Credenciais admin seed (legacy localStorage):
-
-- email: `admin@zenify.local`
-- password: `admin123`
-
-Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/persistencia.md](docs/persistencia.md)
