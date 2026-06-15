@@ -20,8 +20,8 @@ function getTopbarConfig(page) {
    showBell: true,
   },
   diario: {
-   title: t("topbar.community.title"),
-   subtitle: t("topbar.community.subtitle"),
+   title: t("topbar.journal.title"),
+   subtitle: t("topbar.journal.subtitle"),
    showBell: true,
   },
   insights: {

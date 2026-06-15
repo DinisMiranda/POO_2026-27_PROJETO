@@ -1674,6 +1674,57 @@ a.play-btn { text-decoration: none; }
   flex-shrink: 0;
 }
 
+/* ─── Diário de humor ─── */
+.diary-mood-hint,
+.diary-rule {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.diary-feedback {
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-sm);
+  display: none;
+}
+
+.diary-feedback.visible {
+  display: block;
+}
+
+.diary-feedback--success {
+  color: #2d6a4f;
+}
+
+.diary-feedback--error {
+  color: #be123c;
+}
+
+.diary-history-meta {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
+
+.diary-history-note {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.diary-empty {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  list-style: none;
+}
+
+.diary-history-row {
+  align-items: flex-start;
+}
+
 .checkin-mood-lead {
   font-size: var(--text-sm);
   color: var(--color-text-muted);

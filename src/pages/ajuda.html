@@ -1,46 +1,25 @@
-<!doctype html>
-<html lang="pt">
- <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zenify – Ajuda</title>
-  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-   href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
-   rel="stylesheet"
-  />
-  <link rel="stylesheet" href="../css/app.css" />
- </head>
- <body data-zenify-page="ajuda">
-  <div class="app">
-   <aside class="sidebar" data-zenify-sidebar></aside>
-   <main class="main">
-    <header data-zenify-topbar></header>
-    <div class="page-stack">
      <div class="card">
-      <h3>Comecar</h3>
+      <h3>Começar</h3>
       <div class="faq-item">
-       <h4>Como faco o check-in diario?</h4>
+       <h4>Como faço o check-in diário?</h4>
        <p>
-        Vai a <a href="landing.html">Registo</a>, escolhe o nivel de
-        humor (1-5), escreve uma nota opcional e carrega em Guardar check-in.
+        No <a href="dashboard.html">Dashboard</a>, carrega em «Fazer check-in de hoje»
+        e escolhe o teu humor. Também podes registar humor e notas no
+        <a href="diario.html">Diário</a>.
        </p>
       </div>
       <div class="faq-item">
-       <h4>O que e o streak?</h4>
+       <h4>O que é o streak?</h4>
        <p>
-        E o numero de dias seguidos com check-in. Mantem a consistencia para
+        É o número de dias seguidos com check-in. Mantém a consistência para
         desbloquear medalhas e ganhar XP extra.
        </p>
       </div>
       <div class="faq-item">
-       <h4>Como funcionam os exercicios?</h4>
+       <h4>Como funcionam os exercícios?</h4>
        <p>
-        Em <a href="exercicios.html">Exercicios</a> escolhes uma
-        intervencao curta (respiracao, grounding, relaxamento). Ao concluir,
-        ganhas pontos de consistencia.
+        Em <a href="exercicios.html">Exercícios</a> escolhes uma prática curta
+        (respiração, meditação, diário de gratidão). Ao concluir, ganhas XP.
        </p>
       </div>
      </div>
@@ -48,38 +27,13 @@
       <div class="card">
        <h3>Assistente</h3>
        <p class="lead">
-        O assistente responde a perguntas sobre ansiedade academica, stress e
-        habitos de estudo. Com Ollama activo, as respostas sao geradas
-        localmente.
+        O assistente responde a perguntas sobre ansiedade académica, stress e
+        hábitos de estudo. Requer Ollama local (ver README).
        </p>
        <a
-        href="app.html"
+        href="chatbot.html"
         class="btn-secondary"
         style="margin-top: var(--space-4); display: inline-flex"
-        >Abrir app classica</a
+        >Abrir assistente</a
        >
       </div>
-      <div class="card">
-       <h3>Suporte</h3>
-       <p class="lead">
-        O Zenify nao substitui apoio psicologico profissional. Em caso de crise,
-        contacta os servicos de saude mental da tua instituicao.
-       </p>
-       <p
-        style="
-         font-size: var(--text-sm);
-         margin-top: var(--space-4);
-         color: var(--color-text-muted);
-        "
-       >
-        Email: suporte@zenify.local
-       </p>
-      </div>
-     </div>
-    </div>
-   </main>
-  </div>
-  <script type="module" src="../js/views/sidebar-view.js"></script>
-  <script type="module" src="../js/views/topbar-view.js"></script>
- </body>
-</html>

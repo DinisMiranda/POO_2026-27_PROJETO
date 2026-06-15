@@ -29,6 +29,10 @@ const DICTIONARY = {
     title: "Assistente",
     subtitle: "Conversa sobre bem-estar, stress e hábitos saudáveis.",
    },
+   journal: {
+    title: "Diário",
+    subtitle: "Regista o teu humor e acompanha o histórico.",
+   },
    community: {
     title: "Comunidade",
     subtitle: "Liga-te a pessoas com objetivos semelhantes.",
@@ -178,6 +182,10 @@ const DICTIONARY = {
    chatbot: {
     title: "Assistant",
     subtitle: "Talk about wellbeing, stress and healthy habits.",
+   },
+   journal: {
+    title: "Journal",
+    subtitle: "Log your mood and review your history.",
    },
    community: {
     title: "Community",

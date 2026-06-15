@@ -26,7 +26,6 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
     ajuda.html            → FAQ
     admin.html            → painel de administração
 
-  legacy/                 → MVP Tailwind (app, login, register)
   src/
     css/
       app.css             → layout dashboard + sidebar
@@ -140,21 +139,20 @@ Para entrega no Moodle, usar o modelo em `docs/entrega-variaveis-ambiente.txt`.
 
 ---
 
-## Credenciais antigas (legacy)
+## Fluxo utilizador
 
-| Campo    | Valor             |
-|----------|-------------------|
-| Email    | `admin@zenify.local` |
-| Password | `admin123`        |
+`landing.html` → login → `dashboard.html` → restantes páginas via sidebar:
 
-(apenas páginas em `legacy/`)
+| Página | Função |
+|--------|--------|
+| Dashboard | Check-in diário, streak, humor da semana |
+| Diário | Registo de humor + notas + histórico |
+| Exercícios | Práticas guiadas com XP |
+| Assistente | Chat com IA (Ollama) |
+| Insights | Estatísticas e padrões |
+| Perfil | XP, medalhas, desafios |
+| Admin | Gestão da plataforma (só admin) |
 
-## Fluxo utilizador (frontend PR)
+Toda a app vive em `src/pages/` com autenticação json-server (JWT).
 
-`src/pages/landing.html` → login/registo → `dashboard.html` → restantes páginas via sidebar.
-
-## Legacy
-
-Paginas antigas em `legacy/` — ver [legacy/README.md](legacy/README.md).
-
-Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/persistencia.md](docs/persistencia.md)
+Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/persistencia.md](docs/persistencia.md) · [docs/chat-ollama.md](docs/chat-ollama.md)
