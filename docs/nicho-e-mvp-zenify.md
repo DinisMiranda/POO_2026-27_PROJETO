@@ -61,25 +61,28 @@ O Zenify ajuda estudantes universitarios a reduzir ansiedade academica com inter
 
 ## Servicos (`src/js/data`)
 
-- `auth-service.js` — utilizadores e sessao em localStorage
-- `activity-service.js` — CRUD de atividades no JSON Server
-- `app-service.js` — check-ins e stats filtrados por `userId`
+- `http.js` — login, registo e `apiFetch` com JWT
+- `session.js` — `requireSession()` nas páginas autenticadas
+- `userModel.js` — sessão em `sessionStorage`
+- `activity-service.js` — exercícios/atividades
+- `admin-service.js` — métricas e CRUD do admin
+- `chat-service.js` — assistente Ollama
 
 ## Models (`src/js/models`)
 
-- `UserProgress` — classe com `#xp`, `#streak`, regras de gamificacao
+- `progressModel.js` — XP, desafios e medalhas
+- `streakModel.js` — check-ins e streak
 - `recommendation.js` — `getRecommendation(level, date)`
-- `chatbot.js` — `respondToChat(input)` por regras fixas
 
 ## Views (`src/js/views`)
 
 - Modulos funcionais com selectors DOM no topo do ficheiro
-- `view-manager.js` — `initViews(...)`
-- `modal-manager.js` — `createModal(...)`
+- `sidebar-view.js`, `topbar-view.js` — layout partilhado
+- `view-manager.js` — tabs no painel admin
 
-## Entradas (`src/js/entries`)
+## Controllers (`src/js/controllers`)
 
-- `login.js`, `register.js`, `app.js`, `admin.js` — arranque explicito por pagina
+- Um ficheiro por página (`dashboard.js`, `diario.js`, `admin.js`, …)
 
 ## 5) Escopo recomendado para apresentacao
 

@@ -1,3 +1,24 @@
+<!doctype html>
+<html lang="pt-PT">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zenify – Ajuda</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+   href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+   rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../css/app.css" />
+ </head>
+ <body data-zenify-page="ajuda">
+  <div class="app">
+   <aside class="sidebar" data-zenify-sidebar></aside>
+   <main class="main">
+    <header data-zenify-topbar></header>
+    <div class="page-stack">
      <div class="card">
       <h3>Começar</h3>
       <div class="faq-item">
@@ -37,3 +58,27 @@
         >Abrir assistente</a
        >
       </div>
+      <div class="card">
+       <h3>Suporte</h3>
+       <p class="lead">
+        O Zenify não substitui apoio psicológico profissional. Em caso de crise,
+        contacta os serviços de saúde mental da tua instituição.
+       </p>
+       <p
+        style="
+         font-size: var(--text-sm);
+         margin-top: var(--space-4);
+         color: var(--color-text-muted);
+        "
+       >
+        Email: suporte@zenify.local
+       </p>
+      </div>
+     </div>
+    </div>
+   </main>
+  </div>
+  <script type="module" src="../js/views/sidebar-view.js"></script>
+  <script type="module" src="../js/views/topbar-view.js"></script>
+ </body>
+</html>

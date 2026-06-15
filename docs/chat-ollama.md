@@ -127,7 +127,7 @@ Reinicia `npm run chat-api` após alterar o `.env`.
 | `ollamaReady: false` no health | `ollama pull llama3.2` |
 | Erro de rede no browser | Confirma porta **3002** (não 3001) |
 | Primeira resposta lenta | Normal — o modelo carrega para RAM na primeira vez |
-| Chat não aparece | Usa a app em `src/pages/` (sidebar **Assistente**), não `legacy/` |
+| Chat não aparece | Abre `src/pages/chatbot.html` (sidebar **Assistente**) |
 
 ---
 
@@ -135,4 +135,3 @@ Reinicia `npm run chat-api` após alterar o `.env`.
 
 - Funciona offline depois de `ollama pull`.
 - Não há fallback com respostas pré-escritas — o comportamento é intencional para não simular IA quando o motor não está disponível.
-- A implementação legacy (`legacy/app.html`) mantém regras fixas apenas como MVP antigo; a app apresentada usa Ollama.

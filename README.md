@@ -30,14 +30,12 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
     css/
       app.css             → layout dashboard + sidebar
       landing.css         → landing page
-      auth.css            → formularios auth
       af.css              → a11y (skip link, foco)
     js/
       controllers/        → arranque por pagina
-      views/              → DOM + eventos
-      models/             → dominio
-      data/               → servicos API/localStorage
-      zenify/sidebar.js   → navegacao lateral
+      views/              → DOM + eventos (sidebar, topbar, admin, …)
+      models/             → dominio (progressModel, streakModel, …)
+      data/               → servicos API e sessao
   server/chat-api.js      → proxy Ollama
   db.json                 → JSON Server
   docs/                   → documentacao

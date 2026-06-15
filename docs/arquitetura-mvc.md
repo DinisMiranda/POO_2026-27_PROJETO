@@ -2,42 +2,48 @@
 
 ## Frase para a defesa
 
-O Zenify usa **modulos ES6 funcionais** para views e arranque, **servicos em `data/`** para persistencia, e **uma classe de dominio** (`UserProgress`) onde o estado por utilizador faz sentido.
+O Zenify usa **módulos ES6** com controllers por página, **views** para DOM partilhado (sidebar, topbar) e **models/serviços** para regras de negócio e persistência via json-server-auth.
 
 ## Estrutura
 
 ```
 src/js/
-  data/           ← servicos (auth, activities, checkins) — falam com localStorage/API
-  models/         ← dominio: UserProgress + funcoes puras (chatbot, recommendation)
-  views/          ← DOM: selectors no topo, funcoes exportadas
-  entries/        ← ponto de entrada por pagina (login.js, app.js, …)
+  controllers/    ← arranque por página (dashboard.js, diario.js, …)
+  views/          ← DOM reutilizável (sidebar-view, topbar-view, admin-view, …)
+  models/         ← domínio (progressModel, streakModel, recommendation, …)
+  data/           ← HTTP, sessão, config, serviços admin/chat
 ```
 
-## Porque as Views nao sao classes
+## Arranque por página
 
-Cada instancia de `AuthView` seria identica — sem estado proprio. Os selectors DOM correm **uma vez** no topo do modulo; as funcoes exportadas manipulam esses elementos.
+Cada HTML em `src/pages/` carrega um ou mais `<script type="module">`:
 
-## Porque os Controllers deram lugar a `entries/`
+- `sidebar-view.js` + `topbar-view.js` nas páginas autenticadas
+- um controller específico (`dashboard.js`, `exercicios.js`, …)
+- `landing.js` na entrada pública (login/registo integrado)
 
-Cada HTML carrega um unico `<script type="module" src="…/entries/app.js">`. Esse ficheiro coordena servicos + views — sem `new AppController()` no fim do proprio controller.
-
-## Classe legitima: `UserProgress`
-
-Representa **uma coisa** com estado proprio (`#xp`, `#streak`, `#lastDate`) e metodos que o modificam (`applyCheckInReward`, `computeBadge`).
-
-## Servicos vs models
+## Models principais
 
 | Ficheiro | Papel |
 |----------|--------|
-| `auth-service.js` | Onde os utilizadores “vivem” (localStorage) |
-| `activity-service.js` | CRUD de atividades no JSON Server |
-| `app-service.js` | Check-ins e stats com `userId` |
-| `UserProgress.js` | Regras de gamificacao |
+| `progressModel.js` | XP, desafios, medalhas |
+| `streakModel.js` | Check-ins e streak |
+| `recommendation.js` | Sugestões por humor e hora do dia |
+| `userModel.js` | Sessão JWT + perfil |
 
-## Fluxo de check-in (`entries/app.js`)
+## Serviços (`data/`)
 
-1. `bindMoodSubmit` (view) → entrada
-2. `addCheckin` (app-service) → servidor ou cache local
-3. `progress.applyCheckInReward` (model) → XP/streak + recomendacao
-4. `saveStats` + `renderDashboard` (service + view)
+| Ficheiro | Papel |
+|----------|--------|
+| `http.js` | `apiFetch`, login/registo |
+| `session.js` | `requireSession()` nas páginas protegidas |
+| `activity-service.js` | Exercícios/atividades |
+| `admin-service.js` | CRUD do painel admin |
+| `chat-service.js` | Proxy para Ollama (`server/chat-api.js`) |
+
+## Fluxo de check-in (exemplo)
+
+1. Utilizador escolhe humor no **Dashboard** ou **Diário**
+2. Controller grava em `moodLogs` (e `checkins` no primeiro registo do dia)
+3. `StreakModel.doCheckin` atualiza streak
+4. `ProgressModel` sincroniza desafios e medalhas

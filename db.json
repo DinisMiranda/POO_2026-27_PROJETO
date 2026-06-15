@@ -20,6 +20,18 @@
       "email": "admin@zenify.pt",
       "password": "$2a$10$7jItJgECjcA.4otdsB5Zle/doJQt6HOVFkJJoXk4wl.qpEurBxZ3u",
       "role": "admin"
+    },
+    {
+      "email": "novo@test.pt",
+      "password": "$2a$10$AGoGPp49eYE44lWxxxXPQOVOQTl0QZF/ZeEpmsZqiGRCULSUoc0Sm",
+      "firstName": "Novo",
+      "lastName": "User",
+      "name": "Novo User",
+      "role": "user",
+      "xp": 0,
+      "streak": 0,
+      "badges": [],
+      "id": "VBCqxox"
     }
   ],
   "userStats": [
@@ -67,6 +79,18 @@
         "m8"
       ],
       "createdAt": "2026-06-13T00:00:00.000Z"
+    },
+    {
+      "userId": "u-admin",
+      "xp": 0,
+      "level": 1,
+      "totalCheckins": 0,
+      "longestStreak": 0,
+      "activityTypes": [],
+      "completedChallenges": [],
+      "unlockedMedals": [],
+      "createdAt": "2026-06-15T12:09:39.413Z",
+      "id": "8WyjG6x"
     }
   ],
   "moodLogs": [
@@ -117,6 +141,20 @@
       "userId": "u-user",
       "date": "2026-06-15",
       "mood": 1
+    },
+    {
+      "userId": "u-user",
+      "date": "2026-06-15",
+      "mood": 4,
+      "note": "teste diario",
+      "id": "GNJ4e7w"
+    },
+    {
+      "userId": "u-admin",
+      "date": "2026-06-15",
+      "mood": 3,
+      "note": "ola",
+      "id": "GfBXSB1"
     }
   ],
   "activities": [
@@ -156,7 +194,15 @@
       "description": "Caminha devagar, presta atenção a cada passo."
     }
   ],
-  "checkins": [],
+  "checkins": [
+    {
+      "userId": "u-admin",
+      "date": "2026-06-15",
+      "level": 3,
+      "note": "ola",
+      "id": 1
+    }
+  ],
   "tips": [
     {
       "id": "1",

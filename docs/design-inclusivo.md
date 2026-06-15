@@ -10,5 +10,4 @@
 ## Ficheiros relevantes
 
 - `src/css/af.css` — estilos partilhados de acessibilidade
-- `src/js/views/modal-manager.js` — foco inicial e tecla Escape
-- `src/js/views/view-manager.js` — estado activo exposto a leitores de ecra
+- `src/js/views/view-manager.js` — estado activo exposto a leitores de ecrã (admin)

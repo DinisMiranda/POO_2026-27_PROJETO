@@ -3,7 +3,6 @@ import { clearAuthToken, getAuthToken } from "../data/auth-token.js";
 import { loginWithCredentials, registerAccount } from "../data/http.js";
 
 const SESSION_KEY = "zenify_user";
-const LEGACY_SESSION_KEY = "zenify_session";
 
 function toSafeUser(user) {
  if (!user) return null;
@@ -40,28 +39,12 @@ export const UserModel = {
   if (!safeUser) return;
 
   sessionStorage.setItem(SESSION_KEY, JSON.stringify(safeUser));
-  localStorage.setItem(
-   LEGACY_SESSION_KEY,
-   JSON.stringify({
-    id: safeUser.id,
-    name:
-     safeUser.name ||
-     `${safeUser.firstName || ""} ${safeUser.lastName || ""}`.trim(),
-    firstName: safeUser.firstName,
-    lastName: safeUser.lastName,
-    email: safeUser.email,
-    role: safeUser.role,
-   }),
-  );
  },
 
  getSession() {
   try {
    const raw = sessionStorage.getItem(SESSION_KEY);
-   if (raw) return JSON.parse(raw);
-
-   const legacy = localStorage.getItem(LEGACY_SESSION_KEY);
-   return legacy ? JSON.parse(legacy) : null;
+   return raw ? JSON.parse(raw) : null;
   } catch {
    return null;
   }
@@ -69,7 +52,7 @@ export const UserModel = {
 
  clearSession() {
   sessionStorage.removeItem(SESSION_KEY);
-  localStorage.removeItem(LEGACY_SESSION_KEY);
+  localStorage.removeItem("zenify_session");
   clearAuthToken();
  },
 
