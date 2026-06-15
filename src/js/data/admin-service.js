@@ -18,7 +18,7 @@ async function mutate(path, method, body) {
 
 export const AdminService = {
  async getOverview() {
-  const [users, activities, checkins, challenges, medals, tips, moodLogs, userStats] =
+  const [users, activities, checkins, challenges, medals, tips, moodLogs, progressList] =
    await Promise.all([
     readList("/users"),
     readList("/activities"),
@@ -27,7 +27,7 @@ export const AdminService = {
     readList("/medalDefinitions"),
     readList("/tips"),
     readList("/moodLogs"),
-    readList("/userStats"),
+    readList("/userProgress"),
    ]);
 
   const regularUsers = users.filter((u) => u.role !== "admin");
@@ -52,12 +52,13 @@ export const AdminService = {
     tips: tips.length,
     moodLogs: moodLogs.length,
     avgMood: avgMood.toFixed(1),
-    activeStreaks: userStats.filter((s) => Number(s.streak) > 0).length,
+    activeStreaks: progressList.filter((row) => Number(row.streak) > 0).length,
    },
   };
  },
 
  getUsers: () => readList("/users"),
+ getUserProgress: () => readList("/userProgress"),
  updateUserRole: (id, role) => mutate(`/users/${id}`, "PATCH", { role }),
  deleteUser: (id) => mutate(`/users/${id}`, "DELETE"),
 

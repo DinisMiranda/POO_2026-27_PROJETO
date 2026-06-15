@@ -1,9 +1,9 @@
-import { UserModel } from "../models/userModel.js";
-import { StreakModel } from "../models/streakModel.js";
 import { ProgressModel } from "../models/progressModel.js";
 import { NotificationsModel } from "../models/notificationsModel.js";
-import { apiFetch } from "../data/http.js";
+import { fetchMoodLogs, saveMoodLog } from "../data/mood-service.js";
 import { requireSession } from "../data/session.js";
+import { mountAppShell } from "../views/app-shell.js";
+import { dateStr, MOOD_LABELS } from "../data/utils.js";
 
 let activeUser = null;
 
@@ -39,20 +39,12 @@ const checkinMoodLabel = document.getElementById("checkin-mood-label");
 const confirmCheckinBtn = document.getElementById("btn-confirm-checkin");
 
 const DAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-const MOOD_LABELS = {
- 1: "Muito baixo",
- 2: "Baixo",
- 3: "Neutro",
- 4: "Bom",
- 5: "Ótimo",
-};
 
-let currentStats = null;
-let humorChartInstance = null;
 let currentProgress = null;
 let challengeDefs = [];
 let medalDefs = [];
 let selectedCheckinMood = null;
+let humorChartInstance = null;
 
 function renderProgress(progress) {
  const xp = progress.xp || 0;
@@ -69,18 +61,18 @@ function renderProgress(progress) {
  }
 }
 
-function renderStreak(stats) {
- if (streakNumber) streakNumber.textContent = stats.streak;
+function renderStreak(progress) {
+ if (streakNumber) streakNumber.textContent = progress.streak;
 
  if (streakLabel) {
   streakLabel.textContent =
-   stats.streak === 1 ? "dia seguido" : "dias seguidos";
+   progress.streak === 1 ? "dia seguido" : "dias seguidos";
  }
 
- renderDots(stats.streak, stats.checkedInToday);
+ renderDots(progress.streak, progress.checkedInToday);
 
  if (checkinBtn) {
-  if (stats.checkedInToday) {
+  if (progress.checkedInToday) {
    checkinBtn.textContent = "✓ Check-in feito hoje";
    checkinBtn.disabled = true;
    checkinBtn.classList.add("btn-checkin--done");
@@ -120,10 +112,6 @@ function renderDots(streak, checkedInToday) {
  }
 }
 
-function dateStr(date) {
- return date.toISOString().slice(0, 10);
-}
-
 function getLast7Days() {
  const days = [];
  for (let i = 6; i >= 0; i--) {
@@ -136,35 +124,6 @@ function getLast7Days() {
   });
  }
  return days;
-}
-
-async function fetchMoodLogs(userId) {
- const res = await apiFetch(`/moodLogs?userId=${userId}`);
- if (!res?.ok) return [];
- return res.json();
-}
-
-async function saveMoodForToday(userId, mood) {
- const today = dateStr(new Date());
- const logs = await fetchMoodLogs(userId);
- const existing = logs.find((entry) => entry.date === today);
-
- if (existing?.id) {
-  const res = await apiFetch(`/moodLogs/${existing.id}`, {
-   method: "PATCH",
-   headers: { "Content-Type": "application/json" },
-   body: JSON.stringify({ mood }),
-  });
-  if (!res?.ok) throw new Error("Erro ao atualizar humor.");
-  return;
- }
-
- const res = await apiFetch("/moodLogs", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ userId, date: today, mood }),
- });
- if (!res?.ok) throw new Error("Erro ao guardar humor.");
 }
 
 function resetCheckinMoodModal() {
@@ -206,7 +165,7 @@ async function completeCheckinWithMood(mood) {
  confirmCheckinBtn.textContent = "A registar…";
 
  try {
-  const result = await StreakModel.doCheckin(activeUser.id);
+  const result = await ProgressModel.doCheckin(activeUser.id);
 
   if (result.alreadyDone) {
    showFeedback("Já fizeste check-in hoje!", "warning");
@@ -214,11 +173,10 @@ async function completeCheckinWithMood(mood) {
    return;
   }
 
-  await saveMoodForToday(activeUser.id, mood);
+  await saveMoodLog(activeUser.id, mood);
 
-  currentStats = result;
+  currentProgress = result;
   renderStreak(result);
-  UserModel.saveSession({ ...activeUser, streak: result.streak });
   await refreshProgressData();
   await refreshMoodDisplay();
 
@@ -401,11 +359,8 @@ function renderHumorChart(moodLogs) {
  });
 }
 
-function getChallengeCurrent(challenge, stats, progress) {
- if (challenge.type === "checkin") return stats?.totalCheckins || 0;
- if (challenge.type === "streak") return stats?.streak || 0;
- if (challenge.type === "activities") return (progress?.activityTypes || []).length;
- return 0;
+function getChallengeCurrent(challenge, progress) {
+ return ProgressModel.getChallengeCurrent(challenge, progress);
 }
 
 function getActiveChallenge() {
@@ -417,8 +372,9 @@ function getActiveChallenge() {
  if (!pending.length) return null;
 
  return pending.reduce((best, c) => {
-  const bestRatio = getChallengeCurrent(best, currentStats, currentProgress) / best.target;
-  const ratio = getChallengeCurrent(c, currentStats, currentProgress) / c.target;
+  const bestRatio =
+   getChallengeCurrent(best, currentProgress) / best.target;
+  const ratio = getChallengeCurrent(c, currentProgress) / c.target;
   return ratio > bestRatio ? c : best;
  });
 }
@@ -426,7 +382,7 @@ function getActiveChallenge() {
 function renderChallengeCard() {
  const challenge = getActiveChallenge();
 
- if (!challenge || !currentStats) {
+ if (!challenge || !currentProgress) {
   if (challengeTitle) challengeTitle.textContent = "Sem desafios ativos";
   if (challengeDesc) {
    challengeDesc.textContent = "Vê todos os desafios no teu perfil.";
@@ -437,7 +393,7 @@ function renderChallengeCard() {
   return;
  }
 
- const current = getChallengeCurrent(challenge, currentStats, currentProgress);
+ const current = getChallengeCurrent(challenge, currentProgress);
  const capped = Math.min(current, challenge.target);
  const pct = Math.min((current / challenge.target) * 100, 100);
  const unit = challenge.type === "streak" ? " dias" : "";
@@ -513,35 +469,34 @@ function closeAchievementModal() {
 }
 
 async function refreshProgressData() {
- const [stats, progress, challenges, medals] = await Promise.all([
-  StreakModel.getStats(activeUser.id),
+ const [progress, challenges, medals] = await Promise.all([
   ProgressModel.getProgress(activeUser.id),
   ProgressModel.getChallengeDefinitions(),
   ProgressModel.getMedalDefinitions(),
  ]);
 
- currentStats = stats;
  currentProgress = progress;
  challengeDefs = challenges;
  medalDefs = medals;
 
  await Promise.all([
-  ProgressModel.syncChallenges(activeUser.id, stats),
-  ProgressModel.syncMedals(activeUser.id, stats),
+  ProgressModel.syncChallenges(activeUser.id),
+  ProgressModel.syncMedals(activeUser.id),
  ]);
 
-  currentProgress = await ProgressModel.getProgress(activeUser.id);
+ currentProgress = await ProgressModel.getProgress(activeUser.id);
  renderProgress(currentProgress);
+ renderStreak(currentProgress);
  renderChallengeCard();
 }
 
 async function loadStreak() {
  try {
-  const stats = await StreakModel.syncStreak(activeUser.id);
-  currentStats = stats;
-  renderStreak(stats);
+  const progress = await ProgressModel.syncStreak(activeUser.id);
+  currentProgress = progress;
+  renderStreak(progress);
 
-  if (stats.broken) {
+  if (progress.broken) {
    showFeedback("A tua streak foi reiniciada. Começa hoje!", "warning");
   }
 
@@ -552,7 +507,7 @@ async function loadStreak() {
 }
 
 checkinBtn?.addEventListener("click", () => {
- if (currentStats?.checkedInToday) {
+ if (currentProgress?.checkedInToday) {
   showFeedback("Já fizeste check-in hoje!", "warning");
   return;
  }
@@ -593,13 +548,12 @@ achievementModal?.querySelectorAll("[data-achievement-close]").forEach((el) => {
 
 pendingChallengesList?.addEventListener("click", async (event) => {
  const btn = event.target.closest("[data-challenge-id]");
- if (!btn || !currentStats) return;
+ if (!btn || !currentProgress) return;
 
  try {
   const result = await ProgressModel.claimChallenge(
    activeUser.id,
    btn.dataset.challengeId,
-   currentStats,
   );
 
   if (result.alreadyDone) {
@@ -622,13 +576,12 @@ pendingChallengesList?.addEventListener("click", async (event) => {
 
 pendingMedalsList?.addEventListener("click", async (event) => {
  const btn = event.target.closest("[data-medal-id]");
- if (!btn || !currentStats) return;
+ if (!btn || !currentProgress) return;
 
  try {
   const result = await ProgressModel.claimMedal(
    activeUser.id,
    btn.dataset.medalId,
-   currentStats,
   );
 
   if (result.alreadyDone) {
@@ -660,6 +613,7 @@ async function loadHumorChart() {
 }
 
 async function initDashboard() {
+ mountAppShell();
  activeUser = await requireSession();
  if (!activeUser) return;
 

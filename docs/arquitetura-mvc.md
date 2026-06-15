@@ -10,24 +10,19 @@ O Zenify usa **módulos ES6** com controllers por página, **views** para DOM pa
 src/js/
   controllers/    ← arranque por página (dashboard.js, diario.js, …)
   views/          ← DOM reutilizável (sidebar-view, topbar-view, admin-view, …)
-  models/         ← domínio (progressModel, streakModel, recommendation, …)
-  data/           ← HTTP, sessão, config, serviços admin/chat
+  models/         ← domínio (progressModel, recommendation, …)
+  data/           ← HTTP, utils, mood-service, sessão, serviços
 ```
 
 ## Arranque por página
 
-Cada HTML em `src/pages/` carrega um ou mais `<script type="module">`:
-
-- `sidebar-view.js` + `topbar-view.js` nas páginas autenticadas
-- um controller específico (`dashboard.js`, `exercicios.js`, …)
-- `landing.js` na entrada pública (login/registo integrado)
+Cada HTML em `src/pages/` carrega um controller que chama `mountAppShell()` e a lógica da página.
 
 ## Models principais
 
 | Ficheiro | Papel |
 |----------|--------|
-| `progressModel.js` | XP, desafios, medalhas |
-| `streakModel.js` | Check-ins e streak |
+| `progressModel.js` | XP, streak, check-ins, desafios e medalhas |
 | `recommendation.js` | Sugestões por humor e hora do dia |
 | `userModel.js` | Sessão JWT + perfil |
 
@@ -35,7 +30,9 @@ Cada HTML em `src/pages/` carrega um ou mais `<script type="module">`:
 
 | Ficheiro | Papel |
 |----------|--------|
-| `http.js` | `apiFetch`, login/registo |
+| `http.js` | `apiFetch` / `apiFetchJson`, login/registo |
+| `utils.js` | `getInitials`, `dateStr`, `escapeHtml`, labels de humor |
+| `mood-service.js` | Leitura/escrita de `moodLogs` e `checkins` |
 | `session.js` | `requireSession()` nas páginas protegidas |
 | `activity-service.js` | Exercícios/atividades |
 | `admin-service.js` | CRUD do painel admin |
@@ -45,5 +42,5 @@ Cada HTML em `src/pages/` carrega um ou mais `<script type="module">`:
 
 1. Utilizador escolhe humor no **Dashboard** ou **Diário**
 2. Controller grava em `moodLogs` (e `checkins` no primeiro registo do dia)
-3. `StreakModel.doCheckin` atualiza streak
+3. `ProgressModel.doCheckin` atualiza streak e progresso
 4. `ProgressModel` sincroniza desafios e medalhas

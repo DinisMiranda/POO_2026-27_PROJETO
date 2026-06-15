@@ -8,7 +8,7 @@
 | Sessao + JWT | `sessionStorage` (`zenify_user`) + token em memória | Ver `auth-token.js` |
 | Check-ins | `/checkins` | Filtrados por `userId` |
 | Humor (diário) | `/moodLogs` | Um ou mais registos por dia |
-| XP / streak / medalhas | `/userStats`, campos em `/users` | `ProgressModel`, `StreakModel` |
+| XP / streak / medalhas | `/userProgress` | `ProgressModel` (fonte única) |
 | Exercícios, desafios, dicas | `/activities`, `/challenges`, `/tips` | Conteúdo gerido no admin |
 
 ## Arranque da API

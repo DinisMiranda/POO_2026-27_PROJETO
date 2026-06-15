@@ -6,7 +6,7 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
 
 - Frontend: HTML5, CSS custom (`src/css/`), JavaScript (ES modules)
 - Autenticacao: `json-server-auth` (JWT) via `POST /login` e `POST /register`
-- API mock: JSON Server + auth (`activities`, `checkins`, `userStats`, …)
+- API mock: JSON Server + auth (`activities`, `checkins`, `userProgress`, …)
 - Chat: Ollama via `server/chat-api.js` (porta **3002**) — página `src/pages/chatbot.html` — ver [docs/chat-ollama.md](docs/chat-ollama.md)
 
 ## Estrutura do projecto
@@ -34,8 +34,8 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
     js/
       controllers/        → arranque por pagina
       views/              → DOM + eventos (sidebar, topbar, admin, …)
-      models/             → dominio (progressModel, streakModel, …)
-      data/               → servicos API e sessao
+      models/             → dominio (progressModel, recommendation, …)
+      data/               → apiFetch, utils, mood-service, sessao
   server/chat-api.js      → proxy Ollama
   db.json                 → JSON Server
   docs/                   → documentacao

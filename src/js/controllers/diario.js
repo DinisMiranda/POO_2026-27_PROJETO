@@ -1,8 +1,18 @@
-import { apiFetch } from "../data/http.js";
 import { getRecommendation } from "../models/recommendation.js";
 import { ProgressModel } from "../models/progressModel.js";
-import { StreakModel } from "../models/streakModel.js";
+import {
+ fetchMoodLogs,
+ saveCheckinRecord,
+ saveMoodLog,
+} from "../data/mood-service.js";
 import { requireSession } from "../data/session.js";
+import { mountAppShell } from "../views/app-shell.js";
+import {
+ dateStr,
+ escapeHtml,
+ formatDate,
+ MOOD_LABELS,
+} from "../data/utils.js";
 
 const moodForm = document.getElementById("mood-form");
 const moodPicker = document.getElementById("mood-picker");
@@ -14,25 +24,8 @@ const feedbackEl = document.getElementById("diary-feedback");
 const recommendationText = document.getElementById("recommendation-text");
 const recommendationRule = document.getElementById("recommendation-rule");
 
-const MOOD_LABELS = {
- 1: "Muito baixo",
- 2: "Baixo",
- 3: "Moderado",
- 4: "Bom",
- 5: "Muito bem",
-};
-
 let activeUser = null;
 let selectedMood = null;
-
-function dateStr(date = new Date()) {
- return date.toISOString().slice(0, 10);
-}
-
-function formatDate(isoDate) {
- const [y, m, d] = isoDate.split("-");
- return `${d}/${m}/${y}`;
-}
 
 function showFeedback(message, type = "success") {
  if (!feedbackEl) return;
@@ -52,51 +45,6 @@ function setRecommendation(level) {
  if (recommendationRule) {
   recommendationRule.textContent = rec.rule ? `Regra: ${rec.rule}` : "";
  }
-}
-
-async function fetchMoodLogs(userId) {
- const res = await apiFetch(`/moodLogs?userId=${userId}`);
- if (!res?.ok) return [];
- const logs = await res.json();
- return logs.sort((a, b) => String(b.date).localeCompare(String(a.date)));
-}
-
-async function saveMoodLog(userId, mood, note, existingLog) {
- const today = dateStr();
- const payload = { mood, note: note || "" };
-
- if (existingLog?.id) {
-  const res = await apiFetch(`/moodLogs/${existingLog.id}`, {
-   method: "PATCH",
-   headers: { "Content-Type": "application/json" },
-   body: JSON.stringify(payload),
-  });
-  if (!res?.ok) throw new Error("Erro ao atualizar registo.");
-  return false;
- }
-
- const res = await apiFetch("/moodLogs", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ userId, date: today, ...payload }),
- });
- if (!res?.ok) throw new Error("Erro ao guardar registo.");
- return true;
-}
-
-async function saveCheckin(userId, level, note) {
- const today = dateStr();
- const res = await apiFetch("/checkins", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-   userId,
-   date: today,
-   level,
-   note: note || "",
-  }),
- });
- if (!res?.ok) throw new Error("Erro ao guardar check-in.");
 }
 
 function renderHistory(logs) {
@@ -123,13 +71,6 @@ function renderHistory(logs) {
     </li>`;
   })
   .join("");
-}
-
-function escapeHtml(value) {
- return String(value)
-  .replace(/&/g, "&amp;")
-  .replace(/</g, "&lt;")
-  .replace(/>/g, "&gt;");
 }
 
 function prefillToday(logs) {
@@ -161,23 +102,15 @@ async function handleSubmit(event) {
  clearFeedback();
 
  try {
-  const logs = await fetchMoodLogs(activeUser.id);
-  const today = dateStr();
-  const existing = logs.find((entry) => entry.date === today);
-  const isNewToday = await saveMoodLog(
-   activeUser.id,
-   selectedMood,
-   note,
-   existing,
-  );
+  const isNewToday = await saveMoodLog(activeUser.id, selectedMood, note);
 
   if (isNewToday) {
-   await saveCheckin(activeUser.id, selectedMood, note);
-   const checkin = await StreakModel.doCheckin(activeUser.id);
+   await saveCheckinRecord(activeUser.id, selectedMood, note);
+   const checkin = await ProgressModel.doCheckin(activeUser.id);
    if (!checkin.alreadyDone) {
     await Promise.all([
-     ProgressModel.syncChallenges(activeUser.id, checkin),
-     ProgressModel.syncMedals(activeUser.id, checkin),
+     ProgressModel.syncChallenges(activeUser.id),
+     ProgressModel.syncMedals(activeUser.id),
     ]);
    }
    showFeedback(`Registo guardado! Streak: ${checkin.streak} dias.`);
@@ -211,6 +144,7 @@ function bindMoodPicker() {
 }
 
 async function init() {
+ mountAppShell();
  activeUser = await requireSession();
  if (!activeUser) return;
 

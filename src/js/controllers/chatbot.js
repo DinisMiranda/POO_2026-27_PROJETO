@@ -4,6 +4,7 @@ import {
  isChatApiAvailable,
 } from "../data/chat-service.js";
 import { requireSession } from "../data/session.js";
+import { mountAppShell } from "../views/app-shell.js";
 
 const chatLog = document.getElementById("chat-log");
 const chatForm = document.getElementById("chat-form");
@@ -116,6 +117,7 @@ async function handleSubmit(event) {
 }
 
 async function init() {
+ mountAppShell();
  const user = await requireSession();
  if (!user) return;
 

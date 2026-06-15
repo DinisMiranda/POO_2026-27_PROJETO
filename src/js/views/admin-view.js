@@ -1,3 +1,5 @@
+import { escapeHtml } from "../data/utils.js";
+
 const ACTIVITY_TYPES = [
  "respiracao",
  "meditacao",
@@ -9,14 +11,6 @@ const ACTIVITY_TYPES = [
 
 const CHALLENGE_TYPES = ["checkin", "streak", "activities"];
 const MOOD_LEVELS = ["baixo", "medio", "alto"];
-
-function escapeHtml(value) {
- return String(value ?? "")
-  .replace(/&/g, "&amp;")
-  .replace(/</g, "&lt;")
-  .replace(/>/g, "&gt;")
-  .replace(/"/g, "&quot;");
-}
 
 function typeOptions(values, selected) {
  return values

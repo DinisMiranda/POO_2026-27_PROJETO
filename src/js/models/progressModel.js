@@ -1,23 +1,26 @@
 import { getLevelTierName as resolveLevelTierName } from "../data/levelTiers.js";
-import { API as API_BASE } from "../data/config.js";
+import { apiFetch, apiFetchJson } from "../data/http.js";
+import { dateStr, offsetDate } from "../data/utils.js";
 
-function evaluateCondition(condition, stats, progress) {
+function evaluateCondition(condition, progress) {
  if (!condition) return false;
 
  if (condition.startsWith("streak_")) {
-  return (stats.longestStreak || 0) >= Number(condition.split("_")[1]);
+  return (progress.longestStreak || 0) >= Number(condition.split("_")[1]);
  }
  if (condition.startsWith("checkins_")) {
-  return (stats.totalCheckins || 0) >= Number(condition.split("_")[1]);
+  return (progress.totalCheckins || 0) >= Number(condition.split("_")[1]);
  }
  if (condition.startsWith("xp_")) {
   return (progress.xp || 0) >= Number(condition.split("_")[1]);
  }
  if (condition.startsWith("challenges_")) {
-  return (progress.completedChallenges || []).length >= Number(condition.split("_")[1]);
+  return (progress.completedChallenges || []).length >=
+   Number(condition.split("_")[1]);
  }
  if (condition.startsWith("activities_")) {
-  return (progress.activityTypes || []).length >= Number(condition.split("_")[1]);
+  return (progress.activityTypes || []).length >=
+   Number(condition.split("_")[1]);
  }
 
  return false;
@@ -25,54 +28,46 @@ function evaluateCondition(condition, stats, progress) {
 
 export const ProgressModel = {
  async getProgress(userId) {
-  const res = await fetch(`${API_BASE}/userProgress?userId=${userId}`);
-  if (!res.ok) throw new Error("Erro ao obter progresso.");
-  const list = await res.json();
-  if (list.length > 0) return list[0];
-  return await this._createProgress(userId);
+ const list = await apiFetchJson(`/userProgress?userId=${userId}`);
+ if (list.length > 0) return list[0];
+ return this._createProgress(userId);
  },
 
  async _createProgress(userId) {
-  const payload = {
-   userId,
-   xp: 0,
-   level: 1,
-   totalCheckins: 0,
-   longestStreak: 0,
-   activityTypes: [],
-   completedChallenges: [],
-   unlockedMedals: [],
-   createdAt: new Date().toISOString(),
-  };
-  const res = await fetch(`${API_BASE}/userProgress`, {
+  return apiFetchJson("/userProgress", {
    method: "POST",
    headers: { "Content-Type": "application/json" },
-   body: JSON.stringify(payload),
+   body: JSON.stringify({
+    userId,
+    xp: 0,
+    level: 1,
+    streak: 0,
+    lastCheckin: null,
+    checkedInToday: false,
+    totalCheckins: 0,
+    longestStreak: 0,
+    activityTypes: [],
+    completedChallenges: [],
+    unlockedMedals: [],
+    createdAt: new Date().toISOString(),
+   }),
   });
-  if (!res.ok) throw new Error("Erro ao inicializar progresso.");
-  return await res.json();
  },
 
  async updateProgress(progressId, data) {
-  const res = await fetch(`${API_BASE}/userProgress/${progressId}`, {
+  return apiFetchJson(`/userProgress/${progressId}`, {
    method: "PATCH",
    headers: { "Content-Type": "application/json" },
    body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Erro ao atualizar progresso.");
-  return await res.json();
  },
 
  async getChallengeDefinitions() {
-  const res = await fetch(`${API_BASE}/challengeDefinitions`);
-  if (!res.ok) throw new Error("Erro ao obter desafios.");
-  return await res.json();
+  return apiFetchJson("/challengeDefinitions");
  },
 
  async getMedalDefinitions() {
-  const res = await fetch(`${API_BASE}/medalDefinitions`);
-  if (!res.ok) throw new Error("Erro ao obter medalhas.");
-  return await res.json();
+  return apiFetchJson("/medalDefinitions");
  },
 
  calcLevel(xp) {
@@ -87,7 +82,56 @@ export const ProgressModel = {
   return xp % 100;
  },
 
- async syncChallenges(userId, stats) {
+ async doCheckin(userId) {
+  const progress = await this.getProgress(userId);
+  const today = dateStr();
+  const yesterday = dateStr(offsetDate(-1));
+
+  if (progress.lastCheckin === today) {
+   return { ...progress, alreadyDone: true };
+  }
+
+  const newStreak =
+   progress.lastCheckin === yesterday ? (progress.streak || 0) + 1 : 1;
+
+  const updated = await this.updateProgress(progress.id, {
+   streak: newStreak,
+   longestStreak: Math.max(newStreak, progress.longestStreak || 0),
+   totalCheckins: (progress.totalCheckins || 0) + 1,
+   lastCheckin: today,
+   checkedInToday: true,
+  });
+
+  return { ...updated, alreadyDone: false };
+ },
+
+ async syncStreak(userId) {
+  const progress = await this.getProgress(userId);
+  const today = dateStr();
+  const yesterday = dateStr(offsetDate(-1));
+
+  if (progress.lastCheckin > today) {
+   return { ...progress, checkedInToday: false, broken: false };
+  }
+  if (progress.lastCheckin === today) {
+   return { ...progress, checkedInToday: true, broken: false };
+  }
+  if (progress.lastCheckin === yesterday || progress.lastCheckin === null) {
+   return { ...progress, checkedInToday: false, broken: false };
+  }
+
+  if (progress.streak > 0) {
+   const reset = await this.updateProgress(progress.id, {
+    streak: 0,
+    checkedInToday: false,
+   });
+   return { ...reset, broken: true };
+  }
+
+  return { ...progress, checkedInToday: false, broken: false };
+ },
+
+ async syncChallenges(userId) {
   const [progress, challenges] = await Promise.all([
    this.getProgress(userId),
    this.getChallengeDefinitions(),
@@ -100,8 +144,8 @@ export const ProgressModel = {
    if (progress.completedChallenges.includes(c.id)) continue;
 
    let done = false;
-   if (c.type === "checkin") done = stats.totalCheckins >= c.target;
-   if (c.type === "streak") done = stats.longestStreak >= c.target;
+   if (c.type === "checkin") done = progress.totalCheckins >= c.target;
+   if (c.type === "streak") done = progress.longestStreak >= c.target;
    if (c.type === "activities") {
     done = (progress.activityTypes || []).length >= c.target;
    }
@@ -123,7 +167,7 @@ export const ProgressModel = {
   return { progress: updatedProgress, newlyCompleted };
  },
 
- async syncMedals(userId, stats) {
+ async syncMedals(userId) {
   const [progress, medals] = await Promise.all([
    this.getProgress(userId),
    this.getMedalDefinitions(),
@@ -133,7 +177,7 @@ export const ProgressModel = {
 
   for (const m of medals) {
    if (progress.unlockedMedals.includes(m.id)) continue;
-   if (evaluateCondition(m.condition, stats, progress)) {
+   if (evaluateCondition(m.condition, progress)) {
     newlyUnlocked.push(m.id);
    }
   }
@@ -147,7 +191,7 @@ export const ProgressModel = {
   return { progress: updatedProgress, newlyUnlocked };
  },
 
- async claimChallenge(userId, challengeId, stats) {
+ async claimChallenge(userId, challengeId) {
   const [progress, challenges] = await Promise.all([
    this.getProgress(userId),
    this.getChallengeDefinitions(),
@@ -169,7 +213,7 @@ export const ProgressModel = {
   return { progress: updatedProgress, challenge, alreadyDone: false };
  },
 
- async claimMedal(userId, medalId, stats) {
+ async claimMedal(userId, medalId) {
   const [progress, medals] = await Promise.all([
    this.getProgress(userId),
    this.getMedalDefinitions(),
@@ -212,5 +256,14 @@ export const ProgressModel = {
    (m) => !(progress.unlockedMedals || []).includes(m.id),
   );
   return { pendingChallenges, pendingMedals };
+ },
+
+ getChallengeCurrent(challenge, progress) {
+  if (challenge.type === "checkin") return progress?.totalCheckins || 0;
+  if (challenge.type === "streak") return progress?.streak || 0;
+  if (challenge.type === "activities") {
+   return (progress?.activityTypes || []).length;
+  }
+  return 0;
  },
 };

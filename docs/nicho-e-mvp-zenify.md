@@ -70,8 +70,7 @@ O Zenify ajuda estudantes universitarios a reduzir ansiedade academica com inter
 
 ## Models (`src/js/models`)
 
-- `progressModel.js` — XP, desafios e medalhas
-- `streakModel.js` — check-ins e streak
+- `progressModel.js` — XP, streak, check-ins, desafios e medalhas
 - `recommendation.js` — `getRecommendation(level, date)`
 
 ## Views (`src/js/views`)

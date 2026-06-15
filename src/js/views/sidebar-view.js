@@ -85,6 +85,3 @@ export function mountZenifySidebar(activePage = "") {
     </nav>
   `;
 }
-
-const activePage = document.body?.dataset?.zenifyPage ?? "";
-mountZenifySidebar(activePage);

@@ -5,6 +5,12 @@ import {
  setAuthToken,
 } from "./auth-token.js";
 
+export async function apiFetchJson(path, options = {}) {
+ const res = await apiFetch(path, options);
+ if (!res?.ok) throw new Error(`Pedido falhou: ${path}`);
+ return res.json();
+}
+
 export async function apiFetch(path, options = {}) {
  const controller = new AbortController();
  const timeout = setTimeout(() => controller.abort(), 2500);
@@ -30,16 +36,7 @@ export async function apiFetch(path, options = {}) {
 }
 
 async function fetchUserProfile(userId) {
- const token = getAuthToken();
- const res = await fetch(`${API}/users/${userId}`, {
-  headers: token ? { Authorization: `Bearer ${token}` } : {},
- });
-
- if (!res.ok) {
-  throw new Error("Erro ao obter perfil do utilizador.");
- }
-
- return res.json();
+ return apiFetchJson(`/users/${userId}`);
 }
 
 function userFromAuthResponse({ accessToken, user }) {

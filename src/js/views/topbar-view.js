@@ -93,5 +93,3 @@ export async function mountTopbar() {
 
  bindNotificationButtons(host);
 }
-
-mountTopbar();

@@ -1,8 +1,9 @@
 import { UserModel } from "../models/userModel.js";
-import { StreakModel } from "../models/streakModel.js";
 import { ProgressModel } from "../models/progressModel.js";
 import { requireSession } from "../data/session.js";
-import { API } from "../data/config.js";
+import { apiFetch } from "../data/http.js";
+import { mountAppShell } from "../views/app-shell.js";
+import { getInitials } from "../data/utils.js";
 
 const EMAIL_LOCK_DAYS = 30;
 
@@ -66,19 +67,6 @@ function applyEmailLockUI() {
  }
 }
 
-function getInitials(u) {
- const f = (u?.firstName || "").trim();
- const l = (u?.lastName || "").trim();
- if (f && l) return `${f[0]}${l[0]}`.toUpperCase();
- if (u?.name) {
-  const parts = u.name.trim().split(/\s+/);
-  return parts.length >= 2 ?
-    `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
-   : parts[0][0].toUpperCase();
- }
- return "ZU";
-}
-
 function showToast(msg, duration = 3000) {
  if (!toast) return;
  toast.textContent = msg;
@@ -133,16 +121,13 @@ function renderMedals(medalDefs, unlockedIds) {
  }
 }
 
-function renderChallenges(challengeDefs, completedIds, stats, progress) {
+function renderChallenges(challengeDefs, completedIds, progress) {
  if (!challengesList) return;
  challengesList.innerHTML = "";
 
  for (const c of challengeDefs) {
   const done = completedIds.includes(c.id);
-  let current = 0;
-  if (c.type === "checkin") current = stats.totalCheckins || 0;
-  if (c.type === "streak") current = stats.longestStreak || 0;
-  if (c.type === "activities") current = (progress.activityTypes || []).length;
+  const current = ProgressModel.getChallengeCurrent(c, progress);
 
   const pct = Math.min((current / c.target) * 100, 100);
   const item = document.createElement("div");
@@ -189,7 +174,7 @@ formPerfil?.addEventListener("submit", async (e) => {
   const payload = { firstName, lastName, name: `${firstName} ${lastName}` };
   if (emailChanged) payload.email = email.toLowerCase();
 
-  const res = await fetch(`${API}/users/${activeUser.id}`, {
+  const res = await apiFetch(`/users/${activeUser.id}`, {
    method: "PATCH",
    headers: { "Content-Type": "application/json" },
    body: JSON.stringify(payload),
@@ -211,6 +196,7 @@ btnLogout?.addEventListener("click", () => {
 });
 
 async function init() {
+ mountAppShell();
  activeUser = await requireSession();
  if (!activeUser) return;
 
@@ -218,28 +204,28 @@ async function init() {
  applyEmailLockUI();
 
  try {
-  const [stats, progress, challengeDefs, medalDefs] = await Promise.all([
-   StreakModel.getStats(activeUser.id),
+  const [progress, challengeDefs, medalDefs] = await Promise.all([
    ProgressModel.getProgress(activeUser.id),
    ProgressModel.getChallengeDefinitions(),
    ProgressModel.getMedalDefinitions(),
   ]);
 
-  if (streakEl) streakEl.textContent = `Streak ${stats.streak || 0} dias`;
-  if (checkinsEl) checkinsEl.textContent = `${stats.totalCheckins || 0} check-ins`;
+  if (streakEl) streakEl.textContent = `Streak ${progress.streak || 0} dias`;
+  if (checkinsEl) {
+   checkinsEl.textContent = `${progress.totalCheckins || 0} check-ins`;
+  }
 
   renderXpBar(progress.xp || 0);
   renderMedals(medalDefs, progress.unlockedMedals || []);
   renderChallenges(
    challengeDefs,
    progress.completedChallenges || [],
-   stats,
    progress,
   );
 
   await Promise.all([
-   ProgressModel.syncChallenges(activeUser.id, stats),
-   ProgressModel.syncMedals(activeUser.id, stats),
+   ProgressModel.syncChallenges(activeUser.id),
+   ProgressModel.syncMedals(activeUser.id),
   ]);
  } catch (err) {
   console.error("Erro ao carregar perfil:", err);

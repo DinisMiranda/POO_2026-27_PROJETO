@@ -1,6 +1,9 @@
-import { API } from "../data/config.js";
 import { clearAuthToken, getAuthToken } from "../data/auth-token.js";
-import { loginWithCredentials, registerAccount } from "../data/http.js";
+import {
+ apiFetch,
+ loginWithCredentials,
+ registerAccount,
+} from "../data/http.js";
 
 const SESSION_KEY = "zenify_user";
 
@@ -20,9 +23,6 @@ export const UserModel = {
    password: password.trim(),
    dob,
    role: "user",
-   xp: 0,
-   streak: 0,
-   badges: [],
    createdAt: new Date().toISOString(),
   });
 
@@ -63,16 +63,12 @@ export const UserModel = {
   if (!session?.id || !token) return session;
 
   try {
-   const res = await fetch(`${API}/users/${session.id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-   });
-
-   if (res.status === 401 || res.status === 403) {
+   const res = await apiFetch(`/users/${session.id}`);
+   if (res?.status === 401 || res?.status === 403) {
     this.clearSession();
     return null;
    }
-
-   if (!res.ok) return session;
+   if (!res?.ok) return session;
 
    const safeUser = toSafeUser(await res.json());
    this.saveSession({ ...session, ...safeUser });

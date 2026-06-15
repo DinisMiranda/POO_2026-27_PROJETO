@@ -7,10 +7,7 @@
       "lastName": "Teste",
       "email": "user@zenify.pt",
       "password": "$2a$10$.uFDe4IrceFJbMqGyBaj8uOb.m31R5nlFR9QK3MY6UfpksUxpThBS",
-      "role": "user",
-      "xp": 240,
-      "streak": 12,
-      "badges": []
+      "role": "user"
     },
     {
       "id": "u-admin",
@@ -28,22 +25,7 @@
       "lastName": "User",
       "name": "Novo User",
       "role": "user",
-      "xp": 0,
-      "streak": 0,
-      "badges": [],
       "id": "VBCqxox"
-    }
-  ],
-  "userStats": [
-    {
-      "id": "stats-u-user",
-      "userId": "u-user",
-      "streak": 1,
-      "lastCheckin": "2026-06-15",
-      "checkedInToday": true,
-      "longestStreak": 12,
-      "totalCheckins": 9,
-      "createdAt": "2026-06-13T00:15:14.814Z"
     }
   ],
   "userProgress": [
@@ -52,7 +34,10 @@
       "userId": "u-user",
       "xp": 515,
       "level": 6,
-      "totalCheckins": 8,
+      "streak": 1,
+      "lastCheckin": "2026-06-15",
+      "checkedInToday": true,
+      "totalCheckins": 9,
       "longestStreak": 12,
       "activityTypes": [
         "respiracao",
@@ -84,6 +69,9 @@
       "userId": "u-admin",
       "xp": 0,
       "level": 1,
+      "streak": 0,
+      "lastCheckin": null,
+      "checkedInToday": false,
       "totalCheckins": 0,
       "longestStreak": 0,
       "activityTypes": [],

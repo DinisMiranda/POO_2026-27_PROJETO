@@ -1,4 +1,4 @@
-import { API as API_BASE } from "../data/config.js";
+import { apiFetch, apiFetchJson } from "../data/http.js";
 
 const AI_TEMPLATES = [
  {
@@ -23,20 +23,18 @@ const AI_TEMPLATES = [
 
 export const NotificationsModel = {
  async getForUser(userId) {
-  const [stored, progress, stats, medals, challenges] = await Promise.all([
+  const [stored, progressList, medals, challenges] = await Promise.all([
    this._fetchStored(userId),
-   this._fetch(`${API_BASE}/userProgress?userId=${userId}`),
-   this._fetch(`${API_BASE}/userStats?userId=${userId}`),
-   this._fetch(`${API_BASE}/medalDefinitions`),
-   this._fetch(`${API_BASE}/challengeDefinitions`),
+   apiFetchJson(`/userProgress?userId=${userId}`).catch(() => []),
+   apiFetchJson("/medalDefinitions").catch(() => []),
+   apiFetchJson("/challengeDefinitions").catch(() => []),
   ]);
 
-  const progressRow = progress[0];
-  const statsRow = stats[0];
+  const progress = progressList[0];
   const generated = [];
 
-  if (progressRow && statsRow) {
-   for (const id of progressRow.unlockedMedals || []) {
+  if (progress) {
+   for (const id of progress.unlockedMedals || []) {
     const medal = medals.find((m) => m.id === id);
     if (medal) {
      generated.push({
@@ -44,12 +42,12 @@ export const NotificationsModel = {
       type: "medal",
       title: "Medalha desbloqueada",
       message: `Conquistaste «${medal.title}» — ${medal.description}`,
-      createdAt: progressRow.createdAt,
+      createdAt: progress.createdAt,
      });
     }
    }
 
-   for (const id of progressRow.completedChallenges || []) {
+   for (const id of progress.completedChallenges || []) {
     const challenge = challenges.find((c) => c.id === id);
     if (challenge) {
      generated.push({
@@ -57,7 +55,7 @@ export const NotificationsModel = {
       type: "challenge",
       title: "Desafio concluído",
       message: `Completaste «${challenge.title}» (+${challenge.xpReward} XP)`,
-      createdAt: progressRow.createdAt,
+      createdAt: progress.createdAt,
      });
     }
    }
@@ -79,7 +77,7 @@ export const NotificationsModel = {
  },
 
  async addNotification(userId, payload) {
-  const res = await fetch(`${API_BASE}/userNotifications`, {
+  const res = await apiFetch("/userNotifications", {
    method: "POST",
    headers: { "Content-Type": "application/json" },
    body: JSON.stringify({
@@ -89,12 +87,14 @@ export const NotificationsModel = {
     ...payload,
    }),
   });
-  if (!res.ok) return null;
-  return await res.json();
+  if (!res?.ok) return null;
+  return res.json();
  },
 
  async _fetchStored(userId) {
-  const list = await this._fetch(`${API_BASE}/userNotifications?userId=${userId}`);
+  const list = await apiFetchJson(`/userNotifications?userId=${userId}`).catch(
+   () => [],
+  );
   return list.map((n) => ({
    id: n.id,
    type: n.type,
@@ -102,15 +102,5 @@ export const NotificationsModel = {
    message: n.message,
    createdAt: n.createdAt,
   }));
- },
-
- async _fetch(url) {
-  try {
-   const res = await fetch(url);
-   if (!res.ok) return [];
-   return await res.json();
-  } catch {
-   return [];
-  }
  },
 };

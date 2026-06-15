@@ -29,8 +29,19 @@ async function refreshOverview() {
 }
 
 async function refreshUsers() {
- const users = await AdminService.getUsers();
- renderUsers(users, activeUser?.id);
+ const [users, progressList] = await Promise.all([
+  AdminService.getUsers(),
+  AdminService.getUserProgress(),
+ ]);
+ const progressByUser = Object.fromEntries(
+  progressList.map((row) => [row.userId, row]),
+ );
+ const enriched = users.map((user) => ({
+  ...user,
+  xp: progressByUser[user.id]?.xp ?? 0,
+  streak: progressByUser[user.id]?.streak ?? 0,
+ }));
+ renderUsers(enriched, activeUser?.id);
 }
 
 async function refreshActivities() {

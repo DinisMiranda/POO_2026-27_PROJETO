@@ -1,9 +1,9 @@
 import { getActivities } from "../data/activity-service.js";
 import { ProgressModel } from "../models/progressModel.js";
-import { StreakModel } from "../models/streakModel.js";
 import { requireSession } from "../data/session.js";
 import { mountExercisePlayer } from "../views/exercise-players.js";
 import { apiFetch } from "../data/http.js";
+import { mountAppShell } from "../views/app-shell.js";
 
 const TYPE_LABELS = {
  respiracao: "Respiração",
@@ -118,10 +118,9 @@ async function completeExercise() {
    currentActivity.type,
   );
 
-  const stats = await StreakModel.getStats(activeUser.id);
   await Promise.all([
-   ProgressModel.syncChallenges(activeUser.id, stats),
-   ProgressModel.syncMedals(activeUser.id, stats),
+   ProgressModel.syncChallenges(activeUser.id),
+   ProgressModel.syncMedals(activeUser.id),
   ]);
 
   const typeMsg = result.newType ? " Novo tipo de exercício registado!" : "";
@@ -175,6 +174,7 @@ function renderActivities(list) {
 }
 
 async function init() {
+ mountAppShell();
  activeUser = await requireSession();
  if (!activeUser) return;
 

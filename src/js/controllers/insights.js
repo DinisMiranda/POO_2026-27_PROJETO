@@ -1,6 +1,8 @@
-import { UserModel } from "../models/userModel.js";
-import { API } from "../data/config.js";
+import { ProgressModel } from "../models/progressModel.js";
 import { requireSession } from "../data/session.js";
+import { apiFetchJson } from "../data/http.js";
+import { mountAppShell } from "../views/app-shell.js";
+import { getInitials } from "../data/utils.js";
 
 let sessionUser = null;
 
@@ -20,25 +22,6 @@ const els = {
  chart: document.getElementById("insightsChart"),
  recs: document.getElementById("insights-recs"),
 };
-
-function initials(user) {
- const first = (user.firstName || "").trim();
- const last = (user.lastName || "").trim();
- if (first && last) return `${first[0]}${last[0]}`.toUpperCase();
- if (user.name) {
-  const parts = user.name.trim().split(/\s+/);
-  if (parts.length >= 2)
-   return `${parts[0][0]}${parts.at(-1)[0]}`.toUpperCase();
-  return parts[0][0].toUpperCase();
- }
- return "ZU";
-}
-
-async function fetchJson(url) {
- const res = await fetch(url);
- if (!res.ok) throw new Error(`Erro ao obter dados: ${url}`);
- return await res.json();
-}
 
 function ensureRequiredElements() {
  const missing = Object.entries(els)
@@ -93,28 +76,26 @@ function buildRecommendations(avgMood, streak) {
 }
 
 async function initInsights() {
+ mountAppShell();
  sessionUser = await requireSession();
  if (!sessionUser) return;
 
  ensureRequiredElements();
 
- const [statsList, progressList, moods] = await Promise.all([
-  fetchJson(`${API}/userStats?userId=${sessionUser.id}`),
-  fetchJson(`${API}/userProgress?userId=${sessionUser.id}`),
-  fetchJson(`${API}/moodLogs?userId=${sessionUser.id}`),
+ const userId = sessionUser.id;
+ const [progress, moods] = await Promise.all([
+  ProgressModel.getProgress(userId),
+  apiFetchJson(`/moodLogs?userId=${userId}`).catch(() => []),
  ]);
-
- const stats = statsList[0] || {};
- const progress = progressList[0] || {};
 
  const moodValues =
   moods.length ? moods.map((m) => Number(m.mood)) : [3.0, 3.1, 3.2, 3.3];
 
  const avgMood = moodValues.reduce((a, b) => a + b, 0) / moodValues.length;
- const totalCheckins = stats.totalCheckins ?? progress.totalCheckins ?? 0;
- const streak = stats.streak ?? sessionUser.streak ?? 0;
- const longestStreak = stats.longestStreak ?? progress.longestStreak ?? streak;
- const xp = progress.xp ?? sessionUser.xp ?? 0;
+ const totalCheckins = progress.totalCheckins || 0;
+ const streak = progress.streak || 0;
+ const longestStreak = progress.longestStreak || streak;
+ const xp = progress.xp || 0;
  const weeklyCheckins = Math.min(totalCheckins, 7);
  const checkinRate = Math.round((weeklyCheckins / 7) * 100);
  const weeklySessions = (progress.activityTypes || []).length;
@@ -122,8 +103,9 @@ async function initInsights() {
  const criticalPeriod =
   avgMood < 3.2 ? "Quartas à tarde" : "Segundas ao fim do dia";
 
- if (els.avatar) els.avatar.textContent = initials(sessionUser);
- if (els.avatarText) els.avatarText.textContent = initials(sessionUser);
+ const initials = getInitials(sessionUser);
+ if (els.avatar) els.avatar.textContent = initials;
+ if (els.avatarText) els.avatarText.textContent = initials;
  els.xp.textContent = String(xp);
  els.xpWeek.textContent = `+${weeklyXp} esta semana`;
  els.streak.textContent = `${streak} dias`;

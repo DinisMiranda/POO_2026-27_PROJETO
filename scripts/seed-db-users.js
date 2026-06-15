@@ -20,9 +20,6 @@ db.users = [
     email: "user@zenify.pt",
     password: USER_HASH,
     role: "user",
-    xp: 240,
-    streak: 12,
-    badges: [],
   },
   {
     id: "u-admin",
@@ -41,7 +38,6 @@ function remapUserId(value) {
 }
 
 for (const collection of [
-  "userStats",
   "userProgress",
   "moodLogs",
   "userNotifications",
@@ -55,8 +51,7 @@ for (const collection of [
       ...row,
       userId: remapUserId(row.userId),
       id:
-        row.id === "stats-bc36" ? "stats-u-user"
-        : row.id === "progress-bc36" ? "progress-u-user"
+        row.id === "progress-bc36" ? "progress-u-user"
         : row.id,
     }));
 }
