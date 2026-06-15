@@ -5,8 +5,8 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
 ## Stack
 
 - Frontend: HTML5, CSS custom (`src/css/`), JavaScript (ES modules)
-- Autenticacao: landing page + `userModel.js` (PR frontend) e auth localStorage (legacy)
-- API mock: JSON Server (`activities`, `checkins`, `userStats`)
+- Autenticacao: `json-server-auth` (JWT) via `POST /login` e `POST /register`
+- API mock: JSON Server + auth (`activities`, `checkins`, `userStats`, …)
 - Chat (main): Ollama via `server/chat-api.js` — ver [docs/chat-ollama.md](docs/chat-ollama.md)
 
 ## Estrutura do projecto
@@ -85,19 +85,49 @@ O `index.html` na raiz reencaminha para a landing. Não uses a porta 3000 para o
 
 ### 5. (Opcional) Chat Ollama
 
-Ver [docs/chat-ollama.md](docs/chat-ollama.md).
+Ver [docs/chat-ollama.md](docs/chat-ollama.md). Requer ficheiro `.env` (ver `.env.example` ou `docs/entrega-variaveis-ambiente.txt`).
+
+---
+
+## Autenticação
+
+Login e registo usam **json-server-auth** (padrão F07):
+
+- `POST /login` — devolve JWT (`accessToken`)
+- `POST /register` — cria conta e devolve JWT
+- O token fica em `sessionStorage` e é enviado no header `Authorization`
+
+A password **não** é comparada no browser; o servidor trata o hash (bcrypt).
 
 ---
 
 ## Credenciais de teste (db.json)
 
-| Campo    | Valor             |
-|----------|-------------------|
-| Email    | `dinis@gmail.com` |
-| Password | `dinismiranda`    |
-| Role     | `user`            |
+| Perfil | Email | Password | Área |
+|--------|-------|----------|------|
+| Utilizador | `user@zenify.pt` | `user1234` | Dashboard, exercícios, perfil, … |
+| Administrador | `admin@zenify.pt` | `admin1234` | `src/pages/admin.html` |
+
+Para repor estes utilizadores no `db.json`: `npm run seed-db`
 
 ---
+
+## Variáveis de ambiente
+
+A app base **não precisa** de `.env`. Só o chat Ollama usa variáveis opcionais — ver `.env.example`.
+
+Para entrega no Moodle, usar o modelo em `docs/entrega-variaveis-ambiente.txt`.
+
+---
+
+## Credenciais antigas (legacy)
+
+| Campo    | Valor             |
+|----------|-------------------|
+| Email    | `admin@zenify.local` |
+| Password | `admin123`        |
+
+(apenas páginas em `legacy/`)
 
 ## Fluxo utilizador (frontend PR)
 
@@ -106,10 +136,5 @@ Ver [docs/chat-ollama.md](docs/chat-ollama.md).
 ## Legacy
 
 Paginas antigas em `legacy/` — ver [legacy/README.md](legacy/README.md).
-
-Credenciais admin seed (legacy localStorage):
-
-- email: `admin@zenify.local`
-- password: `admin123`
 
 Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/persistencia.md](docs/persistencia.md)

@@ -1,5 +1,6 @@
 import { redirectByRole, redirectToLogin } from "./navigation.js";
-import { API } from "./config.js";
+import { clearAuthToken, getAuthToken } from "./auth-token.js";
+import { loginWithCredentials, registerAccount } from "./http.js";
 
 const SESSION_KEY = "zenify_session";
 
@@ -13,25 +14,31 @@ export function setSession(user) {
 
 export function clearSession() {
  localStorage.removeItem(SESSION_KEY);
+ sessionStorage.removeItem("zenify_user");
+ clearAuthToken();
+}
+
+function toSessionUser(user) {
+ return {
+  id: user.id,
+  name: user.name ?? `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim(),
+  email: user.email,
+  role: user.role,
+ };
 }
 
 export async function loginUser({ email, password }) {
- const res = await fetch(`${API}/users?email=${encodeURIComponent(email)}`);
- if (!res.ok) throw new Error("Erro ao contactar o servidor.");
- const users = await res.json();
- const match = users.find(
-  (u) =>
-   u.email.toLowerCase() === email.toLowerCase() && u.password === password,
- );
- if (!match) return { ok: false, message: "Credenciais inválidas." };
- const session = {
-  id: match.id,
-  name: match.name ?? `${match.firstName ?? ""} ${match.lastName ?? ""}`.trim(),
-  email: match.email,
-  role: match.role,
- };
- setSession(session);
- return { ok: true, session };
+ try {
+  const user = await loginWithCredentials(email, password);
+  const session = toSessionUser(user);
+  setSession(session);
+  return { ok: true, session };
+ } catch (error) {
+  return {
+   ok: false,
+   message: error.message || "Credenciais inválidas.",
+  };
+ }
 }
 
 export async function registerUser({ name, email, password, role }) {
@@ -42,35 +49,27 @@ export async function registerUser({ name, email, password, role }) {
   };
  }
 
- const checkRes = await fetch(
-  `${API}/users?email=${encodeURIComponent(email)}`,
- );
- const existing = await checkRes.json();
- if (existing.length > 0) {
-  return { ok: false, message: "Já existe uma conta com este email." };
+ try {
+  const created = await registerAccount({
+   name: name.trim(),
+   email: email.trim().toLowerCase(),
+   password,
+   role,
+   createdAt: new Date().toISOString(),
+  });
+
+  return { ok: true, user: created };
+ } catch (error) {
+  return {
+   ok: false,
+   message: error.message || "Erro ao criar conta.",
+  };
  }
-
- const newUser = {
-  name: name.trim(),
-  email: email.trim().toLowerCase(),
-  password,
-  role,
-  createdAt: new Date().toISOString(),
- };
-
- const createRes = await fetch(`${API}/users`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(newUser),
- });
- if (!createRes.ok) throw new Error("Erro ao criar conta.");
- const created = await createRes.json();
- return { ok: true, user: created };
 }
 
 export async function requireAuth(requiredRole) {
  const session = getSession();
- if (!session) {
+ if (!session || !getAuthToken()) {
   redirectToLogin();
   return null;
  }

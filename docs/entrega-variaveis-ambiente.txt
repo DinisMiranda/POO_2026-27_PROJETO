@@ -1,0 +1,16 @@
+Zenify — variáveis de ambiente (entrega Moodle)
+================================================
+
+A aplicação base (frontend + json-server) funciona sem ficheiro .env.
+
+O ficheiro .env só é necessário para o assistente com Ollama (npm run chat-api).
+Copiar para a raiz do projeto como .env se quiserem personalizar:
+
+OLLAMA_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.2
+CHAT_API_PORT=3002
+
+Descrição de cada variável:
+- OLLAMA_URL — URL do servidor Ollama local (por defeito http://localhost:11434)
+- OLLAMA_MODEL — nome do modelo instalado com `ollama pull` (por defeito llama3.2)
+- CHAT_API_PORT — porta do servidor de chat Zenify (por defeito 3002)

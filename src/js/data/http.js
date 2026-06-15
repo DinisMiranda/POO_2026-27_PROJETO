@@ -1,18 +1,100 @@
 import { API } from "./config.js";
+import {
+ getAuthToken,
+ parseAuthToken,
+ setAuthToken,
+} from "./auth-token.js";
 
 export async function apiFetch(path, options = {}) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 2500);
+ const controller = new AbortController();
+ const timeout = setTimeout(() => controller.abort(), 2500);
+ const headers = new Headers(options.headers || {});
+ const token = getAuthToken();
 
-  try {
-    const response = await fetch(`${API}${path}`, {
-      ...options,
-      signal: controller.signal,
-    });
-    return response;
-  } catch {
-    return null;
-  } finally {
-    clearTimeout(timeout);
+ if (token && !headers.has("Authorization")) {
+  headers.set("Authorization", `Bearer ${token}`);
+ }
+
+ try {
+  const response = await fetch(`${API}${path}`, {
+   ...options,
+   headers,
+   signal: controller.signal,
+  });
+  return response;
+ } catch {
+  return null;
+ } finally {
+  clearTimeout(timeout);
+ }
+}
+
+async function fetchUserProfile(userId) {
+ const token = getAuthToken();
+ const res = await fetch(`${API}/users/${userId}`, {
+  headers: token ? { Authorization: `Bearer ${token}` } : {},
+ });
+
+ if (!res.ok) {
+  throw new Error("Erro ao obter perfil do utilizador.");
+ }
+
+ return res.json();
+}
+
+function userFromAuthResponse({ accessToken, user }) {
+ if (!accessToken) {
+  throw new Error("Resposta de autenticação inválida.");
+ }
+
+ setAuthToken(accessToken);
+
+ if (user?.id) {
+  const { password: _pw, ...safeUser } = user;
+  return safeUser;
+ }
+
+ const claims = parseAuthToken(accessToken);
+ if (!claims?.id) {
+  throw new Error("Resposta de autenticação inválida.");
+ }
+
+ return fetchUserProfile(claims.id);
+}
+
+export async function loginWithCredentials(email, password) {
+ const normalizedEmail = email.trim().toLowerCase();
+ const normalizedPassword = password.trim();
+
+ const res = await fetch(`${API}/login`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+   email: normalizedEmail,
+   password: normalizedPassword,
+  }),
+ });
+
+ if (!res.ok) {
+  throw new Error("Email ou password incorretos.");
+ }
+
+ return userFromAuthResponse(await res.json());
+}
+
+export async function registerAccount(payload) {
+ const res = await fetch(`${API}/register`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload),
+ });
+
+ if (!res.ok) {
+  if (res.status === 400) {
+   throw new Error("Este email já está registado.");
   }
+  throw new Error("Erro ao criar conta. Tenta novamente.");
+ }
+
+ return userFromAuthResponse(await res.json());
 }

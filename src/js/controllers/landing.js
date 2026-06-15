@@ -1,13 +1,15 @@
 import { LandingView as View } from "../views/landingView.js";
 import { initI18n, setPageTitle, t } from "../data/i18n.js";
 import { UserModel as Model } from "../models/userModel.js";
+import { redirectByRole } from "../data/navigation.js";
 import { bindNotificationButtons } from "../views/notifications-view.js";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
 
 function checkExistingSession() {
- if (Model.getSession()) {
-  View.redirectToDashboard();
+ const session = Model.getSession();
+ if (session) {
+  redirectByRole(session.role);
  }
 }
 
@@ -66,7 +68,7 @@ async function handleLogin(event) {
  try {
   const user = await Model.login(data);
   Model.saveSession(user);
-  View.redirectToDashboard();
+  redirectByRole(user.role);
  } catch (error) {
   View.showError("login", error.message);
  } finally {
@@ -139,7 +141,7 @@ async function handleRegister(event) {
  try {
   const user = await Model.register(data);
   Model.saveSession(user);
-  View.redirectToDashboard();
+  redirectByRole(user.role);
  } catch (error) {
   View.showError("register", error.message);
  } finally {

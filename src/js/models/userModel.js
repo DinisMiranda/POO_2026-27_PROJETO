@@ -1,4 +1,6 @@
 import { API } from "../data/config.js";
+import { clearAuthToken, getAuthToken } from "../data/auth-token.js";
+import { loginWithCredentials, registerAccount } from "../data/http.js";
 
 const SESSION_KEY = "zenify_user";
 const LEGACY_SESSION_KEY = "zenify_session";
@@ -11,79 +13,26 @@ function toSafeUser(user) {
 
 export const UserModel = {
  async register({ firstName, lastName, email, password, dob }) {
-  const normalizedEmail = email.trim().toLowerCase();
-  const normalizedPassword = password.trim();
-
-  const checkRes = await fetch(
-   `${API}/users?email=${encodeURIComponent(normalizedEmail)}`,
-  );
-
-  if (!checkRes.ok) {
-   throw new Error("Erro ao verificar o email.");
-  }
-
-  const existing = await checkRes.json();
-
-  if (existing.length > 0) {
-   throw new Error("Este email já está registado.");
-  }
-
-  const payload = {
+  const user = await registerAccount({
    firstName: firstName.trim(),
    lastName: lastName.trim(),
    name: `${firstName} ${lastName}`.trim(),
-   email: normalizedEmail,
-   password: normalizedPassword,
+   email: email.trim().toLowerCase(),
+   password: password.trim(),
    dob,
    role: "user",
    xp: 0,
    streak: 0,
    badges: [],
    createdAt: new Date().toISOString(),
-  };
-
-  const res = await fetch(`${API}/users`, {
-   method: "POST",
-   headers: { "Content-Type": "application/json" },
-   body: JSON.stringify(payload),
   });
 
-  if (!res.ok) {
-   throw new Error("Erro ao criar conta. Tenta novamente.");
-  }
-
-  return await res.json();
+  return toSafeUser(user);
  },
 
  async login({ email, password }) {
-  const normalizedEmail = email.trim().toLowerCase();
-  const normalizedPassword = password.trim();
-
-  const emailRes = await fetch(
-   `${API}/users?email=${encodeURIComponent(normalizedEmail)}`,
-  );
-
-  if (!emailRes.ok) {
-   throw new Error(
-    "Load fail: não foi possível validar o email na base de dados.",
-   );
-  }
-
-  const usersByEmail = await emailRes.json();
-
-  if (usersByEmail.length === 0) {
-   throw new Error("Este email não existe na base de dados.");
-  }
-
-  const matchedUser = usersByEmail.find(
-   (user) => String(user.password).trim() === normalizedPassword,
-  );
-
-  if (!matchedUser) {
-   throw new Error("A password está incorreta.");
-  }
-
-  return toSafeUser(matchedUser);
+  const user = await loginWithCredentials(email, password);
+  return toSafeUser(user);
  },
 
  saveSession(user) {
@@ -119,26 +68,28 @@ export const UserModel = {
  clearSession() {
   sessionStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(LEGACY_SESSION_KEY);
+  clearAuthToken();
  },
 
- /** Garante que a sessão tem dados sincronizados com a db. */
  async resolveSession() {
   const session = this.getSession();
-  if (!session?.email) return session;
+  const token = getAuthToken();
+
+  if (!session?.id || !token) return session;
 
   try {
-   const res = await fetch(
-    `${API}/users?email=${encodeURIComponent(session.email)}`,
-   );
+   const res = await fetch(`${API}/users/${session.id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+   });
+
+   if (res.status === 401 || res.status === 403) {
+    this.clearSession();
+    return null;
+   }
+
    if (!res.ok) return session;
 
-   const users = await res.json();
-   const match = users.find(
-    (u) => u.email.toLowerCase() === session.email.toLowerCase(),
-   );
-   if (!match) return session;
-
-   const safeUser = toSafeUser(match);
+   const safeUser = toSafeUser(await res.json());
    this.saveSession({ ...session, ...safeUser });
    return safeUser;
   } catch {
