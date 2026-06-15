@@ -1,4 +1,4 @@
-/** Fabricas de UI personalizada por exercicio (id da activity). */
+/** Fábricas de UI personalizada por exercício (id da activity). */
 
 function formatTime(totalSeconds) {
  const m = Math.floor(totalSeconds / 60);
@@ -447,7 +447,7 @@ function walkPlayer(activity, container, callbacks) {
 
   if (steps >= targetSteps) {
    callbacks.onReadyToComplete?.(true);
-   if (promptEl) promptEl.textContent = "Objectivo de passos alcançado! Excelente caminhada consciente.";
+   if (promptEl) promptEl.textContent = "Objetivo de passos alcançado! Excelente caminhada consciente.";
   } else if (steps >= Math.floor(targetSteps * 0.5)) {
    callbacks.onReadyToComplete?.(true);
   }

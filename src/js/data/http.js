@@ -73,7 +73,7 @@ export async function loginWithCredentials(email, password) {
  });
 
  if (!res.ok) {
-  throw new Error("Email ou password incorretos.");
+  throw new Error("Email ou palavra-passe incorretos.");
  }
 
  return userFromAuthResponse(await res.json());
