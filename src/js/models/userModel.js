@@ -47,6 +47,8 @@ export const UserModel = {
     name:
      safeUser.name ||
      `${safeUser.firstName || ""} ${safeUser.lastName || ""}`.trim(),
+    firstName: safeUser.firstName,
+    lastName: safeUser.lastName,
     email: safeUser.email,
     role: safeUser.role,
    }),

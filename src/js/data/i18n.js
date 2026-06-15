@@ -13,6 +13,7 @@ const DICTIONARY = {
    profile: "Perfil",
    settings: "Configurações",
    help: "Ajuda",
+   admin: "Administração",
   },
 
   topbar: {
@@ -47,6 +48,10 @@ const DICTIONARY = {
    help: {
     title: "Ajuda",
     subtitle: "Encontra respostas rápidas e suporte.",
+   },
+   admin: {
+    title: "Administração",
+    subtitle: "Gere utilizadores, conteúdos e métricas da plataforma.",
    },
    default: {
     title: "Zenify",
@@ -158,6 +163,7 @@ const DICTIONARY = {
    profile: "Profile",
    settings: "Settings",
    help: "Help",
+   admin: "Administration",
   },
 
   topbar: {
@@ -192,6 +198,10 @@ const DICTIONARY = {
    help: {
     title: "Help",
     subtitle: "Find quick answers and support.",
+   },
+   admin: {
+    title: "Administration",
+    subtitle: "Manage users, content and platform metrics.",
    },
    default: {
     title: "Zenify",

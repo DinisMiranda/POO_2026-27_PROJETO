@@ -44,6 +44,11 @@ function getTopbarConfig(page) {
    subtitle: t("topbar.help.subtitle"),
    showBell: false,
   },
+  admin: {
+   title: t("topbar.admin.title"),
+   subtitle: t("topbar.admin.subtitle"),
+   showBell: false,
+  },
  };
 
  return (

@@ -1835,3 +1835,231 @@ body.notif-modal-open {
   background: var(--color-surface-offset);
   cursor: not-allowed;
 }
+
+/* ─── Utilities ─── */
+.hidden { display: none !important; }
+
+/* ─── Admin panel ─── */
+.admin-toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.admin-toolbar-title {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(1.35rem, 1rem + 1vw, 1.75rem);
+}
+
+.admin-eyebrow {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary-hover);
+}
+
+.admin-toolbar-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.admin-tab {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.admin-tab:hover {
+  color: var(--color-text);
+  border-color: rgba(92, 186, 154, 0.35);
+}
+
+.admin-tab--active {
+  background: var(--color-primary-bg);
+  border-color: rgba(92, 186, 154, 0.45);
+  color: var(--color-primary-hover);
+}
+
+.admin-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-4);
+}
+
+.admin-stat {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-stat-value {
+  display: block;
+  font-size: clamp(1.35rem, 1rem + 1vw, 1.8rem);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.admin-stat-label {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.admin-item-meta,
+.admin-user-meta {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.admin-item-desc {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.admin-user-row {
+  align-items: flex-start;
+}
+
+.admin-user-main,
+.admin-user-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.admin-user-side {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.admin-row-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.admin-inline-select {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-2);
+  font: inherit;
+  font-size: var(--text-sm);
+}
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 700;
+}
+
+.admin-badge--admin {
+  background: #ede8f8;
+  color: #6a5a9a;
+}
+
+.admin-badge--user {
+  background: #e8f5ef;
+  color: #2d6a5f;
+}
+
+.admin-badge--tip {
+  background: #fef8e0;
+  color: #9a6a10;
+}
+
+.btn-admin-danger {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #be123c;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.btn-admin-danger:hover {
+  background: #ffe4e6;
+}
+
+.admin-empty {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.admin-toast {
+  position: fixed;
+  right: var(--space-6);
+  bottom: var(--space-6);
+  z-index: 120;
+  max-width: 320px;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-xl);
+  background: #12352d;
+  color: #fff;
+  font-size: var(--text-sm);
+  box-shadow: var(--shadow-md);
+}
+
+.admin-toast--error {
+  background: #7f1d1d;
+}
+
+@media (max-width: 900px) {
+  .page-grid-2,
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-user-side {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .admin-row-actions {
+    justify-content: flex-start;
+  }
+}
