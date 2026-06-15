@@ -22,10 +22,18 @@
 
     <div class="page-stack chatbot-page">
      <div class="card chatbot-card">
-      <div class="chatbot-header">
-       <h3>Assistente Zenify</h3>
-       <span id="chat-status" class="chat-status">A verificar ligação…</span>
-      </div>
+       <div class="chatbot-header">
+        <h3>Assistente Zenify</h3>
+        <span id="chat-status" class="chat-status">A verificar ligação…</span>
+       </div>
+       <div id="chat-unavailable" class="chat-unavailable" hidden>
+        <strong>Assistente indisponível</strong>
+        <p>
+         O chat usa IA local via Ollama. Para funcionar, instala o Ollama, corre
+         <code>ollama pull llama3.2</code> e arranca <code>npm run chat-api</code>.
+         Ver instruções no README (secção «Assistente IA»).
+        </p>
+       </div>
       <div id="chat-log" class="chat-log" role="log" aria-live="polite"></div>
       <form id="chat-form" class="chat-form">
        <input

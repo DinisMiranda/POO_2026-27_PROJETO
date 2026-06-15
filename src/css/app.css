@@ -1569,6 +1569,39 @@ a.play-btn { text-decoration: none; }
   color: var(--color-text-muted);
 }
 
+.chat-status--error {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.chat-unavailable {
+  margin: var(--space-4) var(--space-6) 0;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-xl);
+  border: 1px solid #fecdd3;
+  background: #fff8f8;
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.chat-unavailable strong {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: #9f1239;
+}
+
+.chat-unavailable p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.chat-unavailable code {
+  font-size: 0.85em;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+}
+
 .chat-log {
   flex: 1;
   overflow-y: auto;

@@ -1,3 +1,4 @@
+/** Respostas por regras — apenas para legacy/app.html. A app principal usa Ollama. */
 export function respondToChat(input) {
   const text = input.toLowerCase().trim();
   if (!text) {

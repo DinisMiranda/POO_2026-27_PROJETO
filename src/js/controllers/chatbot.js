@@ -1,5 +1,8 @@
-import { askAssistant, isChatApiAvailable } from "../data/chat-service.js";
-import { respondToChat } from "../models/chatbot.js";
+import {
+ askAssistant,
+ ChatUnavailableError,
+ isChatApiAvailable,
+} from "../data/chat-service.js";
 import { requireSession } from "../data/session.js";
 
 const chatLog = document.getElementById("chat-log");
@@ -7,9 +10,16 @@ const chatForm = document.getElementById("chat-form");
 const chatInput = document.getElementById("chat-input");
 const chatSubmit = document.getElementById("chat-submit");
 const chatStatus = document.getElementById("chat-status");
+const chatUnavailable = document.getElementById("chat-unavailable");
 
 let chatHistory = [];
 let ollamaReady = false;
+
+const WELCOME_ONLINE =
+ "Olá! Sou o assistente Zenify. Pergunta sobre ansiedade, stress, sono, hábitos de estudo ou exercícios de bem-estar.";
+
+const UNAVAILABLE_MESSAGE =
+ "O assistente com IA não está disponível. Confirma que o Ollama está a correr e que executaste `npm run chat-api` (porta 3002). Tenta novamente mais tarde.";
 
 function appendMessage(author, text) {
  if (!chatLog) return;
@@ -39,41 +49,48 @@ function replaceLastBotMessage(text) {
  chatLog.scrollTop = chatLog.scrollHeight;
 }
 
+function setFormEnabled(enabled) {
+ if (chatInput) chatInput.disabled = !enabled;
+ if (chatSubmit) chatSubmit.disabled = !enabled;
+}
+
 function setPending(pending) {
- if (chatInput) chatInput.disabled = pending;
- if (chatSubmit) chatSubmit.disabled = pending;
+ setFormEnabled(ollamaReady && !pending);
 }
 
 function setStatus(online) {
- if (!chatStatus) return;
-
  ollamaReady = online;
- chatStatus.textContent =
-  online ? "Modo IA (Ollama) ativo" : "Modo offline — respostas pré-definidas";
- chatStatus.className = `chat-status chat-status--${online ? "online" : "offline"}`;
+
+ if (chatStatus) {
+  chatStatus.textContent =
+   online ? "IA ativa (Ollama)" : "Indisponível";
+  chatStatus.className = `chat-status chat-status--${online ? "online" : "error"}`;
+ }
+
+ if (chatUnavailable) {
+  chatUnavailable.hidden = online;
+ }
+
+ setFormEnabled(online);
 }
 
 async function resolveReply(message) {
- if (ollamaReady) {
-  try {
-   const reply = await askAssistant(message, chatHistory);
-   chatHistory.push(
-    { role: "user", content: message },
-    { role: "assistant", content: reply },
-   );
-   return reply;
-  } catch {
-   setStatus(false);
-  }
+ if (!ollamaReady) {
+  throw new ChatUnavailableError();
  }
 
- return respondToChat(message);
+ const reply = await askAssistant(message, chatHistory);
+ chatHistory.push(
+  { role: "user", content: message },
+  { role: "assistant", content: reply },
+ );
+ return reply;
 }
 
 async function handleSubmit(event) {
  event.preventDefault();
  const message = chatInput?.value.trim();
- if (!message) return;
+ if (!message || !ollamaReady) return;
 
  chatInput.value = "";
  appendMessage("user", message);
@@ -83,11 +100,18 @@ async function handleSubmit(event) {
  try {
   const reply = await resolveReply(message);
   replaceLastBotMessage(reply);
- } catch {
-  replaceLastBotMessage("Não consegui responder agora. Tenta outra vez.");
+ } catch (error) {
+  if (error instanceof ChatUnavailableError) {
+   setStatus(false);
+   replaceLastBotMessage(UNAVAILABLE_MESSAGE);
+  } else {
+   replaceLastBotMessage(
+    "Não consegui responder agora. Tenta novamente em instantes.",
+   );
+  }
  } finally {
   setPending(false);
-  chatInput?.focus();
+  if (ollamaReady) chatInput?.focus();
  }
 }
 
@@ -95,20 +119,14 @@ async function init() {
  const user = await requireSession();
  if (!user) return;
 
- setPending(true);
+ setFormEnabled(false);
  const online = await isChatApiAvailable();
  setStatus(online);
- setPending(false);
 
- appendMessage(
-  "bot",
-  online ?
-   "Olá! Sou o assistente Zenify. Pergunta sobre ansiedade, stress, sono ou exercícios."
-  : "Olá! O Ollama não está disponível. Respondo com sugestões pré-definidas — tenta: ansiedade, stress, humor ou exercício.",
- );
+ appendMessage("bot", online ? WELCOME_ONLINE : UNAVAILABLE_MESSAGE);
 
  chatForm?.addEventListener("submit", handleSubmit);
- chatInput?.focus();
+ if (online) chatInput?.focus();
 }
 
 init();

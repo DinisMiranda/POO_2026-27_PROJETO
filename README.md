@@ -7,7 +7,7 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
 - Frontend: HTML5, CSS custom (`src/css/`), JavaScript (ES modules)
 - Autenticacao: `json-server-auth` (JWT) via `POST /login` e `POST /register`
 - API mock: JSON Server + auth (`activities`, `checkins`, `userStats`, …)
-- Chat (main): Ollama via `server/chat-api.js` — ver [docs/chat-ollama.md](docs/chat-ollama.md)
+- Chat: Ollama via `server/chat-api.js` (porta **3002**) — página `src/pages/chatbot.html` — ver [docs/chat-ollama.md](docs/chat-ollama.md)
 
 ## Estrutura do projecto
 
@@ -17,14 +17,14 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
   src/pages/
     landing.html          → entrada pública + login/registo
     dashboard.html        → hoje (área autenticada)
-  registo.html            → diario de humor
-  exercicios.html         → exercicios de calma
-  insights.html           → estatisticas
-  comunidade.html         → feed
-  perfil.html             → perfil
-  settings.html           → configuracoes
-  ajuda.html              → FAQ
-  admin.html              → painel admin (MVP antigo)
+    exercicios.html       → exercícios de calma
+    chatbot.html          → assistente IA (Ollama)
+    insights.html         → estatísticas
+    diario.html           → diário de humor
+    perfil.html           → perfil
+    settings.html         → configurações
+    ajuda.html            → FAQ
+    admin.html            → painel de administração
 
   legacy/                 → MVP Tailwind (app, login, register)
   src/
@@ -83,9 +83,29 @@ O `index.html` na raiz reencaminha para a landing. Não uses a porta 3000 para o
 
 > Não abras os ficheiros `.html` directamente pelo sistema de ficheiros (`file://`) — os ES modules e o `fetch` não funcionam sem um servidor HTTP.
 
-### 5. (Opcional) Chat Ollama
+### 5. Assistente IA (Ollama) — **obrigatório para o chat**
 
-Ver [docs/chat-ollama.md](docs/chat-ollama.md). Requer ficheiro `.env` (ver `.env.example` ou `docs/entrega-variaveis-ambiente.txt`).
+O assistente está na sidebar (**Assistente** → `chatbot.html`). Usa Ollama local — **não** há respostas pré-escritas quando a IA está offline; a app mostra um aviso honesto.
+
+**Pré-requisitos:** [Ollama](https://ollama.com/download) instalado + `ollama pull llama3.2`
+
+Abre um **terceiro terminal**:
+
+```bash
+npm run chat-api
+```
+
+Confirma antes da demonstração:
+
+```bash
+curl http://localhost:3002/api/health
+```
+
+Deve devolver `"ollamaReady": true`.
+
+Guia completo (Windows/macOS/Linux, resolução de problemas): [docs/chat-ollama.md](docs/chat-ollama.md)
+
+Variáveis opcionais: `.env.example` ou `docs/entrega-variaveis-ambiente.txt` (entrega Moodle).
 
 ---
 
