@@ -13,9 +13,10 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
 
 ```
 /
-  index.html              → redirect para landing
-  landing.html            → entrada publica + login/registo
-  dashboard.html          → hoje (area autenticada)
+  index.html              → redirect para src/pages/landing.html
+  src/pages/
+    landing.html          → entrada pública + login/registo
+    dashboard.html        → hoje (área autenticada)
   registo.html            → diario de humor
   exercicios.html         → exercicios de calma
   insights.html           → estatisticas
@@ -48,52 +49,41 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
 > ⚠️ **IMPORTANTE — A DB tem de estar ligada antes de abrir o browser.**
 > O login faz `fetch` para `http://localhost:3000`. Se o json-server nao estiver ativo, o login falha sempre com "load fail".
 
-### 1. Ligar a base de dados (JSON Server) — **obrigatorio**
+### 1. Instalar dependências
+
+```bash
+npm install
+```
+
+### 2. Ligar a base de dados (JSON Server) — **obrigatório**
 
 Abre um terminal e corre:
 
 ```bash
-npx json-server --watch db.json --port 3000
-```
-
-Deves ver:
-
-```
-Resources
-  http://localhost:3000/users
-  http://localhost:3000/activities
-  http://localhost:3000/checkins
-  ...
-
-Home
-  http://localhost:3000
+npm run data
 ```
 
 Deixa este terminal aberto enquanto usas a app.
 
-### 2. Servir o frontend — **obrigatorio (terminal separado)**
+### 3. Servir o frontend — **obrigatório (terminal separado)**
 
 Abre um **segundo terminal** e corre:
 
 ```bash
-npx serve . --listen 5500
+npm run web
 ```
 
-Ou com live-reload (recomendado para desenvolvimento):
-
-```bash
-npx live-server --port=5500
-```
-
-### 3. Abrir no browser
+### 4. Abrir no browser
 
 ```
-http://localhost:5500/landing.html
+http://localhost:5000/
 ```
 
-> Nao abras os ficheiros `.html` directamente pelo sistema de ficheiros (`file://`) — os ES modules e o `fetch` nao funcionam sem um servidor HTTP.
+O `index.html` na raiz reencaminha para a landing. Não uses a porta 3000 para o frontend — essa porta é do json-server.
 
-### 4. (Opcional) Chat Ollama
+> Não abras os ficheiros `.html` directamente pelo sistema de ficheiros (`file://`) — os ES modules e o `fetch` não funcionam sem um servidor HTTP.
+
+### 5. (Opcional) Chat Ollama
 
 Ver [docs/chat-ollama.md](docs/chat-ollama.md).
 
@@ -111,4 +101,15 @@ Ver [docs/chat-ollama.md](docs/chat-ollama.md).
 
 ## Fluxo utilizador (frontend PR)
 
-`landing.html` → login/registo → `dashboard.html` → restantes paginas via sidebar.
+`src/pages/landing.html` → login/registo → `dashboard.html` → restantes páginas via sidebar.
+
+## Legacy
+
+Paginas antigas em `legacy/` — ver [legacy/README.md](legacy/README.md).
+
+Credenciais admin seed (legacy localStorage):
+
+- email: `admin@zenify.local`
+- password: `admin123`
+
+Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/persistencia.md](docs/persistencia.md)
