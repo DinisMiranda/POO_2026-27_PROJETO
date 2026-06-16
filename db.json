@@ -17,6 +17,17 @@
       "email": "admin@zenify.pt",
       "password": "$2a$10$fzaKeOLNGH2Vw1VsNHVYAuKL0YaShig3nhhZbdVhSoKE9Lx9XC5le",
       "role": "admin"
+    },
+    {
+      "email": "emanuel@gmail.com",
+      "password": "$2a$10$SSdpzIeftHWzA/BKZL/O1OL2oZPhkA8Vb5oLmM48EpaCXMua/7U3K",
+      "firstName": "Emanuel",
+      "lastName": "Gomes",
+      "name": "Emanuel Gomes",
+      "dob": "2004-06-18",
+      "role": "user",
+      "createdAt": "2026-06-16T13:02:12.129Z",
+      "id": "bQQoVbW"
     }
   ],
   "userStats": [
@@ -69,8 +80,8 @@
       "userId": "u-admin",
       "xp": 50,
       "level": 1,
-      "totalCheckins": 1,
-      "longestStreak": 1,
+      "totalCheckins": 2,
+      "longestStreak": 2,
       "activityTypes": [],
       "completedChallenges": [
         "c1"
@@ -80,54 +91,31 @@
       ],
       "createdAt": "2026-06-15T12:09:39.413Z",
       "id": "8WyjG6x",
-      "streak": 1,
-      "lastCheckin": "2026-06-15",
+      "streak": 2,
+      "lastCheckin": "2026-06-16",
       "checkedInToday": true
+    },
+    {
+      "userId": "bQQoVbW",
+      "xp": 50,
+      "level": 1,
+      "streak": 1,
+      "lastCheckin": "2026-06-16",
+      "checkedInToday": true,
+      "totalCheckins": 1,
+      "longestStreak": 1,
+      "activityTypes": [],
+      "completedChallenges": [
+        "c1"
+      ],
+      "unlockedMedals": [
+        "m5"
+      ],
+      "createdAt": "2026-06-16T13:02:13.195Z",
+      "id": "5V__LZe"
     }
   ],
   "moodLogs": [
-    {
-      "id": "mood1",
-      "userId": "u-user",
-      "date": "2026-05-27",
-      "mood": 3.2
-    },
-    {
-      "id": "mood2",
-      "userId": "u-user",
-      "date": "2026-05-28",
-      "mood": 3.4
-    },
-    {
-      "id": "mood3",
-      "userId": "u-user",
-      "date": "2026-05-29",
-      "mood": 3
-    },
-    {
-      "id": "mood4",
-      "userId": "u-user",
-      "date": "2026-05-30",
-      "mood": 3.5
-    },
-    {
-      "id": "mood5",
-      "userId": "u-user",
-      "date": "2026-05-31",
-      "mood": 3.8
-    },
-    {
-      "id": "mood6",
-      "userId": "u-user",
-      "date": "2026-06-01",
-      "mood": 3.6
-    },
-    {
-      "id": "mood7",
-      "userId": "u-user",
-      "date": "2026-06-02",
-      "mood": 3.9
-    },
     {
       "id": "f4e4",
       "userId": "u-user",
@@ -147,6 +135,20 @@
       "mood": 1,
       "note": "",
       "id": "GfBXSB1"
+    },
+    {
+      "userId": "u-admin",
+      "date": "2026-06-16",
+      "mood": 4,
+      "note": "",
+      "id": "AnoHl-8"
+    },
+    {
+      "userId": "bQQoVbW",
+      "date": "2026-06-16",
+      "mood": 5,
+      "note": "",
+      "id": "moMS-gF"
     }
   ],
   "activities": [
@@ -193,6 +195,13 @@
       "level": 3,
       "note": "ola",
       "id": 1
+    },
+    {
+      "userId": "u-admin",
+      "date": "2026-06-16",
+      "level": 4,
+      "note": "",
+      "id": 2
     }
   ],
   "tips": [

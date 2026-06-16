@@ -304,7 +304,7 @@ body.notif-modal-open {
 }
 
 .hero-copy h1 span {
-  color: #6287a0;
+  color: #3e80b5;
 }
 
 .hero-copy p {
@@ -733,7 +733,7 @@ body.notif-modal-open {
   max-height: 115%;
   object-fit: cover;
   object-position: center 20%;
-  transform: translate(1.25rem, -16%);
+  transform: translate(1.25rem, -2.5rem) scale(1.194);
   filter: drop-shadow(0 20px 32px rgba(15, 36, 56, 0.2));
   pointer-events: none;
   user-select: none;

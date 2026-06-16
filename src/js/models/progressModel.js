@@ -15,12 +15,15 @@ function evaluateCondition(condition, progress) {
   return (progress.xp || 0) >= Number(condition.split("_")[1]);
  }
  if (condition.startsWith("challenges_")) {
-  return (progress.completedChallenges || []).length >=
-   Number(condition.split("_")[1]);
+  return (
+   (progress.completedChallenges || []).length >=
+   Number(condition.split("_")[1])
+  );
  }
  if (condition.startsWith("activities_")) {
-  return (progress.activityTypes || []).length >=
-   Number(condition.split("_")[1]);
+  return (
+   (progress.activityTypes || []).length >= Number(condition.split("_")[1])
+  );
  }
 
  return false;
@@ -28,9 +31,9 @@ function evaluateCondition(condition, progress) {
 
 export const ProgressModel = {
  async getProgress(userId) {
- const list = await apiFetchJson(`/userProgress?userId=${userId}`);
- if (list.length > 0) return list[0];
- return this._createProgress(userId);
+  const list = await apiFetchJson(`/userProgress?userId=${userId}`);
+  if (list.length > 0) return list[0];
+  return this._createProgress(userId);
  },
 
  async _createProgress(userId) {

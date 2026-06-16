@@ -24,7 +24,7 @@ export async function saveMoodLog(userId, mood, note = "") {
   return false;
  }
 
- const res = await apiFetch("/moodLogs", {
+ const res = await apiFetch(`/moodLogs?userId=${userId}`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ userId, date: today, ...payload }),

@@ -18,7 +18,9 @@ const levelXpText = document.getElementById("level-xp-text");
 const dashboardXpBar = document.getElementById("dashboard-xp-bar");
 const dashboardXpLabel = document.getElementById("dashboard-xp-label");
 const achievementModal = document.getElementById("achievement-modal");
-const pendingChallengesList = document.getElementById("pending-challenges-list");
+const pendingChallengesList = document.getElementById(
+ "pending-challenges-list",
+);
 const pendingMedalsList = document.getElementById("pending-medals-list");
 const addAchievementBtn = document.getElementById("btn-add-achievement");
 const humorChartEl = document.getElementById("humorChart");
@@ -29,8 +31,12 @@ const mentalStateScore = document.getElementById("mental-state-score");
 const mentalStateOrb = document.getElementById("mental-state-orb");
 const challengeTitle = document.getElementById("challenge-title");
 const challengeDesc = document.getElementById("challenge-desc");
-const challengeProgressFill = document.getElementById("challenge-progress-fill");
-const challengeProgressLabel = document.getElementById("challenge-progress-label");
+const challengeProgressFill = document.getElementById(
+ "challenge-progress-fill",
+);
+const challengeProgressLabel = document.getElementById(
+ "challenge-progress-label",
+);
 const challengePtsValue = document.getElementById("challenge-pts-value");
 const viewChallengeBtn = document.getElementById("btn-view-challenge");
 const checkinMoodModal = document.getElementById("checkin-mood-modal");
@@ -226,14 +232,9 @@ function resolveMentalState(moodLogs) {
    .filter((v) => !Number.isNaN(v));
  }
 
- if (!values.length) {
-  values = [3.2, 3.4, 3.6, 3.5, 3.8, 3.9, 3.7];
- }
-
  const avg = values.reduce((sum, v) => sum + v, 0) / values.length;
  const split = Math.max(1, Math.floor(values.length / 2));
- const firstAvg =
-  values.slice(0, split).reduce((sum, v) => sum + v, 0) / split;
+ const firstAvg = values.slice(0, split).reduce((sum, v) => sum + v, 0) / split;
  const secondSlice = values.slice(split);
  const secondAvg =
   secondSlice.length ?
@@ -309,9 +310,6 @@ function renderHumorChart(moodLogs) {
    .slice(-7);
   labels = recent.map((entry) => entry.date.slice(5));
   values = recent.map((entry) => Number(entry.mood));
- } else if (!hasWeekData) {
-  labels = weekDays.map((d) => d.label);
-  values = [3.2, 3.4, 3.6, 3.5, 3.8, 4.0, 3.9];
  }
 
  if (humorChartInstance) {
@@ -372,8 +370,7 @@ function getActiveChallenge() {
  if (!pending.length) return null;
 
  return pending.reduce((best, c) => {
-  const bestRatio =
-   getChallengeCurrent(best, currentProgress) / best.target;
+  const bestRatio = getChallengeCurrent(best, currentProgress) / best.target;
   const ratio = getChallengeCurrent(c, currentProgress) / c.target;
   return ratio > bestRatio ? c : best;
  });
@@ -404,7 +401,8 @@ function renderChallengeCard() {
  if (challengeProgressLabel) {
   challengeProgressLabel.textContent = `${capped}/${challenge.target}${unit}`;
  }
- if (challengePtsValue) challengePtsValue.textContent = `${challenge.xpReward} pts`;
+ if (challengePtsValue)
+  challengePtsValue.textContent = `${challenge.xpReward} pts`;
 }
 
 function showFeedback(message, type = "success") {
@@ -422,7 +420,11 @@ function renderPendingAchievements() {
  if (!currentProgress) return;
 
  const { pendingChallenges, pendingMedals } =
-  ProgressModel.getPendingAchievements(currentProgress, challengeDefs, medalDefs);
+  ProgressModel.getPendingAchievements(
+   currentProgress,
+   challengeDefs,
+   medalDefs,
+  );
 
  if (pendingChallengesList) {
   pendingChallengesList.innerHTML =
@@ -532,9 +534,11 @@ confirmCheckinBtn?.addEventListener("click", () => {
  completeCheckinWithMood(selectedCheckinMood);
 });
 
-checkinMoodModal?.querySelectorAll("[data-checkin-mood-close]").forEach((el) => {
- el.addEventListener("click", closeCheckinMoodModal);
-});
+checkinMoodModal
+ ?.querySelectorAll("[data-checkin-mood-close]")
+ .forEach((el) => {
+  el.addEventListener("click", closeCheckinMoodModal);
+ });
 
 addAchievementBtn?.addEventListener("click", openAchievementModal);
 
