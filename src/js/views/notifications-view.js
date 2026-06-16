@@ -1,5 +1,5 @@
-import { NotificationsModel } from "../models/notificationsModel.js";
-import { UserModel } from "../models/userModel.js";
+import { NotificationsService } from "../data/notifications-service.js";
+import { UserService } from "../data/user-service.js";
 
 let modalEl = null;
 
@@ -48,7 +48,7 @@ function renderItem(item) {
 }
 
 export async function openNotificationsModal() {
- const user = UserModel.getSession();
+ const user = UserService.getSession();
  const modal = ensureModal();
  const list = modal.querySelector("#notif-modal-list");
 
@@ -65,7 +65,7 @@ export async function openNotificationsModal() {
  list.innerHTML = `<p class="notif-loading">A carregar…</p>`;
 
  try {
-  const items = await NotificationsModel.getForUser(user.id);
+  const items = await NotificationsService.getForUser(user.id);
   list.innerHTML =
    items.length > 0 ?
     items.map(renderItem).join("")

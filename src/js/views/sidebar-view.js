@@ -1,5 +1,5 @@
 import { t } from "../data/i18n.js";
-import { UserModel } from "../models/userModel.js";
+import { UserService } from "../data/user-service.js";
 
 const LOGO_SVG = `
 <svg width="26" height="26" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -11,7 +11,7 @@ const LOGO_SVG = `
 `;
 
 function getItems() {
- const session = UserModel.getSession();
+ const session = UserService.getSession();
  const adminLink =
   session?.role === "admin" ?
    [{ key: "admin", href: "./admin.html", label: t("nav.admin") }]

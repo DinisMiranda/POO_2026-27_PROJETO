@@ -1,4 +1,4 @@
-import { apiFetch, apiFetchJson } from "../data/http.js";
+import { apiFetch, apiFetchJson } from "./http.js";
 
 const AI_TEMPLATES = [
  {
@@ -21,7 +21,7 @@ const AI_TEMPLATES = [
  },
 ];
 
-export const NotificationsModel = {
+export const NotificationsService = {
  async getForUser(userId) {
   const [stored, progressList, medals, challenges] = await Promise.all([
    this._fetchStored(userId),

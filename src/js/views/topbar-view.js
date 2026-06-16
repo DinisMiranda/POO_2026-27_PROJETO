@@ -1,4 +1,4 @@
-import { UserModel } from "../models/userModel.js";
+import { UserService } from "../data/user-service.js";
 import { t } from "../data/i18n.js";
 import { bindNotificationButtons } from "./notifications-view.js";
 
@@ -142,7 +142,7 @@ function bindAvatar(host) {
  });
 
  logoutBtn?.addEventListener("click", () => {
-  UserModel.clearSession();
+  UserService.clearSession();
   window.location.href = "../pages/landing.html";
  });
 }
@@ -152,7 +152,7 @@ export async function mountTopbar() {
  if (!host) return;
 
  const page = document.body.dataset.zenifyPage || "";
- const user = await UserModel.resolveSession();
+ const user = await UserService.resolveSession();
  const config = getTopbarConfig(page);
  const initials = getInitials(user);
 

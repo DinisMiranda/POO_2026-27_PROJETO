@@ -1,35 +1,8 @@
-import { getLevelTierName as resolveLevelTierName } from "../data/levelTiers.js";
-import { apiFetch, apiFetchJson } from "../data/http.js";
-import { dateStr, offsetDate } from "../data/utils.js";
+import { Progress } from "../models/Progress.js";
+import { apiFetchJson } from "./http.js";
+import { dateStr, offsetDate } from "./utils.js";
 
-function evaluateCondition(condition, progress) {
- if (!condition) return false;
-
- if (condition.startsWith("streak_")) {
-  return (progress.longestStreak || 0) >= Number(condition.split("_")[1]);
- }
- if (condition.startsWith("checkins_")) {
-  return (progress.totalCheckins || 0) >= Number(condition.split("_")[1]);
- }
- if (condition.startsWith("xp_")) {
-  return (progress.xp || 0) >= Number(condition.split("_")[1]);
- }
- if (condition.startsWith("challenges_")) {
-  return (
-   (progress.completedChallenges || []).length >=
-   Number(condition.split("_")[1])
-  );
- }
- if (condition.startsWith("activities_")) {
-  return (
-   (progress.activityTypes || []).length >= Number(condition.split("_")[1])
-  );
- }
-
- return false;
-}
-
-export const ProgressModel = {
+export const ProgressService = {
  async getProgress(userId) {
   const list = await apiFetchJson(`/userProgress?userId=${userId}`);
   if (list.length > 0) return list[0];
@@ -74,15 +47,15 @@ export const ProgressModel = {
  },
 
  calcLevel(xp) {
-  return Math.floor(xp / 100) + 1;
+  return Progress.calcLevel(xp);
  },
 
  getLevelTierName(level) {
-  return resolveLevelTierName(level);
+  return Progress.getLevelTierName(level);
  },
 
  getXpInLevel(xp) {
-  return xp % 100;
+  return Progress.getXpInLevel(xp);
  },
 
  async doCheckin(userId) {
@@ -164,7 +137,7 @@ export const ProgressModel = {
   const updatedProgress = await this.updateProgress(progress.id, {
    completedChallenges: [...progress.completedChallenges, ...newlyCompleted],
    xp: progress.xp + xpGained,
-   level: this.calcLevel(progress.xp + xpGained),
+   level: Progress.calcLevel(progress.xp + xpGained),
   });
 
   return { progress: updatedProgress, newlyCompleted };
@@ -180,7 +153,7 @@ export const ProgressModel = {
 
   for (const m of medals) {
    if (progress.unlockedMedals.includes(m.id)) continue;
-   if (evaluateCondition(m.condition, progress)) {
+   if (Progress.medalConditionMet(m.condition, progress)) {
     newlyUnlocked.push(m.id);
    }
   }
@@ -210,7 +183,7 @@ export const ProgressModel = {
   const updatedProgress = await this.updateProgress(progress.id, {
    completedChallenges: [...progress.completedChallenges, challengeId],
    xp: newXp,
-   level: this.calcLevel(newXp),
+   level: Progress.calcLevel(newXp),
   });
 
   return { progress: updatedProgress, challenge, alreadyDone: false };
@@ -245,28 +218,17 @@ export const ProgressModel = {
   const updatedProgress = await this.updateProgress(progress.id, {
    activityTypes: isNewType ? [...types, activityType] : types,
    xp: newXp,
-   level: this.calcLevel(newXp),
+   level: Progress.calcLevel(newXp),
   });
 
   return { progress: updatedProgress, xpGain, newType: isNewType };
  },
 
  getPendingAchievements(progress, challengeDefs, medalDefs) {
-  const pendingChallenges = challengeDefs.filter(
-   (c) => !(progress.completedChallenges || []).includes(c.id),
-  );
-  const pendingMedals = medalDefs.filter(
-   (m) => !(progress.unlockedMedals || []).includes(m.id),
-  );
-  return { pendingChallenges, pendingMedals };
+  return Progress.getPendingAchievements(progress, challengeDefs, medalDefs);
  },
 
  getChallengeCurrent(challenge, progress) {
-  if (challenge.type === "checkin") return progress?.totalCheckins || 0;
-  if (challenge.type === "streak") return progress?.streak || 0;
-  if (challenge.type === "activities") {
-   return (progress?.activityTypes || []).length;
-  }
-  return 0;
+  return Progress.getChallengeCurrent(challenge, progress);
  },
 };

@@ -1,9 +1,9 @@
-import { clearAuthToken, getAuthToken } from "../data/auth-token.js";
+import { clearAuthToken, getAuthToken } from "./auth-token.js";
 import {
  apiFetch,
  loginWithCredentials,
  registerAccount,
-} from "../data/http.js";
+} from "./http.js";
 
 const SESSION_KEY = "zenify_user";
 
@@ -13,7 +13,7 @@ function toSafeUser(user) {
  return safeUser;
 }
 
-export const UserModel = {
+export const UserService = {
  async register({ firstName, lastName, email, password, dob }) {
   const user = await registerAccount({
    firstName: firstName.trim(),

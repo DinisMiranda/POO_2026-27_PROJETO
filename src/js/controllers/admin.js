@@ -1,4 +1,4 @@
-import { UserModel } from "../models/userModel.js";
+import { UserService } from "../data/user-service.js";
 import { requireSession } from "../data/session.js";
 import { redirectByRole, redirectToLogin } from "../data/navigation.js";
 import { initI18n, setPageTitle } from "../data/i18n.js";
@@ -93,7 +93,7 @@ async function init() {
  });
 
  document.getElementById("btn-admin-logout")?.addEventListener("click", () => {
-  UserModel.clearSession();
+  UserService.clearSession();
   redirectToLogin();
  });
 
