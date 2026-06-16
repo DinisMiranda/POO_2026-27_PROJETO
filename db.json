@@ -28,6 +28,17 @@
       "role": "user",
       "createdAt": "2026-06-16T13:02:12.129Z",
       "id": "bQQoVbW"
+    },
+    {
+      "email": "123@gmail.pt",
+      "password": "$2a$10$62czheJ59YLjbAJMcL2ky.S0E9tf7ujUZ2OufeYiMeXeoysffmedu",
+      "firstName": "123",
+      "lastName": "123",
+      "name": "123 123",
+      "dob": "2026-06-01",
+      "role": "user",
+      "createdAt": "2026-06-16T13:55:42.986Z",
+      "id": "mr1hFy-"
     }
   ],
   "userStats": [
@@ -113,6 +124,21 @@
       ],
       "createdAt": "2026-06-16T13:02:13.195Z",
       "id": "5V__LZe"
+    },
+    {
+      "userId": "mr1hFy-",
+      "xp": 0,
+      "level": 1,
+      "streak": 0,
+      "lastCheckin": null,
+      "checkedInToday": false,
+      "totalCheckins": 0,
+      "longestStreak": 0,
+      "activityTypes": [],
+      "completedChallenges": [],
+      "unlockedMedals": [],
+      "createdAt": "2026-06-16T13:55:43.216Z",
+      "id": "PUwMTk5"
     }
   ],
   "moodLogs": [
