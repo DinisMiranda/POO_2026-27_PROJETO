@@ -4,11 +4,11 @@
   "type": "module",
   "scripts": {
     "web": "serve . -l 5000",
-    "data": "json-server-auth db.json --port 3000 --watch",
+    "data": "json-server-auth db.json --port 3000 --host 0.0.0.0 --watch",
     "seed-db": "node scripts/seed-db-users.js",
     "chat-api": "node server/chat-api.js",
-    "api": "json-server-auth db.json --port 3000",
-    "start": "json-server-auth db.json --port 3000"
+    "api": "json-server-auth db.json --port 3000 --host 0.0.0.0",
+    "start": "json-server-auth db.json --port 3000 --host 0.0.0.0"
   },
   "dependencies": {
     "cors": "^2.8.5",

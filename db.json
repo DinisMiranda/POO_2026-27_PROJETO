@@ -6,7 +6,7 @@
       "firstName": "Ana",
       "lastName": "Teste",
       "email": "user@zenify.pt",
-      "password": "$2a$10$.uFDe4IrceFJbMqGyBaj8uOb.m31R5nlFR9QK3MY6UfpksUxpThBS",
+      "password": "$2a$10$Dx3DJPkJQfdfOTMoJ8/I7.PbofJvQEoQriiY8L4fAq2zLe5cR8qQ.",
       "role": "user"
     },
     {
@@ -15,17 +15,20 @@
       "firstName": "Admin",
       "lastName": "Zenify",
       "email": "admin@zenify.pt",
-      "password": "$2a$10$7jItJgECjcA.4otdsB5Zle/doJQt6HOVFkJJoXk4wl.qpEurBxZ3u",
+      "password": "$2a$10$fzaKeOLNGH2Vw1VsNHVYAuKL0YaShig3nhhZbdVhSoKE9Lx9XC5le",
       "role": "admin"
-    },
+    }
+  ],
+  "userStats": [
     {
-      "email": "novo@test.pt",
-      "password": "$2a$10$AGoGPp49eYE44lWxxxXPQOVOQTl0QZF/ZeEpmsZqiGRCULSUoc0Sm",
-      "firstName": "Novo",
-      "lastName": "User",
-      "name": "Novo User",
-      "role": "user",
-      "id": "VBCqxox"
+      "id": "stats-u-user",
+      "userId": "u-user",
+      "streak": 1,
+      "lastCheckin": "2026-06-15",
+      "checkedInToday": true,
+      "longestStreak": 12,
+      "totalCheckins": 9,
+      "createdAt": "2026-06-13T00:15:14.814Z"
     }
   ],
   "userProgress": [
@@ -34,10 +37,7 @@
       "userId": "u-user",
       "xp": 515,
       "level": 6,
-      "streak": 1,
-      "lastCheckin": "2026-06-15",
-      "checkedInToday": true,
-      "totalCheckins": 9,
+      "totalCheckins": 8,
       "longestStreak": 12,
       "activityTypes": [
         "respiracao",
@@ -67,18 +67,22 @@
     },
     {
       "userId": "u-admin",
-      "xp": 0,
+      "xp": 50,
       "level": 1,
-      "streak": 0,
-      "lastCheckin": null,
-      "checkedInToday": false,
-      "totalCheckins": 0,
-      "longestStreak": 0,
+      "totalCheckins": 1,
+      "longestStreak": 1,
       "activityTypes": [],
-      "completedChallenges": [],
-      "unlockedMedals": [],
+      "completedChallenges": [
+        "c1"
+      ],
+      "unlockedMedals": [
+        "m5"
+      ],
       "createdAt": "2026-06-15T12:09:39.413Z",
-      "id": "8WyjG6x"
+      "id": "8WyjG6x",
+      "streak": 1,
+      "lastCheckin": "2026-06-15",
+      "checkedInToday": true
     }
   ],
   "moodLogs": [
@@ -140,8 +144,8 @@
     {
       "userId": "u-admin",
       "date": "2026-06-15",
-      "mood": 3,
-      "note": "ola",
+      "mood": 1,
+      "note": "",
       "id": "GfBXSB1"
     }
   ],
