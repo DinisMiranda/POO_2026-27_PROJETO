@@ -78,7 +78,7 @@ const DICTIONARY = {
    preferences: "Preferências",
    language: "Idioma",
    languagePt: "Português",
-   languageEn: "English",
+   languageEn: "Inglês",
    reminderTime: "Hora do lembrete",
    save: "Guardar preferências",
    privacy: "Privacidade",
