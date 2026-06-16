@@ -63,6 +63,7 @@ const DICTIONARY = {
    },
    notifications: "Notificações",
    profileLabel: "Perfil",
+   logout: "Terminar sessão",
   },
 
   settings: {
@@ -230,6 +231,7 @@ const DICTIONARY = {
    },
    notifications: "Notifications",
    profileLabel: "Profile",
+   logout: "Sign out",
   },
 
   settings: {
