@@ -726,13 +726,13 @@ body.notif-modal-open {
 
 .review-photo {
   position: absolute;
-  right: clamp(0.25rem, 3vw, 1.75rem);
+  right: clamp(0.25rem, 3vw, 0rem);
   bottom: 0;
-  width: clamp(240px, 38vw, 360px);
+  width: clamp(600px, 38vw, 360px);
   height: auto;
   max-height: 115%;
   object-fit: cover;
-  object-position: center 12%;
+  object-position: center 20%;
   transform: translateY(-16%);
   filter: drop-shadow(0 20px 32px rgba(15, 36, 56, 0.2));
   pointer-events: none;
@@ -1064,13 +1064,6 @@ body.notif-modal-open {
   .review-visual {
     min-height: 300px;
     margin-top: -0.5rem;
-  }
-
-  .review-photo {
-    right: 50%;
-    width: min(300px, 72vw);
-    transform: translate(50%, -10%);
-    object-position: center 10%;
   }
 
   .footer-grid {
