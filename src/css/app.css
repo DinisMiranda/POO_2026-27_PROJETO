@@ -603,6 +603,8 @@ a.play-btn { text-decoration: none; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .exercise-card-top {
@@ -658,6 +660,7 @@ a.play-btn { text-decoration: none; }
   cursor: pointer;
   transition: background var(--transition);
   font-family: inherit;
+  margin-top: auto;
 }
 .exercise-card-footer:hover { background: var(--color-surface-offset); }
 .exercise-card-footer svg { width: 14px; height: 14px; }
