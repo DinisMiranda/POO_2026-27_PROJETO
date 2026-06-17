@@ -1,5 +1,6 @@
 import { Progress } from "../models/Progress.js";
 import { getLast7Days } from "../utils/mental-state.js";
+import { t, tf } from "../data/i18n.js";
 
 const FACE_SVG = {
  balanced: `<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="30" cy="30" r="28" stroke-width="1.5"/><path d="M17 26 Q21 22 25 26" stroke-width="2"/><path d="M35 26 Q39 22 43 26" stroke-width="2"/><path d="M22 36 Q30 42 38 36"/></svg>`,
@@ -53,7 +54,7 @@ export const DashboardView = {
   const tierName = Progress.getLevelTierName(level);
 
   if (this.levelTierName) this.levelTierName.textContent = tierName;
-  if (this.levelNumber) this.levelNumber.textContent = `Nível ${level}`;
+  if (this.levelNumber) this.levelNumber.textContent = `${t("common.level")} ${level}`;
   if (this.levelXpText) this.levelXpText.textContent = `${xp} XP`;
   if (this.dashboardXpBar) this.dashboardXpBar.style.width = `${xpInLevel}%`;
   if (this.dashboardXpLabel) {
@@ -66,18 +67,18 @@ export const DashboardView = {
 
   if (this.streakLabel) {
    this.streakLabel.textContent =
-    progress.streak === 1 ? "dia seguido" : "dias seguidos";
+    progress.streak === 1 ? t("common.dayStreak") : t("common.daysStreak");
   }
 
   this.renderDots(progress.streak, progress.checkedInToday);
 
   if (this.checkinBtn) {
    if (progress.checkedInToday) {
-    this.checkinBtn.textContent = "✓ Check-in feito hoje";
+    this.checkinBtn.textContent = t("dashboard.checkinDone");
     this.checkinBtn.disabled = true;
     this.checkinBtn.classList.add("btn-checkin--done");
    } else {
-    this.checkinBtn.textContent = "Fazer check-in de hoje";
+    this.checkinBtn.textContent = t("dashboard.checkinToday");
     this.checkinBtn.disabled = false;
     this.checkinBtn.classList.remove("btn-checkin--done");
    }
@@ -117,11 +118,11 @@ export const DashboardView = {
    btn.classList.remove("is-selected");
   });
   if (this.checkinMoodLabel) {
-   this.checkinMoodLabel.textContent = "Escolhe um valor de 1 a 5";
+   this.checkinMoodLabel.textContent = t("mood.pickValue");
   }
   if (this.confirmCheckinBtn) {
    this.confirmCheckinBtn.disabled = true;
-   this.confirmCheckinBtn.textContent = "Registar check-in";
+   this.confirmCheckinBtn.textContent = t("dashboard.registerCheckin");
   }
  },
 
@@ -144,7 +145,7 @@ export const DashboardView = {
  setConfirmCheckinLoading(loading) {
   if (!this.confirmCheckinBtn) return;
   this.confirmCheckinBtn.disabled = loading;
-  this.confirmCheckinBtn.textContent = loading ? "A registar…" : "Registar check-in";
+  this.confirmCheckinBtn.textContent = loading ? t("common.registering") : t("dashboard.registerCheckin");
  },
 
  enableConfirmCheckin() {
@@ -240,20 +241,20 @@ export const DashboardView = {
 
  renderChallengeCard(challenge, progress, getChallengeCurrent) {
   if (!challenge || !progress) {
-   if (this.challengeTitle) this.challengeTitle.textContent = "Sem desafios ativos";
+   if (this.challengeTitle) this.challengeTitle.textContent = t("dashboard.noActiveChallenges");
    if (this.challengeDesc) {
-    this.challengeDesc.textContent = "Vê todos os desafios no teu perfil.";
+    this.challengeDesc.textContent = t("dashboard.seeProfileChallenges");
    }
    if (this.challengeProgressFill) this.challengeProgressFill.style.width = "0%";
    if (this.challengeProgressLabel) this.challengeProgressLabel.textContent = "—";
-   if (this.challengePtsValue) this.challengePtsValue.textContent = "— pts";
+   if (this.challengePtsValue) this.challengePtsValue.textContent = `— ${t("common.pts")}`;
    return;
   }
 
   const current = getChallengeCurrent(challenge, progress);
   const capped = Math.min(current, challenge.target);
   const pct = Math.min((current / challenge.target) * 100, 100);
-  const unit = challenge.type === "streak" ? " dias" : "";
+  const unit = challenge.type === "streak" ? ` ${t("common.days")}` : "";
 
   if (this.challengeTitle) this.challengeTitle.textContent = challenge.title;
   if (this.challengeDesc) this.challengeDesc.textContent = challenge.description;
@@ -262,7 +263,7 @@ export const DashboardView = {
    this.challengeProgressLabel.textContent = `${capped}/${challenge.target}${unit}`;
   }
   if (this.challengePtsValue) {
-   this.challengePtsValue.textContent = `${challenge.xpReward} pts`;
+   this.challengePtsValue.textContent = `${challenge.xpReward} ${t("common.pts")}`;
   }
  },
 
@@ -291,7 +292,7 @@ export const DashboardView = {
     `,
       )
       .join("")
-    : `<p class="achievement-empty">Sem desafios pendentes.</p>`;
+    : `<p class="achievement-empty">${t("dashboard.noPendingChallenges")}</p>`;
   }
 
   if (this.pendingMedalsList) {
@@ -307,7 +308,7 @@ export const DashboardView = {
     `,
       )
       .join("")
-    : `<p class="achievement-empty">Sem medalhas pendentes.</p>`;
+    : `<p class="achievement-empty">${t("dashboard.noPendingMedals")}</p>`;
   }
  },
 

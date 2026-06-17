@@ -5,9 +5,11 @@ import { mountAppShell } from "../views/app-shell.js";
 import { InsightsView as View } from "../views/insights-view.js";
 import { getInitials } from "../data/utils.js";
 import { buildInsightsRecommendations } from "../utils/insights-rules.js";
+import { setPageTitle, t, tf } from "../data/i18n.js";
 
 async function initInsights() {
  mountAppShell();
+ setPageTitle("page.title.insights");
  const sessionUser = await requireSession();
  if (!sessionUser) return;
 
@@ -32,7 +34,7 @@ async function initInsights() {
  const weeklySessions = (progress.activityTypes || []).length;
  const weeklyXp = weeklySessions * 5;
  const criticalPeriod =
-  avgMood < 3.2 ? "Quartas à tarde" : "Segundas ao fim do dia";
+  avgMood < 3.2 ? t("insights.criticalWed") : t("insights.criticalMon");
 
  View.renderSummary({
   initials: getInitials(sessionUser),
@@ -52,7 +54,7 @@ async function initInsights() {
  const labels =
   moods.length ?
    moods.map((m) => m.date.slice(5))
-  : ["Sem 1", "Sem 2", "Sem 3", "Sem 4"];
+  : [tf("insights.weekLabel", { n: 1 }), tf("insights.weekLabel", { n: 2 }), tf("insights.weekLabel", { n: 3 }), tf("insights.weekLabel", { n: 4 })];
 
  const values =
   moods.length ? moods.map((m) => Number(m.mood)) : [2.8, 3.1, 3.0, 3.4];

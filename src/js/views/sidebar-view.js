@@ -75,11 +75,11 @@ export function mountZenifySidebar(activePage = "") {
       <span>Zenify</span>
     </a>
 
-    <nav class="sidebar-nav" aria-label="Principal">
+    <nav class="sidebar-nav" aria-label="${t("common.navPrimary")}">
       ${renderNavLinks(items.main, activePage)}
     </nav>
 
-    <nav class="sidebar-nav sidebar-nav--bottom" aria-label="Secundário">
+    <nav class="sidebar-nav sidebar-nav--bottom" aria-label="${t("common.navSecondary")}">
       ${renderNavLinks(items.bottom, activePage)}
     </nav>
   `;

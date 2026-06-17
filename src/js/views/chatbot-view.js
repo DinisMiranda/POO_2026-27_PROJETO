@@ -1,3 +1,5 @@
+import { t } from "../data/i18n.js";
+
 export const ChatbotView = {
  chatLog: document.getElementById("chat-log"),
  chatForm: document.getElementById("chat-form"),
@@ -14,7 +16,7 @@ export const ChatbotView = {
 
   const label = document.createElement("span");
   label.className = "chat-bubble-author";
-  label.textContent = author === "user" ? "Tu" : "Zenify";
+  label.textContent = author === "user" ? t("diary.you") : t("diary.bot");
 
   const body = document.createElement("p");
   body.textContent = text;
@@ -41,7 +43,7 @@ export const ChatbotView = {
 
  setStatus(online) {
   if (this.chatStatus) {
-   this.chatStatus.textContent = online ? "IA ativa (Ollama)" : "Indisponível";
+   this.chatStatus.textContent = online ? t("diary.statusOnline") : t("diary.statusOffline");
    this.chatStatus.className = `chat-status chat-status--${online ? "online" : "error"}`;
   }
 

@@ -10,21 +10,21 @@ import { SettingsView as View } from "../views/settings-view.js";
 
 function refreshPageLanguage(language) {
  setLanguage(language);
- initI18n();
- mountAppShell();
- setPageTitle("page.title.settings");
- View.setLanguageValue(getLanguage());
+ window.location.reload();
 }
 
 function initSettingsPage() {
- initI18n();
  mountAppShell();
  setPageTitle("page.title.settings");
  View.setLanguageValue(getLanguage());
 
  View.bindSave(() => {
-  refreshPageLanguage(View.getSelectedLanguage() || getLanguage());
-  View.showFeedback(t("settings.saved"));
+  const next = View.getSelectedLanguage() || getLanguage();
+  if (next === getLanguage()) {
+   View.showFeedback(t("settings.saved"));
+   return;
+  }
+  refreshPageLanguage(next);
  });
 }
 

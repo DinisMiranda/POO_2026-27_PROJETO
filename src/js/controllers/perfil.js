@@ -4,6 +4,7 @@ import { requireSession } from "../data/session.js";
 import { apiFetch } from "../data/http.js";
 import { mountAppShell } from "../views/app-shell.js";
 import { PerfilView as View } from "../views/perfil-view.js";
+import { setPageTitle, getLocale, t, tf } from "../data/i18n.js";
 
 const EMAIL_LOCK_DAYS = 30;
 
@@ -28,19 +29,19 @@ async function handleProfileSubmit(event) {
 
  const { firstName, lastName, email } = View.getFormData();
  if (!firstName || !lastName || !email) {
-  return View.showToast("Preenche todos os campos.");
+  return View.showToast(t("profile.fillAll"));
  }
 
  const emailChanged = email.toLowerCase() !== (activeUser.email || "").toLowerCase();
  if (emailChanged) {
   const lock = canChangeEmail(activeUser);
   if (!lock.allowed) {
-   const dateStr = lock.unlockDate.toLocaleDateString("pt-PT", {
+   const dateStr = lock.unlockDate.toLocaleDateString(getLocale(), {
     day: "numeric",
     month: "long",
     year: "numeric",
    });
-   return View.showToast(`Não podes alterar o email até ${dateStr}.`);
+   return View.showToast(tf("profile.emailLockedShort", { date: dateStr }));
   }
  }
 
@@ -58,9 +59,9 @@ async function handleProfileSubmit(event) {
   activeUser = { ...activeUser, ...updated };
   UserService.saveSession(activeUser);
   View.fillUserInfo(activeUser);
-  View.showToast("Perfil atualizado com sucesso! ✓");
+  View.showToast(t("profile.saved"));
  } catch {
-  View.showToast("Erro ao guardar. Tenta novamente.");
+  View.showToast(t("profile.saveError"));
  }
 }
 
@@ -75,6 +76,7 @@ function bindEvents() {
 
 async function init() {
  mountAppShell();
+ setPageTitle("page.title.profile");
  activeUser = await requireSession();
  if (!activeUser) return;
 
@@ -104,9 +106,7 @@ async function init() {
   ]);
  } catch (err) {
   console.error("Erro ao carregar perfil:", err);
-  View.showToast(
-   "Não foi possível carregar os dados. Verifica se o json-server está ativo.",
-  );
+  View.showToast(t("profile.loadError"));
  }
 }
 

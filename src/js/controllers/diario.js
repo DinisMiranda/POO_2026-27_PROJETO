@@ -11,17 +11,12 @@ import { requireSession } from "../data/session.js";
 import { mountAppShell } from "../views/app-shell.js";
 import { DiarioView as View } from "../views/diario-view.js";
 import { ChatbotView as ChatView } from "../views/chatbot-view.js";
+import { setPageTitle, t } from "../data/i18n.js";
 
 let activeUser = null;
 let journalEntries = [];
 let chatHistory = [];
 let ollamaReady = false;
-
-const WELCOME_ONLINE =
- "Olá! Sou o assistente Zenify. Pergunta sobre ansiedade, stress, sono ou hábitos de estudo.";
-
-const UNAVAILABLE_MESSAGE =
- "O assistente não está disponível. Confirma que o Ollama e o `npm run chat-api` estão ativos.";
 
 async function refreshJournal() {
  journalEntries = await fetchJournalEntries(activeUser.id);
@@ -34,7 +29,7 @@ async function handleJournalSubmit(event) {
 
  const { title, body } = View.getFormData();
  if (!title || !body) {
-  View.showFeedback("Preenche o título e o texto do registo.", "error");
+  View.showFeedback(t("diary.fillRequired"), "error");
   return;
  }
 
@@ -44,13 +39,10 @@ async function handleJournalSubmit(event) {
  try {
   await saveJournalEntry(activeUser.id, { title, body });
   View.resetForm();
-  View.showFeedback("Registo guardado no diário.");
+  View.showFeedback(t("diary.saved"));
   await refreshJournal();
  } catch {
-  View.showFeedback(
-   "Não foi possível guardar. Verifica se o json-server está ativo.",
-   "error",
-  );
+  View.showFeedback(t("diary.saveFailed"), "error");
  } finally {
   View.setSubmitDisabled(false);
  }
@@ -88,7 +80,7 @@ async function handleChatSubmit(event) {
 
  ChatView.clearInput();
  ChatView.appendMessage("user", message);
- ChatView.appendMessage("bot", "A pensar…");
+ ChatView.appendMessage("bot", t("diary.thinking"));
  setChatPending(true);
 
  try {
@@ -97,11 +89,9 @@ async function handleChatSubmit(event) {
  } catch (error) {
   if (error instanceof ChatUnavailableError) {
    setChatStatus(false);
-   ChatView.replaceLastBotMessage(UNAVAILABLE_MESSAGE);
+   ChatView.replaceLastBotMessage(t("diary.offline"));
   } else {
-   ChatView.replaceLastBotMessage(
-    "Não consegui responder agora. Tenta novamente em instantes.",
-   );
+   ChatView.replaceLastBotMessage(t("diary.chatError"));
   }
  } finally {
   setChatPending(false);
@@ -113,7 +103,7 @@ async function initChat() {
  ChatView.setFormEnabled(false);
  const online = await isChatApiAvailable();
  setChatStatus(online);
- ChatView.appendMessage("bot", online ? WELCOME_ONLINE : UNAVAILABLE_MESSAGE);
+ ChatView.appendMessage("bot", online ? t("diary.welcome") : t("diary.offline"));
  ChatView.bindSubmit(handleChatSubmit);
  if (online) ChatView.focusInput();
 }
@@ -130,6 +120,7 @@ function bindEvents() {
 
 async function init() {
  mountAppShell();
+ setPageTitle("page.title.journal");
  activeUser = await requireSession();
  if (!activeUser) return;
 

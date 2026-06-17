@@ -1,3 +1,16 @@
+import { getLocale, t } from "./i18n.js";
+
+export function getMoodLabels() {
+ return {
+  1: t("mood.1"),
+  2: t("mood.2"),
+  3: t("mood.3"),
+  4: t("mood.4"),
+  5: t("mood.5"),
+ };
+}
+
+/** @deprecated use getMoodLabels() */
 export const MOOD_LABELS = {
  1: "Muito baixo",
  2: "Baixo",
@@ -24,7 +37,7 @@ export function formatDate(isoDate) {
 export function formatDateTime(isoDateTime) {
  const date = new Date(isoDateTime);
  if (Number.isNaN(date.getTime())) return formatDate(String(isoDateTime).slice(0, 10));
- return date.toLocaleString("pt-PT", {
+ return date.toLocaleString(getLocale(), {
   day: "numeric",
   month: "short",
   year: "numeric",

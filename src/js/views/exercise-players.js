@@ -1,3 +1,5 @@
+import { t, tf } from "../data/i18n.js";
+
 /** Fábricas de UI personalizada por exercício (id da activity). */
 
 function formatTime(totalSeconds) {
@@ -51,9 +53,9 @@ function shell(activity, innerHtml) {
 /** Respiração 4-4 — círculo animado com fases */
 function breathingPlayer(activity, container, callbacks) {
  const phases = [
-  { label: "Inspira", class: "inhale", duration: 4 },
-  { label: "Retém", class: "hold", duration: 4 },
-  { label: "Expira", class: "exhale", duration: 4 },
+  { label: t("exercises.player.inhale"), class: "inhale", duration: 4 },
+  { label: t("exercises.player.hold"), class: "hold", duration: 4 },
+  { label: t("exercises.player.exhale"), class: "exhale", duration: 4 },
  ];
  let phaseIndex = 0;
  let phaseTimeout = null;
@@ -66,14 +68,14 @@ function breathingPlayer(activity, container, callbacks) {
   `
   <div class="breath-stage">
     <div class="breath-circle" id="breath-circle">
-      <span id="breath-label">Preparar</span>
+      <span id="breath-label">${t("exercises.player.prepare")}</span>
     </div>
   </div>
   <div class="player-stats">
-    <span>Ciclos: <strong id="breath-cycles">0</strong></span>
+    <span>${t("exercises.player.cycles")} <strong id="breath-cycles">0</strong></span>
     <span class="player-timer" id="breath-timer">${formatTime((activity.duration || 5) * 60)}</span>
   </div>
-  <button type="button" class="btn-primary" id="breath-start">Começar respiração</button>
+  <button type="button" class="btn-primary" id="breath-start">${t("exercises.player.startBreath")}</button>
 `,
  );
 
@@ -89,9 +91,9 @@ function breathingPlayer(activity, container, callbacks) {
   () => {
    running = false;
    clearTimeout(phaseTimeout);
-   label.textContent = "Sessão completa";
+   label.textContent = t("exercises.player.sessionComplete");
    circle.className = "breath-circle";
-   startBtn.textContent = "Repetir";
+   startBtn.textContent = t("exercises.player.repeat");
    startBtn.disabled = false;
    callbacks.onReadyToComplete?.(true);
   },
@@ -117,7 +119,7 @@ function breathingPlayer(activity, container, callbacks) {
   phaseIndex = 0;
   cycles = 0;
   if (cyclesEl) cyclesEl.textContent = "0";
-  startBtn.textContent = "A decorrer…";
+  startBtn.textContent = t("common.running");
   startBtn.disabled = true;
   callbacks.onReadyToComplete?.(false);
   timer.start(timerEl);
@@ -195,7 +197,7 @@ function meditationPlayer(activity, container, callbacks) {
   if (stepEl) stepEl.textContent = "1";
   if (barEl) barEl.style.width = "0%";
   startBtn.disabled = true;
-  startBtn.textContent = "A decorrer…";
+  startBtn.textContent = t("common.running");
   callbacks.onReadyToComplete?.(false);
 
   promptInterval = setInterval(() => {
@@ -289,7 +291,7 @@ function bodyScanPlayer(activity, container, callbacks) {
   zoneIndex = 0;
   highlight(0);
   startBtn.disabled = true;
-  startBtn.textContent = "A decorrer…";
+  startBtn.textContent = t("common.running");
   callbacks.onReadyToComplete?.(false);
 
   zoneInterval = setInterval(() => {

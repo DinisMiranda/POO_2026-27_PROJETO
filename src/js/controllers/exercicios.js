@@ -4,6 +4,7 @@ import { requireSession } from "../data/session.js";
 import { apiFetch } from "../data/http.js";
 import { mountAppShell } from "../views/app-shell.js";
 import { ExerciciosView as View } from "../views/exercicios-view.js";
+import { setPageTitle, t } from "../data/i18n.js";
 
 let activeUser = null;
 let currentActivity = null;
@@ -31,7 +32,7 @@ async function completeExercise() {
  const player = View.activePlayer;
 
  if (player?.validate && !player.validate()) {
-  View.showToast("Completa o exercício antes de concluir.");
+  View.showToast(t("exercises.finishFirst"));
   return;
  }
 
@@ -54,7 +55,7 @@ async function completeExercise() {
    ProgressService.syncMedals(activeUser.id),
   ]);
 
-  const typeMsg = result.newType ? "Registaste um novo tipo de exercício!" : "";
+  const typeMsg = result.newType ? t("exercises.newType") : "";
   currentActivity = null;
   View.closeModal();
   View.showXpModal({
@@ -64,7 +65,7 @@ async function completeExercise() {
   });
  } catch (err) {
   console.error("Erro ao concluir exercício:", err);
-  View.showToast("Erro ao registar o exercício. Tenta novamente.");
+  View.showToast(t("exercises.saveError"));
   View.setCompleteEnabled(true);
  }
 }
@@ -79,6 +80,7 @@ function openActivity(activityId) {
 
 async function init() {
  mountAppShell();
+ setPageTitle("page.title.exercises");
  activeUser = await requireSession();
  if (!activeUser) return;
 

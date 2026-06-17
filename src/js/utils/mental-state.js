@@ -1,6 +1,7 @@
 import { dateStr } from "../data/utils.js";
+import { t } from "../data/i18n.js";
 
-const DAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+const DAY_KEYS = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
 
 export function getLast7Days() {
  const days = [];
@@ -10,7 +11,7 @@ export function getLast7Days() {
   d.setDate(d.getDate() - i);
   days.push({
    date: dateStr(d),
-   label: DAY_LABELS[d.getDay()],
+   label: t(`mental.${DAY_KEYS[d.getDay()]}`),
   });
  }
  return days;
@@ -35,11 +36,11 @@ export function resolveMentalState(moodLogs) {
 
  if (!values.length) {
   return {
-   title: "Sem dados",
-   message: "Regista o teu humor para veres o estado mental.",
+   title: t("mental.noData"),
+   message: t("mental.noDataMsg"),
    score: null,
    trend: "stable",
-   trendLabel: "Tendência estável",
+   trendLabel: t("mental.trendStable"),
    face: "empty",
   };
  }
@@ -54,30 +55,30 @@ export function resolveMentalState(moodLogs) {
   : firstAvg;
 
  let trend = "stable";
- let trendLabel = "Tendência estável";
+ let trendLabel = t("mental.trendStable");
  if (secondAvg - firstAvg > 0.15) {
   trend = "up";
-  trendLabel = "A melhorar";
+  trendLabel = t("mental.trendUp");
  } else if (firstAvg - secondAvg > 0.15) {
   trend = "down";
-  trendLabel = "A descer";
+  trendLabel = t("mental.trendDown");
  }
 
- let title = "Sensível";
- let message = "Esta semana foi mais exigente. Reserva um momento para ti.";
+ let title = t("mental.sensitive");
+ let message = t("mental.sensitiveMsg");
  let face = "low";
 
  if (avg >= 4) {
-  title = "Radiante";
-  message = "Estás num ótimo momento. Mantém os teus rituais de bem-estar.";
+  title = t("mental.radiant");
+  message = t("mental.radiantMsg");
   face = "balanced";
  } else if (avg >= 3.2) {
-  title = "Equilibrada";
-  message = "Humor consistente esta semana. Continua assim!";
+  title = t("mental.balanced");
+  message = t("mental.balancedMsg");
   face = "balanced";
  } else if (avg >= 2.5) {
-  title = "Estável";
-  message = "Pequenas pausas podem fazer a diferença no teu dia.";
+  title = t("mental.stable");
+  message = t("mental.stableMsg");
   face = "calm";
  }
 

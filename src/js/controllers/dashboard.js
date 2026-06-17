@@ -4,8 +4,9 @@ import { fetchMoodLogs, saveMoodLog } from "../data/mood-service.js";
 import { requireSession } from "../data/session.js";
 import { mountAppShell } from "../views/app-shell.js";
 import { DashboardView as View } from "../views/dashboard-view.js";
-import { MOOD_LABELS } from "../data/utils.js";
+import { getMoodLabels } from "../data/utils.js";
 import { resolveMentalState } from "../utils/mental-state.js";
+import { setPageTitle, t, tf } from "../data/i18n.js";
 
 let activeUser = null;
 let currentProgress = null;
@@ -88,7 +89,7 @@ async function completeCheckinWithMood(mood) {
   const result = await ProgressService.doCheckin(activeUser.id);
 
   if (result.alreadyDone) {
-   View.showFeedback("Já fizeste check-in hoje!", "warning");
+   View.showFeedback(t("dashboard.alreadyCheckedIn"), "warning");
    View.closeCheckinMoodModal();
    return;
   }
@@ -103,12 +104,12 @@ async function completeCheckinWithMood(mood) {
   View.closeCheckinMoodModal();
   View.showFeedback(
    result.streak === 1 ?
-    "Check-in feito! Streak iniciada 🔥"
-   : `Check-in feito! Streak: ${result.streak} dias 🔥`,
+    t("dashboard.checkinStarted")
+   : tf("dashboard.checkinDoneStreak", { n: result.streak }),
    "success",
   );
  } catch {
-  View.showFeedback("Erro ao registar o check-in. Tenta novamente.", "error");
+  View.showFeedback(t("dashboard.checkinError"), "error");
   View.setConfirmCheckinLoading(false);
   if (selectedCheckinMood !== null) View.enableConfirmCheckin();
  }
@@ -121,7 +122,7 @@ async function loadStreak() {
   View.renderStreak(progress);
 
   if (progress.broken) {
-   View.showFeedback("A tua streak foi reiniciada. Começa hoje!", "warning");
+   View.showFeedback(t("dashboard.streakReset"), "warning");
   }
 
   await refreshProgressData();
@@ -133,7 +134,7 @@ async function loadStreak() {
 function bindEvents() {
  View.bindCheckin(() => {
   if (currentProgress?.checkedInToday) {
-   View.showFeedback("Já fizeste check-in hoje!", "warning");
+   View.showFeedback(t("dashboard.alreadyCheckedIn"), "warning");
    return;
   }
   View.openCheckinMoodModal();
@@ -145,7 +146,7 @@ function bindEvents() {
 
   selectedCheckinMood = Number(btn.dataset.mood);
   View.selectMoodPick(btn);
-  View.setCheckinMoodLabel(MOOD_LABELS[selectedCheckinMood] || "");
+  View.setCheckinMoodLabel(getMoodLabels()[selectedCheckinMood] || "");
   View.enableConfirmCheckin();
  });
 
@@ -177,20 +178,20 @@ function bindEvents() {
    );
 
    if (result.alreadyDone) {
-    View.showFeedback("Desafio já estava concluído.", "warning");
+    View.showFeedback(t("dashboard.challengeAlreadyDone"), "warning");
    } else {
     await NotificationsService.addNotification(activeUser.id, {
      type: "challenge",
-     title: "Desafio registado",
-     message: `Adicionaste «${result.challenge.title}» (+${result.challenge.xpReward} XP).`,
+     title: t("dashboard.notifChallenge"),
+     message: `«${result.challenge.title}» (+${result.challenge.xpReward} XP).`,
     });
-    View.showFeedback(`Desafio «${result.challenge.title}» adicionado!`, "success");
+    View.showFeedback(tf("dashboard.challengeAdded", { title: result.challenge.title }), "success");
    }
 
    await refreshProgressData();
    renderPendingAchievements();
   } catch {
-   View.showFeedback("Erro ao adicionar desafio.", "error");
+   View.showFeedback(t("dashboard.challengeAddError"), "error");
   }
  });
 
@@ -205,20 +206,20 @@ function bindEvents() {
    );
 
    if (result.alreadyDone) {
-    View.showFeedback("Medalha já estava desbloqueada.", "warning");
+    View.showFeedback(t("dashboard.medalAlreadyDone"), "warning");
    } else {
     await NotificationsService.addNotification(activeUser.id, {
      type: "medal",
-     title: "Medalha registada",
-     message: `Adicionaste «${result.medal.title}».`,
+     title: t("dashboard.notifMedal"),
+     message: `«${result.medal.title}».`,
     });
-    View.showFeedback(`Medalha «${result.medal.title}» adicionada!`, "success");
+    View.showFeedback(tf("dashboard.medalAdded", { title: result.medal.title }), "success");
    }
 
    await refreshProgressData();
    renderPendingAchievements();
   } catch {
-   View.showFeedback("Erro ao adicionar medalha.", "error");
+   View.showFeedback(t("dashboard.medalAddError"), "error");
   }
  });
 }
@@ -235,6 +236,7 @@ async function loadHumorChart() {
 
 async function initDashboard() {
  mountAppShell();
+ setPageTitle("page.title.dashboard");
  activeUser = await requireSession();
  if (!activeUser) return;
 

@@ -25,7 +25,7 @@
      <div class="content-top">
       <div class="card mental-state-card">
        <div class="mental-state-content">
-        <span class="mental-state-label">Estado mental</span>
+        <span class="mental-state-label" data-i18n="dashboard.mentalState">Estado mental</span>
         <h2 class="mental-state-title" id="mental-state-title">Equilibrada</h2>
         <p class="mental-state-message" id="mental-state-message">
          Humor consistente esta semana. Continua assim!
@@ -69,7 +69,7 @@
       </div>
 
       <div class="card humor-card">
-       <h3>O teu humor esta semana</h3>
+       <h3 data-i18n="dashboard.humorWeek">O teu humor esta semana</h3>
        <div class="chart-wrap"><canvas id="humorChart"></canvas></div>
       </div>
 
@@ -88,13 +88,14 @@
        <p class="xp-bar-label" id="dashboard-xp-label">0 / 100 XP</p>
 
        <div class="checkin-row">
-        <button type="button" class="btn-checkin" id="btn-checkin">
+        <button type="button" class="btn-checkin" id="btn-checkin" data-i18n="dashboard.checkinToday">
          Fazer check-in de hoje
         </button>
         <button
          type="button"
          class="btn-add-achievement"
          id="btn-add-achievement"
+         data-i18n="dashboard.addAchievements"
         >
          + Conquistas
         </button>
@@ -104,8 +105,8 @@
 
        <div>
         <p class="streak-text">
-         Streak: <strong><span id="streak-number">0</span></strong>
-         <span id="streak-label">dias seguidos</span>
+         <span data-i18n="dashboard.streak">Streak:</span> <strong><span id="streak-number">0</span></strong>
+         <span id="streak-label" data-i18n="common.daysStreak">dias seguidos</span>
         </p>
         <div class="streak-dots" id="streak-dots"></div>
        </div>
@@ -115,7 +116,7 @@
      <div class="content-body">
       <div class="content-main">
        <div class="recommended">
-        <h3>Recomendado para ti</h3>
+        <h3 data-i18n="dashboard.recommended">Recomendado para ti</h3>
         <div class="exercises-grid">
          <a
           href="exercicios.html"
@@ -417,18 +418,19 @@
      aria-labelledby="checkin-mood-title"
     >
      <header class="achievement-modal-header">
-      <h2 id="checkin-mood-title">Check-in de hoje</h2>
+      <h2 id="checkin-mood-title" data-i18n="dashboard.checkinModalTitle">Check-in de hoje</h2>
       <button
        type="button"
        class="achievement-modal-close"
        data-checkin-mood-close
+       data-i18n-aria-label="common.close"
        aria-label="Fechar"
       >
        &times;
       </button>
      </header>
      <div class="achievement-modal-body">
-      <p class="checkin-mood-lead">Como está a tua mente hoje?</p>
+      <p class="checkin-mood-lead" data-i18n="dashboard.checkinLead">Como está a tua mente hoje?</p>
       <div class="mood-picker" id="checkin-mood-picker">
        <button type="button" class="mood-pick" data-mood="1">1</button>
        <button type="button" class="mood-pick" data-mood="2">2</button>
@@ -436,7 +438,7 @@
        <button type="button" class="mood-pick" data-mood="4">4</button>
        <button type="button" class="mood-pick" data-mood="5">5</button>
       </div>
-      <p class="checkin-mood-label" id="checkin-mood-label">
+      <p class="checkin-mood-label" id="checkin-mood-label" data-i18n="mood.pickValue">
        Escolhe um valor de 1 a 5
       </p>
       <button
@@ -444,6 +446,7 @@
        class="btn-checkin btn-checkin--modal"
        id="btn-confirm-checkin"
        disabled
+       data-i18n="dashboard.registerCheckin"
       >
        Registar check-in
       </button>
@@ -459,7 +462,7 @@
      aria-labelledby="achievement-modal-title"
     >
      <header class="achievement-modal-header">
-      <h2 id="achievement-modal-title">Adicionar conquista</h2>
+      <h2 id="achievement-modal-title" data-i18n="dashboard.achievementModalTitle">Adicionar conquista</h2>
       <button
        type="button"
        class="achievement-modal-close"
@@ -470,9 +473,9 @@
       </button>
      </header>
      <div class="achievement-modal-body">
-      <h3>Desafios pendentes</h3>
+      <h3 data-i18n="dashboard.pendingChallenges">Desafios pendentes</h3>
       <div id="pending-challenges-list" class="achievement-list"></div>
-      <h3>Medalhas pendentes</h3>
+      <h3 data-i18n="dashboard.pendingMedals">Medalhas pendentes</h3>
       <div id="pending-medals-list" class="achievement-list"></div>
      </div>
     </div>

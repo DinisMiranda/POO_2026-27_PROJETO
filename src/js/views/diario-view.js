@@ -1,4 +1,5 @@
 import { escapeHtml, formatDate, formatDateTime } from "../data/utils.js";
+import { t } from "../data/i18n.js";
 
 export const DiarioView = {
  journalForm: document.getElementById("journal-form"),
@@ -44,7 +45,7 @@ export const DiarioView = {
 
   if (!entries.length) {
    this.journalLog.innerHTML =
-    `<li class="journal-log-empty">Ainda não tens registos. Escreve o teu primeiro texto acima.</li>`;
+    `<li class="journal-log-empty">${t("diary.emptyLog")}</li>`;
    return;
   }
 

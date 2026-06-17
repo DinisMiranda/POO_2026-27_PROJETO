@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/landing.css" />
  </head>
  <body>
-  <a class="skip-link" href="#conteudo-principal">Saltar para o conteúdo</a>
+  <a class="skip-link" href="#conteudo-principal" data-i18n="general.skipLink">Saltar para o conteúdo</a>
 
   <main id="conteudo-principal">
    <section class="hero-section">
@@ -67,19 +67,20 @@
         class="landing-avatar-btn"
         id="landing-profile-link"
         aria-label="Perfil"
+        data-i18n-aria-label="auth.profileAria"
        >
        </a>
       </div>
      </div>
 
      <div class="hero-copy">
-      <h1>A tua mente,<br /><span>Em equilíbrio.</span></h1>
-      <p>
+      <h1 data-i18n-html="landing.hero.title">A tua mente,<br /><span>Em equilíbrio.</span></h1>
+      <p data-i18n="landing.hero.subtitle">
        Zenify é a tua plataforma de bem-estar mental que combina tecnologia,
        ciência e atenção plena para te ajudar a viver melhor todos os dias.
       </p>
 
-      <button class="cta-button" id="cta-comecar" type="button">
+      <button class="cta-button" id="cta-comecar" type="button" data-i18n="landing.hero.cta">
        Começar agora
       </button>
 
@@ -112,6 +113,7 @@
         aria-selected="false"
         aria-controls="panel-login"
         type="button"
+        data-i18n="landing.auth.loginTab"
        >
         Entrar
        </button>
@@ -123,6 +125,7 @@
         aria-selected="true"
         aria-controls="panel-register"
         type="button"
+        data-i18n="landing.auth.registerTab"
        >
         Registar
        </button>
@@ -137,7 +140,7 @@
        <form id="registerForm" novalidate>
         <div class="field-grid two-cols">
          <div class="field">
-          <label for="reg-first-name">Primeiro nome</label>
+          <label for="reg-first-name" data-i18n="landing.auth.firstName">Primeiro nome</label>
           <input
            id="reg-first-name"
            name="firstName"
@@ -149,7 +152,7 @@
          </div>
 
          <div class="field">
-          <label for="reg-last-name">Último nome</label>
+          <label for="reg-last-name" data-i18n="landing.auth.lastName">Último nome</label>
           <input
            id="reg-last-name"
            name="lastName"
@@ -162,7 +165,7 @@
         </div>
 
         <div class="field">
-         <label for="reg-email">Email</label>
+         <label for="reg-email" data-i18n="landing.auth.email">Email</label>
          <input
           id="reg-email"
           name="email"
@@ -176,13 +179,13 @@
         </div>
 
         <div class="field">
-         <label for="reg-dob">Data de nascimento</label>
+         <label for="reg-dob" data-i18n="landing.auth.dob">Data de nascimento</label>
          <input id="reg-dob" name="dob" type="date" required />
          <small class="field-error" id="error-reg-dob"></small>
         </div>
 
         <div class="field">
-         <label for="reg-password">Palavra-passe</label>
+         <label for="reg-password" data-i18n="landing.auth.password">Palavra-passe</label>
          <input
           id="reg-password"
           name="password"
@@ -202,7 +205,7 @@
          aria-live="assertive"
         ></p>
 
-        <button type="submit" class="btn-auth" id="btn-register">
+        <button type="submit" class="btn-auth" id="btn-register" data-i18n="landing.auth.registerAction">
          Registar
         </button>
        </form>
@@ -217,7 +220,7 @@
       >
        <form id="loginForm" novalidate>
         <div class="field">
-         <label for="login-email">Email</label>
+         <label for="login-email" data-i18n="landing.auth.email">Email</label>
          <input
           id="login-email"
           name="email"
@@ -231,7 +234,7 @@
         </div>
 
         <div class="field">
-         <label for="login-password">Palavra-passe</label>
+         <label for="login-password" data-i18n="landing.auth.password">Palavra-passe</label>
          <input
           id="login-password"
           name="password"
@@ -250,7 +253,7 @@
          aria-live="assertive"
         ></p>
 
-        <button type="submit" class="btn-auth" id="btn-login">Entrar</button>
+        <button type="submit" class="btn-auth" id="btn-login" data-i18n="landing.auth.loginAction">Entrar</button>
        </form>
       </section>
      </div>
@@ -259,7 +262,7 @@
 
    <section class="features-section">
     <div class="section-intro">
-     <h2>O teu bem-estar, num só espaço</h2>
+     <h2 data-i18n="landing.feature.wellbeing">O teu bem-estar, num só espaço</h2>
      <p>
       Ferramentas desenhadas para te conheceres melhor, criares hábitos
       saudáveis e acompanhares a tua evolução com clareza.

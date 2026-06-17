@@ -1,6 +1,23 @@
+import { APP_STRINGS } from "./i18n-app.js";
+
 const LANGUAGE_KEY = "zenify_language";
 const DEFAULT_LANGUAGE = "pt";
 const SUPPORTED_LANGUAGES = ["pt", "en"];
+
+function deepMerge(target, source) {
+ for (const key of Object.keys(source)) {
+  if (
+   source[key] &&
+   typeof source[key] === "object" &&
+   !Array.isArray(source[key])
+  ) {
+   target[key] = deepMerge(target[key] || {}, source[key]);
+  } else {
+   target[key] = source[key];
+  }
+ }
+ return target;
+}
 
 const DICTIONARY = {
  pt: {
@@ -339,6 +356,9 @@ const DICTIONARY = {
  },
 };
 
+deepMerge(DICTIONARY.pt, APP_STRINGS.pt);
+deepMerge(DICTIONARY.en, APP_STRINGS.en);
+
 function resolvePath(object, path) {
  return path.split(".").reduce((acc, key) => acc?.[key], object);
 }
@@ -362,6 +382,10 @@ export function applyDocumentLanguage() {
  document.documentElement.lang = language === "pt" ? "pt-PT" : "en";
 }
 
+export function getLocale() {
+ return getLanguage() === "en" ? "en-GB" : "pt-PT";
+}
+
 export function t(key) {
  const language = getLanguage();
 
@@ -370,6 +394,15 @@ export function t(key) {
   resolvePath(DICTIONARY[DEFAULT_LANGUAGE], key) ??
   key
  );
+}
+
+/** Traduz com substituição de placeholders: tf("key", { n: 3 }) → "3 dias" */
+export function tf(key, vars = {}) {
+ let text = t(key);
+ for (const [name, value] of Object.entries(vars)) {
+  text = text.replaceAll(`{${name}}`, String(value));
+ }
+ return text;
 }
 
 export function applyTranslations(root = document) {

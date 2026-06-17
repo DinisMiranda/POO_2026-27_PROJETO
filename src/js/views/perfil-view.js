@@ -1,5 +1,6 @@
 import { Progress } from "../models/Progress.js";
 import { getInitials } from "../data/utils.js";
+import { getLocale, t, tf } from "../data/i18n.js";
 
 export const PerfilView = {
  avatarEl: document.getElementById("profile-avatar"),
@@ -50,12 +51,12 @@ export const PerfilView = {
    this.inpEmail.readOnly = true;
    this.inpEmail.classList.add("input-locked");
    if (this.emailLockNotice) {
-    const dateStr = lock.unlockDate.toLocaleDateString("pt-PT", {
+    const dateStr = lock.unlockDate.toLocaleDateString(getLocale(), {
      day: "numeric",
      month: "long",
      year: "numeric",
     });
-    this.emailLockNotice.textContent = `Não podes alterar o email até ${dateStr} (30 dias após a criação da conta).`;
+    this.emailLockNotice.textContent = tf("profile.emailLocked", { date: dateStr });
     this.emailLockNotice.hidden = false;
    }
   } else if (this.emailLockNotice) {
@@ -77,16 +78,16 @@ export const PerfilView = {
   if (this.xpBar) this.xpBar.style.width = `${pct}%`;
   if (this.xpLabel) this.xpLabel.textContent = `${xpInLevel} / ${xpPerLevel} XP`;
   if (this.levelLabel) {
-   this.levelLabel.textContent = `${tierName} · Nível ${level} → ${level + 1}`;
+   this.levelLabel.textContent = `${tierName} · ${t("common.level")} ${level} → ${level + 1}`;
   }
  },
 
  renderStats(progress) {
   if (this.streakEl) {
-   this.streakEl.textContent = `Streak ${progress.streak || 0} dias`;
+   this.streakEl.textContent = `Streak ${progress.streak || 0} ${t("common.days")}`;
   }
   if (this.checkinsEl) {
-   this.checkinsEl.textContent = `${progress.totalCheckins || 0} check-ins`;
+   this.checkinsEl.textContent = `${progress.totalCheckins || 0} ${t("profile.checkins")}`;
   }
  },
 
@@ -103,7 +104,7 @@ export const PerfilView = {
         ${m.icon}
       </div>
       <div class="medal-name">${m.title}</div>
-      <div class="medal-desc">${unlocked ? m.description : "Bloqueada"}</div>
+      <div class="medal-desc">${unlocked ? m.description : t("profile.locked")}</div>
     `;
    this.medalsGrid.appendChild(div);
   }

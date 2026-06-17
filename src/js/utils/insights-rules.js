@@ -1,14 +1,15 @@
+import { t } from "../data/i18n.js";
+
 export function buildInsightsRecommendations(avgMood, streak) {
  if (avgMood < 3.2) {
   return [
    {
-    title: "Reforçar regulação emocional",
-    text:
-     "Experimenta respiração box e diário de gratidão nos dias de humor mais baixo.",
+    title: t("insights.recLow1Title"),
+    text: t("insights.recLow1Text"),
    },
    {
-    title: "Rotina pós-estudo",
-    text: "Cria um fecho de dia com meditação curta e menos tempo de ecrã.",
+    title: t("insights.recLow2Title"),
+    text: t("insights.recLow2Text"),
    },
   ];
  }
@@ -16,26 +17,24 @@ export function buildInsightsRecommendations(avgMood, streak) {
  if (streak >= 7) {
   return [
    {
-    title: "Mantém a consistência",
-    text: "Estás num bom ritmo. Continua com micro check-ins diários.",
+    title: t("insights.recHigh1Title"),
+    text: t("insights.recHigh1Text"),
    },
    {
-    title: "Sobe a dificuldade",
-    text:
-     "Adiciona uma sessão de movimento consciente para diversificar hábitos.",
+    title: t("insights.recHigh2Title"),
+    text: t("insights.recHigh2Text"),
    },
   ];
  }
 
  return [
   {
-   title: "Criar hábito diário",
-   text: "Faz pelo menos um check-in por dia para ganhar consistência.",
+   title: t("insights.recDefault1Title"),
+   text: t("insights.recDefault1Text"),
   },
   {
-   title: "Explorar exercícios",
-   text:
-    "Testa respiração, meditação e diário para perceber o que funciona melhor contigo.",
+   title: t("insights.recDefault2Title"),
+   text: t("insights.recDefault2Text"),
   },
  ];
 }

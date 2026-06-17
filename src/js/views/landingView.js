@@ -102,11 +102,11 @@ export const LandingView = {
   btn.disabled = loading;
 
   if (btn.id === "btn-login") {
-   btn.textContent = loading ? "A entrar…" : "Entrar";
+   btn.textContent = loading ? t("common.loggingIn") : t("landing.auth.loginAction");
   }
 
   if (btn.id === "btn-register") {
-   btn.textContent = loading ? "A criar conta…" : "Registar";
+   btn.textContent = loading ? t("common.creatingAccount") : t("landing.auth.registerAction");
   }
  },
 

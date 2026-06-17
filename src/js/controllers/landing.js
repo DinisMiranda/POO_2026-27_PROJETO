@@ -239,10 +239,10 @@ function bindLandingTopbar() {
 
  if (session) {
   profileLink.href = "dashboard.html";
-  profileLink.setAttribute("aria-label", "Ir para dashboard");
+  profileLink.setAttribute("aria-label", t("auth.goDashboard"));
  } else {
   profileLink.href = "#auth-panel";
-  profileLink.setAttribute("aria-label", "Ir para registo");
+  profileLink.setAttribute("aria-label", t("auth.goRegister"));
   profileLink.addEventListener("click", (event) => {
    event.preventDefault();
    View.switchTab("register");
@@ -254,6 +254,7 @@ function bindLandingTopbar() {
 function init() {
  initI18n();
  setPageTitle("page.title.landing");
+ View.switchTab("register");
 
  checkExistingSession();
  bindTabs();

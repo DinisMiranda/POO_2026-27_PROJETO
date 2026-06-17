@@ -1,12 +1,5 @@
 import { mountExercisePlayer } from "./exercise-players.js";
-
-const TYPE_LABELS = {
- respiracao: "Respiração",
- meditacao: "Meditação",
- relaxamento: "Relaxamento",
- diario: "Diário",
- movimento: "Movimento",
-};
+import { t, tf } from "../data/i18n.js";
 
 const TYPE_ICONS = {
  respiracao: "calm",
@@ -21,7 +14,7 @@ function iconClass(type) {
 }
 
 function typeLabel(type) {
- return TYPE_LABELS[type] || type;
+ return t(`exercises.types.${type}`) || type;
 }
 
 export const ExerciciosView = {
@@ -49,9 +42,9 @@ export const ExerciciosView = {
  showXpModal({ xpGain, title, extraMessage = "" }) {
   if (!this.xpModalEl) return;
 
-  if (this.xpBadgeEl) this.xpBadgeEl.textContent = `+${xpGain} XP`;
+  if (this.xpBadgeEl) this.xpBadgeEl.textContent = `+${xpGain} ${t("common.xp")}`;
   if (this.xpSubtitleEl) {
-   this.xpSubtitleEl.textContent = title ? `Completaste «${title}».` : "";
+   this.xpSubtitleEl.textContent = title ? tf("exercises.completedSubtitle", { title }) : "";
   }
   if (this.xpExtraEl) {
    if (extraMessage) {
@@ -76,7 +69,7 @@ export const ExerciciosView = {
   if (this.modalEl) this.modalEl.hidden = true;
   if (this.completeBtn) {
    this.completeBtn.disabled = true;
-   this.completeBtn.textContent = "Concluir exercício";
+   this.completeBtn.textContent = t("exercises.complete");
   }
  },
 
@@ -87,7 +80,7 @@ export const ExerciciosView = {
 
   if (this.modalTitle) this.modalTitle.textContent = activity.title;
   if (this.modalMeta) {
-   this.modalMeta.textContent = `${activity.duration || 5} min · ${typeLabel(activity.type)}`;
+   this.modalMeta.textContent = `${activity.duration || 5} ${t("common.min")} · ${typeLabel(activity.type)}`;
   }
   if (this.completeBtn) this.completeBtn.disabled = true;
 
@@ -110,8 +103,7 @@ export const ExerciciosView = {
   if (!this.gridEl) return;
 
   if (!list.length) {
-   this.gridEl.innerHTML =
-    `<p class="card lead">Nenhum exercício disponível. Verifica se o json-server está ativo.</p>`;
+   this.gridEl.innerHTML = `<p class="card lead">${t("exercises.empty")}</p>`;
    return;
   }
 
@@ -129,13 +121,13 @@ export const ExerciciosView = {
           <h4>${activity.title}</h4>
           <p>${activity.description || ""}</p>
           <div class="exercise-meta">
-            <span>${activity.duration || 5} min</span>
+            <span>${activity.duration || 5} ${t("common.min")}</span>
             <span>${typeLabel(activity.type)}</span>
           </div>
         </div>
       </div>
       <button type="button" class="exercise-card-footer" data-start-activity="${activity.id}">
-        <span>Iniciar</span>
+        <span>${t("common.start")}</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polyline points="9 18 15 12 9 6"/>
         </svg>

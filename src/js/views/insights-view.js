@@ -1,3 +1,5 @@
+import { t, tf } from "../data/i18n.js";
+
 export const InsightsView = {
  avatar: document.getElementById("insight-avatar"),
  avatarText: document.getElementById("insight-avatar-text"),
@@ -21,7 +23,7 @@ export const InsightsView = {
    .map(([key]) => key);
 
   if (missing.length) {
-   throw new Error(`Elementos em falta no insights.html: ${missing.join(", ")}`);
+   throw new Error(`Missing elements in insights.html: ${missing.join(", ")}`);
   }
  },
 
@@ -40,14 +42,14 @@ export const InsightsView = {
   if (this.avatar) this.avatar.textContent = initials;
   if (this.avatarText) this.avatarText.textContent = initials;
   this.xp.textContent = String(xp);
-  this.xpWeek.textContent = `+${weeklyXp} esta semana`;
-  this.streak.textContent = `${streak} dias`;
-  this.bestStreak.textContent = `Melhor sequência: ${longestStreak} dias`;
+  this.xpWeek.textContent = tf("insights.weeklyXp", { n: weeklyXp });
+  this.streak.textContent = tf("insights.streakDays", { n: streak });
+  this.bestStreak.textContent = tf("insights.bestStreak", { n: longestStreak });
   this.mood.textContent = `${avgMood.toFixed(1)} / 5`;
-  this.weeklyCheckins.textContent = `${weeklyCheckins} de 7 dias`;
-  this.weeklySessions.textContent = `${weeklySessions} sessões completas`;
+  this.weeklyCheckins.textContent = tf("insights.checkinsOf7", { n: weeklyCheckins });
+  this.weeklySessions.textContent = tf("insights.sessionsComplete", { n: weeklySessions });
   this.checkinRate.textContent = `${checkinRate}%`;
-  this.weeklyXp.textContent = `+${weeklyXp} XP`;
+  this.weeklyXp.textContent = `+${weeklyXp} ${t("common.xp")}`;
   this.criticalPeriod.textContent = criticalPeriod;
  },
 
@@ -60,7 +62,7 @@ export const InsightsView = {
             <strong>${rec.title}</strong><br />
             <span>${rec.text}</span>
           </div>
-          <a href="exercicios.html" class="btn-secondary">Abrir</a>
+          <a href="exercicios.html" class="btn-secondary">${t("common.open")}</a>
         </div>
       `,
    )
@@ -97,7 +99,7 @@ export const InsightsView = {
   this.recs.innerHTML = `
       <div class="list-row">
         <div>
-          <strong>Erro ao carregar insights</strong><br />
+          <strong>${t("insights.loadError")}</strong><br />
           <span>${message}</span>
         </div>
       </div>

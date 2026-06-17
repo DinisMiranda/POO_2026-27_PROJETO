@@ -50,18 +50,18 @@
      <div class="page-grid-2">
       <!-- DADOS PESSOAIS -->
       <div class="card">
-       <h3>Dados pessoais</h3>
+       <h3 data-i18n="profile.personalData">Dados pessoais</h3>
        <form id="form-perfil" style="margin-top: var(--space-4)">
         <div class="field">
-         <label for="inp-firstName">Primeiro nome</label>
+         <label for="inp-firstName" data-i18n="profile.firstName">Primeiro nome</label>
          <input id="inp-firstName" type="text" />
         </div>
         <div class="field">
-         <label for="inp-lastName">Apelido</label>
+         <label for="inp-lastName" data-i18n="profile.lastName">Apelido</label>
          <input id="inp-lastName" type="text" />
         </div>
         <div class="field">
-         <label for="inp-email">Email</label>
+         <label for="inp-email" data-i18n="profile.email">Email</label>
          <input id="inp-email" type="email" />
          <p class="email-lock-notice" id="email-lock-notice" hidden></p>
         </div>
@@ -73,8 +73,8 @@
           margin-top: var(--space-2);
          "
         >
-         <button class="btn-primary" type="submit">Guardar alterações</button>
-         <button class="btn-secondary" type="button" id="btn-logout">
+         <button class="btn-primary" type="submit" data-i18n="profile.saveChanges">Guardar alterações</button>
+         <button class="btn-secondary" type="button" id="btn-logout" data-i18n="profile.logout">
           Terminar sessão
          </button>
         </div>
@@ -83,8 +83,8 @@
 
       <!-- MEDALHAS -->
       <div class="card">
-       <h3>Medalhas</h3>
-       <p style="font-size: var(--text-sm); color: var(--color-text-muted)">
+       <h3 data-i18n="profile.medals">Medalhas</h3>
+       <p style="font-size: var(--text-sm); color: var(--color-text-muted)" data-i18n="profile.medalsLead">
         Medalhas desbloqueadas com base no teu progresso.
        </p>
        <div class="medals-grid" id="medals-grid">
@@ -95,8 +95,8 @@
 
      <!-- DESAFIOS -->
      <div class="card" id="desafios">
-      <h3>Desafios</h3>
-      <p style="font-size: var(--text-sm); color: var(--color-text-muted)">
+      <h3 data-i18n="profile.challenges">Desafios</h3>
+      <p style="font-size: var(--text-sm); color: var(--color-text-muted)" data-i18n="profile.challengesLead">
        Progresso atualizado automaticamente com os teus check-ins e atividades.
       </p>
       <div class="challenges-list" id="challenges-list">

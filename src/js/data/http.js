@@ -4,6 +4,7 @@ import {
  parseAuthToken,
  setAuthToken,
 } from "./auth-token.js";
+import { t } from "./i18n.js";
 
 export async function apiFetchJson(path, options = {}) {
  const res = await apiFetch(path, options);
@@ -73,7 +74,7 @@ export async function loginWithCredentials(email, password) {
  });
 
  if (!res.ok) {
-  throw new Error("Email ou palavra-passe incorretos.");
+  throw new Error(t("auth.wrongCredentials"));
  }
 
  return userFromAuthResponse(await res.json());
@@ -88,9 +89,9 @@ export async function registerAccount(payload) {
 
  if (!res.ok) {
   if (res.status === 400) {
-   throw new Error("Este email já está registado.");
+   throw new Error(t("auth.emailTaken"));
   }
-  throw new Error("Erro ao criar conta. Tenta novamente.");
+  throw new Error(t("auth.registerFailed"));
  }
 
  return userFromAuthResponse(await res.json());

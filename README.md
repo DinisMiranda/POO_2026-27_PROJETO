@@ -153,4 +153,4 @@ Para entrega no Moodle, usar o modelo em `docs/entrega-variaveis-ambiente.txt`.
 
 Toda a app vive em `src/pages/` com autenticação json-server (JWT).
 
-Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/persistencia.md](docs/persistencia.md) · [docs/views-e-modals.md](docs/views-e-modals.md) · [docs/chat-ollama.md](docs/chat-ollama.md)
+Documentacao: [docs/funcionalidades.md](docs/funcionalidades.md) · [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/persistencia.md](docs/persistencia.md) · [docs/views-e-modals.md](docs/views-e-modals.md) · [docs/chat-ollama.md](docs/chat-ollama.md)

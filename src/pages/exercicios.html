@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt">
+<html lang="pt-PT">
  <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -36,13 +36,14 @@
    >
     <header class="achievement-modal-header">
      <div>
-      <h2 id="exercise-modal-title">Exercício</h2>
+      <h2 id="exercise-modal-title" data-i18n="exercises.title">Exercício</h2>
       <p class="exercise-modal-meta" id="exercise-modal-meta"></p>
      </div>
      <button
       type="button"
       class="achievement-modal-close"
       data-exercise-close
+      data-i18n-aria-label="common.close"
       aria-label="Fechar"
      >
       &times;
@@ -52,8 +53,8 @@
     <div class="achievement-modal-body exercise-modal-body" id="exercise-modal-content"></div>
 
     <footer class="exercise-modal-footer">
-     <button type="button" class="btn-secondary" data-exercise-close>Sair</button>
-     <button type="button" class="btn-primary" id="exercise-complete" disabled>
+     <button type="button" class="btn-secondary" data-exercise-close data-i18n="common.exit">Sair</button>
+     <button type="button" class="btn-primary" id="exercise-complete" disabled data-i18n="exercises.complete">
       Concluir exercício
      </button>
     </footer>
@@ -70,10 +71,10 @@
    >
     <div class="exercise-xp-body">
      <div class="exercise-xp-badge" id="exercise-xp-badge" aria-hidden="true">+0 XP</div>
-     <h2 id="exercise-xp-title">Exercício concluído!</h2>
+     <h2 id="exercise-xp-title" data-i18n="exercises.completed">Exercício concluído!</h2>
      <p class="exercise-xp-subtitle" id="exercise-xp-subtitle"></p>
      <p class="exercise-xp-extra" id="exercise-xp-extra" hidden></p>
-     <button type="button" class="btn-primary exercise-xp-btn" data-xp-close>
+     <button type="button" class="btn-primary exercise-xp-btn" data-xp-close data-i18n="common.continue">
       Continuar
      </button>
     </div>

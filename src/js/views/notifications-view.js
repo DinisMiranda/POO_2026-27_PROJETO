@@ -1,5 +1,6 @@
 import { NotificationsService } from "../data/notifications-service.js";
 import { UserService } from "../data/user-service.js";
+import { t } from "../data/i18n.js";
 
 let modalEl = null;
 
@@ -13,13 +14,16 @@ function ensureModal() {
   <div class="notif-modal-backdrop" data-notif-close></div>
   <div class="notif-modal-panel" role="dialog" aria-labelledby="notif-modal-title" aria-modal="true">
    <header class="notif-modal-header">
-    <h2 id="notif-modal-title">Notificações</h2>
-    <button type="button" class="notif-modal-close" data-notif-close aria-label="Fechar">&times;</button>
+    <h2 id="notif-modal-title"></h2>
+    <button type="button" class="notif-modal-close" data-notif-close aria-label="">&times;</button>
    </header>
    <div class="notif-modal-body" id="notif-modal-list"></div>
   </div>
  `;
  document.body.appendChild(modalEl);
+
+ modalEl.querySelector("#notif-modal-title").textContent = t("notifications.title");
+ modalEl.querySelector(".notif-modal-close").setAttribute("aria-label", t("common.close"));
 
  modalEl.querySelectorAll("[data-notif-close]").forEach((el) => {
   el.addEventListener("click", closeNotificationsModal);
@@ -34,9 +38,9 @@ function ensureModal() {
 
 function renderItem(item) {
  const typeLabel =
-  item.type === "medal" ? "Medalha"
-  : item.type === "challenge" ? "Desafio"
-  : "Zenify AI";
+  item.type === "medal" ? t("notifications.typeMedal")
+  : item.type === "challenge" ? t("notifications.typeChallenge")
+  : t("notifications.typeAi");
 
  return `
   <article class="notif-item notif-item--${item.type}">
@@ -56,22 +60,20 @@ export async function openNotificationsModal() {
  document.body.classList.add("notif-modal-open");
 
  if (!user) {
-  list.innerHTML = `
-   <p class="notif-empty">Inicia sessão para ver medalhas, desafios e sugestões personalizadas.</p>
-  `;
+  list.innerHTML = `<p class="notif-empty">${t("notifications.loginRequired")}</p>`;
   return;
  }
 
- list.innerHTML = `<p class="notif-loading">A carregar…</p>`;
+ list.innerHTML = `<p class="notif-loading">${t("common.loading")}</p>`;
 
  try {
   const items = await NotificationsService.getForUser(user.id);
   list.innerHTML =
    items.length > 0 ?
     items.map(renderItem).join("")
-   : `<p class="notif-empty">Sem notificações recentes.</p>`;
+   : `<p class="notif-empty">${t("notifications.empty")}</p>`;
  } catch {
-  list.innerHTML = `<p class="notif-empty">Não foi possível carregar notificações.</p>`;
+  list.innerHTML = `<p class="notif-empty">${t("notifications.loadError")}</p>`;
  }
 }
 
