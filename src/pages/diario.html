@@ -20,61 +20,99 @@
    <main class="main">
     <header data-zenify-topbar></header>
 
-    <div class="page-stack">
-     <div class="page-grid-2">
-      <div class="card">
-       <h3>Registo de hoje</h3>
+    <div class="page-stack diary-page">
+     <div class="diary-layout">
+      <div class="card chatbot-card diary-chat-card">
+       <div class="chatbot-header">
+        <h3>Assistente Zenify</h3>
+        <span id="chat-status" class="chat-status">A verificar ligação…</span>
+       </div>
+       <div id="chat-unavailable" class="chat-unavailable" hidden>
+        <strong>Assistente indisponível</strong>
+        <p>
+         Para usar o chat, instala o Ollama, corre
+         <code>ollama pull llama3.2</code> e arranca
+         <code>npm run chat-api</code>.
+        </p>
+       </div>
+       <div id="chat-log" class="chat-log diary-chat-log" role="log" aria-live="polite"></div>
+       <form id="chat-form" class="chat-form">
+        <input
+         id="chat-input"
+         name="message"
+         type="text"
+         placeholder="Escreve a tua mensagem…"
+         autocomplete="off"
+         maxlength="500"
+        />
+        <button type="submit" id="chat-submit" class="btn-primary">Enviar</button>
+       </form>
+      </div>
+
+      <div class="card diary-write-card">
+       <h3>Novo registo</h3>
        <p class="lead">
-        Regista como te sentes (1 = muito baixo, 5 = muito bem). Podes atualizar
-        a entrada de hoje ao longo do dia.
+        Escreve como te sentiste hoje. Podes criar vários registos ao longo do dia.
        </p>
 
-       <form id="mood-form" class="diary-form">
+       <form id="journal-form" class="diary-form">
         <div class="field">
-         <label>Humor</label>
-         <div class="mood-picker" id="mood-picker" role="group" aria-label="Nível de humor">
-          <button type="button" class="mood-pick" data-mood="1">1</button>
-          <button type="button" class="mood-pick" data-mood="2">2</button>
-          <button type="button" class="mood-pick" data-mood="3">3</button>
-          <button type="button" class="mood-pick" data-mood="4">4</button>
-          <button type="button" class="mood-pick" data-mood="5">5</button>
-         </div>
-         <p class="diary-mood-hint" id="mood-hint">Escolhe um valor de 1 a 5</p>
+         <label for="journal-title">Título</label>
+         <input
+          id="journal-title"
+          name="title"
+          type="text"
+          required
+          maxlength="80"
+          placeholder="Ex.: Manhã ansiosa, tarde mais calma"
+         />
         </div>
 
         <div class="field">
-         <label for="mood-note">Nota (opcional)</label>
+         <label for="journal-body">Como te sentiste?</label>
          <textarea
-          id="mood-note"
-          name="note"
-          placeholder="Ex.: Stress antes da apresentação, mas respirei fundo."
-          maxlength="500"
+          id="journal-body"
+          name="body"
+          required
+          maxlength="2000"
+          rows="8"
+          placeholder="Descreve o teu dia, emoções, pensamentos ou momentos importantes."
          ></textarea>
         </div>
 
-        <button type="submit" class="btn-primary" id="mood-submit" disabled>
-         Guardar registo
+        <button type="submit" class="btn-primary" id="journal-submit">
+         Guardar no diário
         </button>
        </form>
 
        <p id="diary-feedback" class="diary-feedback" role="status" aria-live="polite"></p>
       </div>
-
-      <div class="card">
-       <h3>Sugestão Zenify</h3>
-       <p class="lead" id="recommendation-text">
-        Regista o teu humor para receberes uma sugestão personalizada.
-       </p>
-       <p class="diary-rule" id="recommendation-rule"></p>
-      </div>
      </div>
 
-     <div class="card">
-      <h3>Histórico recente</h3>
-      <ul class="list-rows" id="mood-history"></ul>
+     <div class="card diary-log-card">
+      <h3>Os teus registos</h3>
+      <p class="lead">Clica num registo para ler o texto completo.</p>
+      <ul id="journal-log" class="journal-log"></ul>
      </div>
     </div>
    </main>
+  </div>
+
+  <div id="journal-modal" class="journal-modal" hidden>
+   <div class="journal-modal-backdrop" data-journal-close></div>
+   <div
+    class="journal-modal-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="journal-modal-title"
+   >
+    <button type="button" class="journal-modal-close" data-journal-close aria-label="Fechar">
+     ×
+    </button>
+    <time id="journal-modal-date" class="journal-modal-date"></time>
+    <h2 id="journal-modal-title"></h2>
+    <div id="journal-modal-body" class="journal-modal-body"></div>
+   </div>
   </div>
 
   <script type="module" src="../js/controllers/diario.js"></script>

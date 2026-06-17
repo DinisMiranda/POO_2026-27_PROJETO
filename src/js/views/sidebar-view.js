@@ -18,10 +18,9 @@ function getItems() {
   : [];
 
  return {
-  main: [
+   main: [
    { key: "hoje", href: "./dashboard.html", label: t("nav.today") },
    { key: "exercicios", href: "./exercicios.html", label: t("nav.exercises") },
-   { key: "chatbot", href: "./chatbot.html", label: t("nav.chatbot") },
    { key: "insights", href: "./insights.html", label: t("nav.insights") },
    { key: "diario", href: "./diario.html", label: t("nav.journal") },
    { key: "perfil", href: "./perfil.html", label: t("nav.profile") },

@@ -31,7 +31,7 @@ const DICTIONARY = {
    },
    journal: {
     title: "Diário",
-    subtitle: "Regista o teu humor e acompanha o histórico.",
+    subtitle: "Escreve como te sentes e conversa com o assistente Zenify.",
    },
    community: {
     title: "Comunidade",
@@ -199,7 +199,7 @@ const DICTIONARY = {
    },
    journal: {
     title: "Journal",
-    subtitle: "Log your mood and review your history.",
+    subtitle: "Write how you feel and chat with the Zenify assistant.",
    },
    community: {
     title: "Community",

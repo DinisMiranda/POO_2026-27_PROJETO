@@ -21,6 +21,18 @@ export function formatDate(isoDate) {
  return `${d}/${m}/${y}`;
 }
 
+export function formatDateTime(isoDateTime) {
+ const date = new Date(isoDateTime);
+ if (Number.isNaN(date.getTime())) return formatDate(String(isoDateTime).slice(0, 10));
+ return date.toLocaleString("pt-PT", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+ });
+}
+
 export function escapeHtml(value) {
  return String(value ?? "")
   .replace(/&/g, "&amp;")

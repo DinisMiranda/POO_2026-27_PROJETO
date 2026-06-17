@@ -177,6 +177,32 @@
       "id": "moMS-gF"
     }
   ],
+  "journalEntries": [
+    {
+      "id": "j1",
+      "userId": "u-user",
+      "date": "2026-06-15",
+      "title": "Dia exigente na faculdade",
+      "body": "Acordei ansiosa com a apresentação, mas depois do almoço senti-me mais calma. Respirei fundo antes de entrar na sala.",
+      "createdAt": "2026-06-15T09:30:00.000Z"
+    },
+    {
+      "id": "j2",
+      "userId": "u-user",
+      "date": "2026-06-15",
+      "title": "Tarde mais leve",
+      "body": "Fui caminhar 15 minutos depois das aulas. Ajudou a desligar a cabeça e a recuperar energia.",
+      "createdAt": "2026-06-15T17:45:00.000Z"
+    },
+    {
+      "userId": "u-admin",
+      "date": "2026-06-17",
+      "title": "dia 2",
+      "body": "coiso",
+      "createdAt": "2026-06-17T13:45:53.386Z",
+      "id": "esRII5t"
+    }
+  ],
   "activities": [
     {
       "id": "1",

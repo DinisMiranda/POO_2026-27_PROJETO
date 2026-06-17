@@ -1,20 +1,16 @@
-import {
- dateStr,
- escapeHtml,
- formatDate,
- MOOD_LABELS,
-} from "../data/utils.js";
+import { escapeHtml, formatDate, formatDateTime } from "../data/utils.js";
 
 export const DiarioView = {
- moodForm: document.getElementById("mood-form"),
- moodPicker: document.getElementById("mood-picker"),
- moodHint: document.getElementById("mood-hint"),
- moodNote: document.getElementById("mood-note"),
- moodSubmit: document.getElementById("mood-submit"),
- moodHistory: document.getElementById("mood-history"),
+ journalForm: document.getElementById("journal-form"),
+ journalTitle: document.getElementById("journal-title"),
+ journalBody: document.getElementById("journal-body"),
+ journalSubmit: document.getElementById("journal-submit"),
+ journalLog: document.getElementById("journal-log"),
  feedbackEl: document.getElementById("diary-feedback"),
- recommendationText: document.getElementById("recommendation-text"),
- recommendationRule: document.getElementById("recommendation-rule"),
+ journalModal: document.getElementById("journal-modal"),
+ journalModalDate: document.getElementById("journal-modal-date"),
+ journalModalTitle: document.getElementById("journal-modal-title"),
+ journalModalBody: document.getElementById("journal-modal-body"),
 
  showFeedback(message, type = "success") {
   if (!this.feedbackEl) return;
@@ -28,66 +24,82 @@ export const DiarioView = {
   this.feedbackEl.className = "diary-feedback";
  },
 
- setRecommendation(rec) {
-  if (this.recommendationText) this.recommendationText.textContent = rec.text;
-  if (this.recommendationRule) {
-   this.recommendationRule.textContent = rec.rule ? `Regra: ${rec.rule}` : "";
-  }
+ getFormData() {
+  return {
+   title: this.journalTitle?.value.trim() || "",
+   body: this.journalBody?.value.trim() || "",
+  };
  },
 
- renderHistory(logs) {
-  if (!this.moodHistory) return;
-
-  if (!logs.length) {
-   this.moodHistory.innerHTML =
-    `<li class="diary-empty">Ainda não tens registos. Guarda o teu humor acima.</li>`;
-   return;
-  }
-
-  this.moodHistory.innerHTML = logs
-   .slice(0, 20)
-   .map((entry) => {
-    const level = Math.round(Number(entry.mood));
-    const note = entry.note?.trim();
-    return `
-    <li class="list-row diary-history-row">
-     <div>
-      <strong>${formatDate(entry.date)} · ${level}/5</strong>
-      <span class="diary-history-meta">${MOOD_LABELS[level] || ""}</span>
-      ${note ? `<p class="diary-history-note">${escapeHtml(note)}</p>` : ""}
-     </div>
-    </li>`;
-   })
-   .join("");
- },
-
- prefillToday(logs) {
-  const today = logs.find((entry) => entry.date === dateStr());
-  if (!today) return null;
-
-  const mood = Math.round(Number(today.mood));
-  this.moodPicker?.querySelectorAll(".mood-pick").forEach((btn) => {
-   btn.classList.toggle("is-selected", Number(btn.dataset.mood) === mood);
-  });
-  if (this.moodHint) this.moodHint.textContent = MOOD_LABELS[mood] || "";
-  if (this.moodNote && today.note) this.moodNote.value = today.note;
-  if (this.moodSubmit) this.moodSubmit.disabled = false;
-  return mood;
- },
-
- selectMood(mood) {
-  this.moodPicker?.querySelectorAll(".mood-pick").forEach((pick) => {
-   pick.classList.toggle("is-selected", Number(pick.dataset.mood) === mood);
-  });
-  if (this.moodHint) this.moodHint.textContent = MOOD_LABELS[mood] || "";
-  if (this.moodSubmit) this.moodSubmit.disabled = false;
+ resetForm() {
+  if (this.journalForm) this.journalForm.reset();
  },
 
  setSubmitDisabled(disabled) {
-  if (this.moodSubmit) this.moodSubmit.disabled = disabled;
+  if (this.journalSubmit) this.journalSubmit.disabled = disabled;
  },
 
- getNote() {
-  return this.moodNote?.value.trim() || "";
+ renderJournalLog(entries) {
+  if (!this.journalLog) return;
+
+  if (!entries.length) {
+   this.journalLog.innerHTML =
+    `<li class="journal-log-empty">Ainda não tens registos. Escreve o teu primeiro texto acima.</li>`;
+   return;
+  }
+
+  this.journalLog.innerHTML = entries
+   .map(
+    (entry) => `
+    <li>
+     <button type="button" class="journal-entry-card" data-entry-id="${escapeHtml(entry.id)}">
+      <span class="journal-entry-date">${formatDate(entry.date)}</span>
+      <strong class="journal-entry-title">${escapeHtml(entry.title)}</strong>
+      <span class="journal-entry-preview">${escapeHtml(entry.body.slice(0, 90))}${entry.body.length > 90 ? "…" : ""}</span>
+     </button>
+    </li>`,
+   )
+   .join("");
+ },
+
+ openJournalModal(entry) {
+  if (!this.journalModal || !entry) return;
+
+  if (this.journalModalDate) {
+   this.journalModalDate.textContent = formatDateTime(entry.createdAt || entry.date);
+  }
+  if (this.journalModalTitle) {
+   this.journalModalTitle.textContent = entry.title;
+  }
+  if (this.journalModalBody) {
+   this.journalModalBody.textContent = entry.body;
+  }
+
+  this.journalModal.hidden = false;
+  document.body.classList.add("journal-modal-open");
+ },
+
+ closeJournalModal() {
+  if (!this.journalModal) return;
+  this.journalModal.hidden = true;
+  document.body.classList.remove("journal-modal-open");
+ },
+
+ bindJournalForm(handler) {
+  this.journalForm?.addEventListener("submit", handler);
+ },
+
+ bindJournalLog(handler) {
+  this.journalLog?.addEventListener("click", (event) => {
+   const btn = event.target.closest("[data-entry-id]");
+   if (!btn) return;
+   handler(btn.dataset.entryId);
+  });
+ },
+
+ bindModalClose(handler) {
+  document.querySelectorAll("[data-journal-close]").forEach((el) => {
+   el.addEventListener("click", handler);
+  });
  },
 };
