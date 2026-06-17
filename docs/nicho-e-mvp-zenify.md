@@ -43,11 +43,12 @@ O Zenify ajuda estudantes universitarios a reduzir ansiedade academica com inter
 ### Entra no MVP (versao de projeto)
 
 - Registo/login com perfis `user` e `admin` (admin pre-definido).
-- Diario de humor diario (1-5 + nota).
-- Intervencao rapida de respiracao (1-2 minutos).
-- Recomendacao simples por estado emocional e contexto basico (hora/dia).
-- Dashboard com XP, streak, badge e historico recente.
-- Painel admin para gerir atividades (CRUD base local).
+- Diário com registos (título + texto) e assistente IA integrado (Ollama).
+- Check-in de humor diário (1-5) no dashboard.
+- Exercícios guiados (respiração, meditação, diário de gratidão, …) com XP.
+- Recomendação simples por estado emocional e contexto básico (hora/dia).
+- Dashboard com XP, streak, medalhas e histórico recente.
+- Painel admin para gerir atividades, desafios, medalhas e dicas.
 
 ### Fica fora do MVP (futuro)
 
@@ -59,29 +60,39 @@ O Zenify ajuda estudantes universitarios a reduzir ansiedade academica com inter
 
 ## 4) Mapa da arquitectura (implementacao actual)
 
-## Servicos (`src/js/data`)
+### Servicos (`src/js/data/`)
 
 - `http.js` — login, registo e `apiFetch` com JWT
 - `session.js` — `requireSession()` nas páginas autenticadas
-- `userModel.js` — sessão em `sessionStorage`
+- `user-service.js` — sessão e perfil do utilizador
+- `progress-service.js` — XP, streak, check-ins, desafios e medalhas
+- `mood-service.js` — `moodLogs` e `checkins`
+- `journal-service.js` — registos do diário (`journalEntries`)
 - `activity-service.js` — exercícios/atividades
+- `notifications-service.js` — notificações do utilizador
 - `admin-service.js` — métricas e CRUD do admin
 - `chat-service.js` — assistente Ollama
 
-## Models (`src/js/models`)
+### Models (`src/js/models/`)
 
-- `progressModel.js` — XP, streak, check-ins, desafios e medalhas
+- `Progress.js` — entidade de progresso (XP, nível, desafios, medalhas)
+
+### Utils (`src/js/utils/`)
+
 - `recommendation.js` — `getRecommendation(level, date)`
+- `mental-state.js` — estado mental semanal
+- `insights-rules.js` — recomendações da página insights
 
-## Views (`src/js/views`)
+### Views (`src/js/views/`)
 
-- Modulos funcionais com selectors DOM no topo do ficheiro
+- Módulos com selectors DOM no topo do ficheiro
 - `sidebar-view.js`, `topbar-view.js` — layout partilhado
+- `chatbot-view.js` — chat Ollama (usado no Diário)
 - `view-manager.js` — tabs no painel admin
 
-## Controllers (`src/js/controllers`)
+### Controllers (`src/js/controllers/`)
 
-- Um ficheiro por página (`dashboard.js`, `diario.js`, `admin.js`, …)
+- Um ficheiro por página (`dashboard.js`, `diario.js`, `exercicios.js`, `admin.js`, …)
 
 ## 5) Escopo recomendado para apresentacao
 

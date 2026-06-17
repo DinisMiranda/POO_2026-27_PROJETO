@@ -22,26 +22,44 @@ Usado em `admin.html`: alterna entre tabs (utilizadores, exercícios, desafios, 
 
 ### `src/js/views/app-shell.js`
 
-Utilitário de layout usado em admin e configurações.
+Monta sidebar + topbar nas páginas autenticadas.
+
+### `src/js/views/notifications-view.js`
+
+Modal de notificações (ícone no topbar), criado dinamicamente no DOM.
 
 ## Controllers por página
 
-| Página | Controller |
-|--------|------------|
-| `landing.html` | `landing.js` |
-| `dashboard.html` | `dashboard.js` |
-| `diario.html` | `diario.js` |
-| `exercicios.html` | `exercicios.js` |
-| `chatbot.html` | `chatbot.js` |
-| `insights.html` | `insights.js` |
-| `perfil.html` | `perfil.js` |
-| `settings.html` | `settings.js` |
-| `admin.html` | `admin.js` |
+| Página | Controller | View principal |
+|--------|------------|----------------|
+| `landing.html` | `landing.js` | `landingView.js` |
+| `dashboard.html` | `dashboard.js` | `dashboard-view.js` |
+| `diario.html` | `diario.js` | `diario-view.js` + `chatbot-view.js` |
+| `exercicios.html` | `exercicios.js` | `exercicios-view.js` |
+| `insights.html` | `insights.js` | `insights-view.js` |
+| `perfil.html` | `perfil.js` | `perfil-view.js` |
+| `settings.html` | `settings.js` | `settings-view.js` |
+| `admin.html` | `admin.js` | `admin-view.js` |
+| `ajuda.html` | `ajuda.js` | — |
+| `chatbot.html` | — | redireciona para `diario.html` |
+
+## Modais
+
+| Modal | Página | ID / origem | Função |
+|-------|--------|-------------|--------|
+| Check-in de humor | Dashboard | `#checkin-mood-modal` | Escolher humor antes de registar check-in |
+| Adicionar conquista | Dashboard | `#achievement-modal` | Escolher desafio ou medalha pendente |
+| Exercício | Exercícios | `#exercise-modal` | Player guiado (respiração, meditação, …) |
+| Recompensa XP | Exercícios | `#exercise-xp-modal` | Feedback ao concluir exercício |
+| Registo do diário | Diário | `#journal-modal` | Ler registo completo ao clicar no cartão |
+| Notificações | Topbar (global) | `.notif-modal` | Lista de notificações do utilizador |
+
+Todos os modais de conquistas reutilizam a classe `.achievement-modal` em `app.css`. O modal do diário usa `.journal-modal`.
 
 ## Responsabilidades
 
 - **HTML**: estrutura e ids para o controller ligar eventos
-- **Controllers**: orquestram API, models e DOM da página
-- **Views**: componentes DOM reutilizáveis
-- **Models**: regras de negócio
+- **Controllers**: orquestram API, models e views (sem manipular DOM directamente)
+- **Views**: renderização e eventos DOM
+- **Models**: regras de negócio (`Progress.js`)
 - **data/**: persistência e HTTP

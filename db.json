@@ -89,11 +89,13 @@
     },
     {
       "userId": "u-admin",
-      "xp": 50,
+      "xp": 70,
       "level": 1,
       "totalCheckins": 2,
       "longestStreak": 2,
-      "activityTypes": [],
+      "activityTypes": [
+        "diario"
+      ],
       "completedChallenges": [
         "c1"
       ],
@@ -175,6 +177,20 @@
       "mood": 5,
       "note": "",
       "id": "moMS-gF"
+    },
+    {
+      "userId": "u-admin",
+      "date": "2026-06-17",
+      "mood": 2,
+      "note": "12 | 123 | 123",
+      "id": "G9En3WL"
+    },
+    {
+      "userId": "u-admin",
+      "date": "2026-06-17",
+      "mood": 4,
+      "note": "123 | 123 | 123",
+      "id": "mJfgaIg"
     }
   ],
   "journalEntries": [

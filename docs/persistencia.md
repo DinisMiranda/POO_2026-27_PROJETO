@@ -7,7 +7,8 @@
 | Utilizadores e passwords | `db.json` → `/users` | Hash bcrypt via json-server-auth |
 | Sessao + JWT | `sessionStorage` (`zenify_user`) + token em memória | Ver `auth-token.js` |
 | Check-ins | `/checkins` | Filtrados por `userId` |
-| Humor (diário) | `/moodLogs` | Um ou mais registos por dia |
+| Humor (check-in / gratidão) | `/moodLogs` | Um ou mais registos por dia |
+| Registos do diário | `/journalEntries` | Título + texto; vários por dia |
 | XP / streak / medalhas | `/userProgress` | `ProgressService` + entidade `Progress` |
 | Exercícios, desafios, dicas | `/activities`, `/challenges`, `/tips` | Conteúdo gerido no admin |
 

@@ -1,6 +1,8 @@
 # Assistente Zenify (Ollama)
 
-O chat da app principal (`src/pages/chatbot.html`, link **Assistente** na sidebar) usa um modelo de linguagem **local** via [Ollama](https://ollama.com).
+O chat da app principal está integrado no **Diário** (`src/pages/diario.html`, painel à esquerda). Usa um modelo de linguagem **local** via [Ollama](https://ollama.com).
+
+`src/pages/chatbot.html` existe apenas como redirecionamento para `diario.html` (links antigos).
 
 ## Arquitetura
 
@@ -61,7 +63,7 @@ Depois:
 
 1. Abre `http://localhost:5000/`
 2. Inicia sessão (`user@zenify.pt` / `user1234`)
-3. Sidebar → **Assistente**
+3. Sidebar → **Diário** (assistente na coluna esquerda)
 
 ### Verificar o chat antes da demo
 
@@ -127,7 +129,7 @@ Reinicia `npm run chat-api` após alterar o `.env`.
 | `ollamaReady: false` no health | `ollama pull llama3.2` |
 | Erro de rede no browser | Confirma porta **3002** (não 3001) |
 | Primeira resposta lenta | Normal — o modelo carrega para RAM na primeira vez |
-| Chat não aparece | Abre `src/pages/chatbot.html` (sidebar **Assistente**) |
+| Chat não aparece | Abre `src/pages/diario.html` (assistente na coluna esquerda) |
 
 ---
 

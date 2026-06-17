@@ -7,7 +7,7 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
 - Frontend: HTML5, CSS custom (`src/css/`), JavaScript (ES modules)
 - Autenticacao: `json-server-auth` (JWT) via `POST /login` e `POST /register`
 - API mock: JSON Server + auth (`activities`, `checkins`, `userProgress`, …)
-- Chat: Ollama via `server/chat-api.js` (porta **3002**) — página `src/pages/chatbot.html` — ver [docs/chat-ollama.md](docs/chat-ollama.md)
+- Chat: Ollama via `server/chat-api.js` (porta **3002**) — integrado no **Diário** (`diario.html`) — ver [docs/chat-ollama.md](docs/chat-ollama.md)
 
 ## Estrutura do projecto
 
@@ -18,9 +18,9 @@ Base inicial do projeto de POO 2026/27 para a aplicacao Zenify, focada em bem-es
     landing.html          → entrada pública + login/registo
     dashboard.html        → hoje (área autenticada)
     exercicios.html       → exercícios de calma
-    chatbot.html          → assistente IA (Ollama)
+    chatbot.html          → redireciona para diario.html (legado)
     insights.html         → estatísticas
-    diario.html           → diário de humor
+    diario.html           → diário (registos + assistente IA)
     perfil.html           → perfil
     settings.html         → configurações
     ajuda.html            → FAQ
@@ -83,7 +83,7 @@ O `index.html` na raiz reencaminha para a landing. Não uses a porta 3000 para o
 
 ### 5. Assistente IA (Ollama) — **obrigatório para o chat**
 
-O assistente está na sidebar (**Assistente** → `chatbot.html`). Usa Ollama local — **não** há respostas pré-escritas quando a IA está offline; a app mostra um aviso honesto.
+O assistente está integrado no **Diário** (`diario.html`, coluna à esquerda). Usa Ollama local — **não** há respostas pré-escritas quando a IA está offline; a app mostra um aviso honesto.
 
 **Pré-requisitos:** [Ollama](https://ollama.com/download) instalado + `ollama pull llama3.2`
 
@@ -145,13 +145,12 @@ Para entrega no Moodle, usar o modelo em `docs/entrega-variaveis-ambiente.txt`.
 | Página | Função |
 |--------|--------|
 | Dashboard | Check-in diário, streak, humor da semana |
-| Diário | Registo de humor + notas + histórico |
-| Exercícios | Práticas guiadas com XP |
-| Assistente | Chat com IA (Ollama) |
+| Diário | Registos com título e texto + assistente IA (Ollama) |
+| Exercícios | Práticas guiadas com modal de recompensa XP |
 | Insights | Estatísticas e padrões |
 | Perfil | XP, medalhas, desafios |
 | Admin | Gestão da plataforma (só admin) |
 
 Toda a app vive em `src/pages/` com autenticação json-server (JWT).
 
-Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/persistencia.md](docs/persistencia.md) · [docs/chat-ollama.md](docs/chat-ollama.md)
+Documentacao: [docs/arquitetura-mvc.md](docs/arquitetura-mvc.md) · [docs/persistencia.md](docs/persistencia.md) · [docs/views-e-modals.md](docs/views-e-modals.md) · [docs/chat-ollama.md](docs/chat-ollama.md)

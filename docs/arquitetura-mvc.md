@@ -21,7 +21,9 @@ src/js/
 2. A **view** recebe dados e actualiza o HTML.
 3. Os **serviços** em `data/` usam `http.js` + `config.js` (sem URLs hardcoded).
 
-Cada página autenticada segue este par: `dashboard.js` + `dashboard-view.js`, `diario.js` + `diario-view.js`, `exercicios.js` + `exercicios-view.js`, `chatbot.js` + `chatbot-view.js`, `settings.js` + `settings-view.js`, `perfil.js` + `perfil-view.js`, `insights.js` + `insights-view.js`.
+Cada página autenticada segue este par: `dashboard.js` + `dashboard-view.js`, `diario.js` + `diario-view.js`, `exercicios.js` + `exercicios-view.js`, `settings.js` + `settings-view.js`, `perfil.js` + `perfil-view.js`, `insights.js` + `insights-view.js`.
+
+O **Diário** reutiliza `chatbot-view.js` para o assistente Ollama embutido na página (não há página separada na sidebar). `chatbot.html` apenas redireciona para `diario.html`.
 
 Exemplo de referência: `landing.js` + `landingView.js`.
 
@@ -40,6 +42,7 @@ Exemplo de referência: `landing.js` + `landingView.js`.
 | `progress-service.js` | CRUD e fluxos de `userProgress` |
 | `notifications-service.js` | Notificações do utilizador |
 | `mood-service.js` | `moodLogs` e `checkins` |
+| `journal-service.js` | Registos do diário (`journalEntries`) |
 | `activity-service.js` | Exercícios/atividades |
 | `admin-service.js` | CRUD do painel admin |
 | `chat-service.js` | Proxy Ollama |
