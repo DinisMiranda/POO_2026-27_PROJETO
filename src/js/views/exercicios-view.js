@@ -32,6 +32,10 @@ export const ExerciciosView = {
  modalContent: document.getElementById("exercise-modal-content"),
  completeBtn: document.getElementById("exercise-complete"),
  toastEl: document.getElementById("exercise-toast"),
+ xpModalEl: document.getElementById("exercise-xp-modal"),
+ xpBadgeEl: document.getElementById("exercise-xp-badge"),
+ xpSubtitleEl: document.getElementById("exercise-xp-subtitle"),
+ xpExtraEl: document.getElementById("exercise-xp-extra"),
 
  activePlayer: null,
 
@@ -40,6 +44,29 @@ export const ExerciciosView = {
   this.toastEl.textContent = msg;
   this.toastEl.classList.add("show");
   setTimeout(() => this.toastEl.classList.remove("show"), duration);
+ },
+
+ showXpModal({ xpGain, title, extraMessage = "" }) {
+  if (!this.xpModalEl) return;
+
+  if (this.xpBadgeEl) this.xpBadgeEl.textContent = `+${xpGain} XP`;
+  if (this.xpSubtitleEl) {
+   this.xpSubtitleEl.textContent = title ? `Completaste «${title}».` : "";
+  }
+  if (this.xpExtraEl) {
+   if (extraMessage) {
+    this.xpExtraEl.textContent = extraMessage;
+    this.xpExtraEl.hidden = false;
+   } else {
+    this.xpExtraEl.hidden = true;
+   }
+  }
+
+  this.xpModalEl.hidden = false;
+ },
+
+ closeXpModal() {
+  if (this.xpModalEl) this.xpModalEl.hidden = true;
  },
 
  closeModal() {
@@ -134,6 +161,18 @@ export const ExerciciosView = {
  bindClose(handler) {
   this.modalEl?.querySelectorAll("[data-exercise-close]").forEach((el) => {
    el.addEventListener("click", handler);
+  });
+ },
+
+ bindXpClose(handler) {
+  this.xpModalEl?.querySelectorAll("[data-xp-close]").forEach((el) => {
+   el.addEventListener("click", handler);
+  });
+
+  document.addEventListener("keydown", (event) => {
+   if (event.key === "Escape" && this.xpModalEl && !this.xpModalEl.hidden) {
+    handler();
+   }
   });
  },
 };

@@ -60,6 +60,26 @@
    </div>
   </div>
 
+  <div class="achievement-modal exercise-xp-modal" id="exercise-xp-modal" hidden>
+   <div class="achievement-modal-backdrop" data-xp-close></div>
+   <div
+    class="achievement-modal-panel exercise-xp-panel"
+    role="dialog"
+    aria-labelledby="exercise-xp-title"
+    aria-modal="true"
+   >
+    <div class="exercise-xp-body">
+     <div class="exercise-xp-badge" id="exercise-xp-badge" aria-hidden="true">+0 XP</div>
+     <h2 id="exercise-xp-title">Exercício concluído!</h2>
+     <p class="exercise-xp-subtitle" id="exercise-xp-subtitle"></p>
+     <p class="exercise-xp-extra" id="exercise-xp-extra" hidden></p>
+     <button type="button" class="btn-primary exercise-xp-btn" data-xp-close>
+      Continuar
+     </button>
+    </div>
+   </div>
+  </div>
+
   <div class="feedback-toast" id="exercise-toast"></div>
 
   <script type="module" src="../js/controllers/exercicios.js"></script>

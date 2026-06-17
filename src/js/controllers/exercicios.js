@@ -42,6 +42,8 @@ async function completeExercise() {
    await saveGratitudeJournal(player.getJournalData());
   }
 
+  const activityTitle = currentActivity.title;
+
   const result = await ProgressService.completeActivity(
    activeUser.id,
    currentActivity.type,
@@ -52,10 +54,14 @@ async function completeExercise() {
    ProgressService.syncMedals(activeUser.id),
   ]);
 
-  const typeMsg = result.newType ? " Novo tipo de exercício registado!" : "";
-  View.showToast(`Exercício concluído! +${result.xpGain} XP.${typeMsg}`);
+  const typeMsg = result.newType ? "Registaste um novo tipo de exercício!" : "";
   currentActivity = null;
   View.closeModal();
+  View.showXpModal({
+   xpGain: result.xpGain,
+   title: activityTitle,
+   extraMessage: typeMsg,
+  });
  } catch (err) {
   console.error("Erro ao concluir exercício:", err);
   View.showToast("Erro ao registar o exercício. Tenta novamente.");
@@ -89,6 +95,7 @@ async function init() {
   currentActivity = null;
   View.closeModal();
  });
+ View.bindXpClose(() => View.closeXpModal());
 }
 
 init();
