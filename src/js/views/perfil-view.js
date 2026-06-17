@@ -1,6 +1,7 @@
 import { Progress } from "../models/Progress.js";
 import { getInitials } from "../data/utils.js";
 import { getLocale, t, tf } from "../data/i18n.js";
+import { localizeChallenge, localizeMedal } from "../data/content-i18n.js";
 
 export const PerfilView = {
  avatarEl: document.getElementById("profile-avatar"),
@@ -96,6 +97,7 @@ export const PerfilView = {
   this.medalsGrid.innerHTML = "";
   for (const m of medalDefs) {
    const unlocked = unlockedIds.includes(m.id);
+   const item = localizeMedal(m);
    const div = document.createElement("div");
    div.className = "medal";
    div.innerHTML = `
@@ -103,8 +105,8 @@ export const PerfilView = {
            style="${unlocked ? `background:${m.color};color:${m.textColor}` : ""}">
         ${m.icon}
       </div>
-      <div class="medal-name">${m.title}</div>
-      <div class="medal-desc">${unlocked ? m.description : t("profile.locked")}</div>
+      <div class="medal-name">${item.title}</div>
+      <div class="medal-desc">${unlocked ? item.description : t("profile.locked")}</div>
     `;
    this.medalsGrid.appendChild(div);
   }
@@ -115,23 +117,24 @@ export const PerfilView = {
   this.challengesList.innerHTML = "";
 
   for (const c of challengeDefs) {
+   const localized = localizeChallenge(c);
    const done = completedIds.includes(c.id);
    const current = Progress.getChallengeCurrent(c, progress);
    const pct = Math.min((current / c.target) * 100, 100);
-   const item = document.createElement("div");
-   item.className = `challenge-item${done ? " challenge-done" : ""}`;
-   item.innerHTML = `
+   const row = document.createElement("div");
+   row.className = `challenge-item${done ? " challenge-done" : ""}`;
+   row.innerHTML = `
       <div class="challenge-icon">${c.icon}</div>
       <div class="challenge-info">
-        <div class="challenge-title">${c.title} ${done ? "✓" : ""}</div>
-        <div class="challenge-desc">${c.description} — <strong>${Math.min(current, c.target)} / ${c.target}</strong></div>
+        <div class="challenge-title">${localized.title} ${done ? "✓" : ""}</div>
+        <div class="challenge-desc">${localized.description} — <strong>${Math.min(current, c.target)} / ${c.target}</strong></div>
         <div class="challenge-bar-wrap">
           <div class="challenge-bar" style="width:${pct}%"></div>
         </div>
       </div>
       <div style="font-size:var(--text-xs);color:var(--color-text-muted);white-space:nowrap;">+${c.xpReward} XP</div>
     `;
-   this.challengesList.appendChild(item);
+   this.challengesList.appendChild(row);
   }
  },
 

@@ -1,5 +1,6 @@
 import { mountExercisePlayer } from "./exercise-players.js";
 import { t, tf } from "../data/i18n.js";
+import { localizeActivity } from "../data/content-i18n.js";
 
 const TYPE_ICONS = {
  respiracao: "calm",
@@ -76,9 +77,10 @@ export const ExerciciosView = {
  openModal(activity) {
   if (!this.modalEl || !this.modalContent) return null;
 
+  const localized = localizeActivity(activity);
   this.activePlayer?.destroy?.();
 
-  if (this.modalTitle) this.modalTitle.textContent = activity.title;
+  if (this.modalTitle) this.modalTitle.textContent = localized.title;
   if (this.modalMeta) {
    this.modalMeta.textContent = `${activity.duration || 5} ${t("common.min")} · ${typeLabel(activity.type)}`;
   }
@@ -108,8 +110,9 @@ export const ExerciciosView = {
   }
 
   this.gridEl.innerHTML = list
-   .map(
-    (activity) => `
+   .map((activity) => {
+    const item = localizeActivity(activity);
+    return `
     <article class="exercise-card">
       <div class="exercise-card-top">
         <div class="exercise-icon ${iconClass(activity.type)}">
@@ -118,8 +121,8 @@ export const ExerciciosView = {
           </svg>
         </div>
         <div class="exercise-info">
-          <h4>${activity.title}</h4>
-          <p>${activity.description || ""}</p>
+          <h4>${item.title}</h4>
+          <p>${item.description || ""}</p>
           <div class="exercise-meta">
             <span>${activity.duration || 5} ${t("common.min")}</span>
             <span>${typeLabel(activity.type)}</span>
@@ -133,8 +136,8 @@ export const ExerciciosView = {
         </svg>
       </button>
     </article>
-  `,
-   )
+  `;
+   })
    .join("");
  },
 

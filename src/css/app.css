@@ -334,6 +334,10 @@ a.play-btn { text-decoration: none; }
   align-items: stretch;
 }
 
+.content-top > .card {
+  min-width: 0;
+}
+
 .content-body {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
@@ -1367,7 +1371,7 @@ a.play-btn { text-decoration: none; }
 
 .page-grid-2 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-5);
 }
 
@@ -1387,6 +1391,17 @@ a.play-btn { text-decoration: none; }
   font-size: var(--text-sm);
   color: var(--color-text-muted);
   line-height: 1.5;
+}
+
+.card-subtitle {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.card h3 + .card-subtitle {
+  margin-top: calc(-1 * var(--space-2));
 }
 
 .field { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-4); }
@@ -1651,20 +1666,26 @@ a.play-btn { text-decoration: none; }
 }
 
 .checkin-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
+  gap: var(--space-2);
 }
 
 .checkin-row .btn-checkin {
   margin-top: 0;
-  flex: 1;
-  min-width: 160px;
+  width: 100%;
+  min-width: 0;
+  justify-content: center;
+  padding-left: 0.85rem;
+  padding-right: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .btn-add-achievement {
-  padding: 0.65rem 1rem;
+  padding: 0.65rem 0.9rem;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
   background: var(--color-surface);
@@ -1672,6 +1693,7 @@ a.play-btn { text-decoration: none; }
   font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
   transition: box-shadow var(--transition), transform var(--transition);
 }
 

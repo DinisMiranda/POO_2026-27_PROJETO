@@ -1,6 +1,7 @@
 import { Progress } from "../models/Progress.js";
 import { getLast7Days } from "../utils/mental-state.js";
 import { t, tf } from "../data/i18n.js";
+import { localizeChallenge, localizeMedal } from "../data/content-i18n.js";
 
 const FACE_SVG = {
  balanced: `<svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="30" cy="30" r="28" stroke-width="1.5"/><path d="M17 26 Q21 22 25 26" stroke-width="2"/><path d="M35 26 Q39 22 43 26" stroke-width="2"/><path d="M22 36 Q30 42 38 36"/></svg>`,
@@ -255,9 +256,10 @@ export const DashboardView = {
   const capped = Math.min(current, challenge.target);
   const pct = Math.min((current / challenge.target) * 100, 100);
   const unit = challenge.type === "streak" ? ` ${t("common.days")}` : "";
+  const localized = localizeChallenge(challenge);
 
-  if (this.challengeTitle) this.challengeTitle.textContent = challenge.title;
-  if (this.challengeDesc) this.challengeDesc.textContent = challenge.description;
+  if (this.challengeTitle) this.challengeTitle.textContent = localized.title;
+  if (this.challengeDesc) this.challengeDesc.textContent = localized.description;
   if (this.challengeProgressFill) this.challengeProgressFill.style.width = `${pct}%`;
   if (this.challengeProgressLabel) {
    this.challengeProgressLabel.textContent = `${capped}/${challenge.target}${unit}`;
@@ -283,14 +285,15 @@ export const DashboardView = {
    this.pendingChallengesList.innerHTML =
     pendingChallenges.length ?
      pendingChallenges
-      .map(
-       (c) => `
+      .map((c) => {
+       const item = localizeChallenge(c);
+       return `
       <button type="button" class="achievement-pick" data-challenge-id="${c.id}">
-        <span>${c.icon} ${c.title}</span>
+        <span>${c.icon} ${item.title}</span>
         <small>+${c.xpReward} XP</small>
       </button>
-    `,
-      )
+    `;
+      })
       .join("")
     : `<p class="achievement-empty">${t("dashboard.noPendingChallenges")}</p>`;
   }
@@ -299,14 +302,15 @@ export const DashboardView = {
    this.pendingMedalsList.innerHTML =
     pendingMedals.length ?
      pendingMedals
-      .map(
-       (m) => `
+      .map((m) => {
+       const item = localizeMedal(m);
+       return `
       <button type="button" class="achievement-pick" data-medal-id="${m.id}">
-        <span>${m.icon} ${m.title}</span>
-        <small>${m.description}</small>
+        <span>${m.icon} ${item.title}</span>
+        <small>${item.description}</small>
       </button>
-    `,
-      )
+    `;
+      })
       .join("")
     : `<p class="achievement-empty">${t("dashboard.noPendingMedals")}</p>`;
   }

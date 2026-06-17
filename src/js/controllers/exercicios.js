@@ -5,6 +5,7 @@ import { apiFetch } from "../data/http.js";
 import { mountAppShell } from "../views/app-shell.js";
 import { ExerciciosView as View } from "../views/exercicios-view.js";
 import { setPageTitle, t } from "../data/i18n.js";
+import { localizeActivity } from "../data/content-i18n.js";
 
 let activeUser = null;
 let currentActivity = null;
@@ -43,7 +44,7 @@ async function completeExercise() {
    await saveGratitudeJournal(player.getJournalData());
   }
 
-  const activityTitle = currentActivity.title;
+  const activityTitle = localizeActivity(currentActivity).title;
 
   const result = await ProgressService.completeActivity(
    activeUser.id,

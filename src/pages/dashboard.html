@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="pt">
+<html lang="pt-PT">
  <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google" content="notranslate" />
   <title>Zenify</title>
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,7 +16,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
  </head>
  <body data-zenify-page="hoje">
-  <div class="app">
+  <div class="app" translate="no">
    <aside class="sidebar" data-zenify-sidebar></aside>
 
    <main class="main">
@@ -26,10 +27,8 @@
       <div class="card mental-state-card">
        <div class="mental-state-content">
         <span class="mental-state-label" data-i18n="dashboard.mentalState">Estado mental</span>
-        <h2 class="mental-state-title" id="mental-state-title">Equilibrada</h2>
-        <p class="mental-state-message" id="mental-state-message">
-         Humor consistente esta semana. Continua assim!
-        </p>
+        <h2 class="mental-state-title" id="mental-state-title">—</h2>
+        <p class="mental-state-message" id="mental-state-message">—</p>
         <div class="mental-state-meta">
          <span class="mental-state-badge" id="mental-state-trend">
           <svg
@@ -45,7 +44,7 @@
             stroke-linejoin="round"
            />
           </svg>
-          Tendência estável
+          —
          </span>
          <span class="mental-state-score" id="mental-state-score">— / 5</span>
         </div>
@@ -106,7 +105,7 @@
        <div>
         <p class="streak-text">
          <span data-i18n="dashboard.streak">Streak:</span> <strong><span id="streak-number">0</span></strong>
-         <span id="streak-label" data-i18n="common.daysStreak">dias seguidos</span>
+         <span id="streak-label">—</span>
         </p>
         <div class="streak-dots" id="streak-dots"></div>
        </div>
@@ -138,8 +137,8 @@
             </svg>
            </div>
            <div class="exercise-info">
-            <h4>Respiração consciente</h4>
-            <p>Reduz o stress e acalma a mente</p>
+            <h4 data-i18n="dashboard.promo.breath.title">Respiração consciente</h4>
+            <p data-i18n="dashboard.promo.breath.desc">Reduz o stress e acalma a mente</p>
             <div class="exercise-meta">
              <span
               ><svg
@@ -152,9 +151,9 @@
                <polyline points="12 6 12 12 16 14" /></svg
               >5 min</span
              >
-             <span>Stress</span>
+             <span data-i18n="exercises.tags.stress">Stress</span>
             </div>
-            <div class="stars" aria-label="Nível 2 de 5">
+            <div class="stars" aria-hidden="true">
              <svg class="star" viewBox="0 0 24 24" fill="currentColor">
               <path
                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
@@ -184,7 +183,7 @@
            </div>
           </div>
           <div class="exercise-card-footer">
-           <span>Iniciar exercício</span
+           <span data-i18n="dashboard.startExercise">Iniciar exercício</span
            ><svg
             viewBox="0 0 24 24"
             fill="none"
@@ -212,8 +211,8 @@
             </svg>
            </div>
            <div class="exercise-info">
-            <h4>Sono profundo</h4>
-            <p>Relaxamento para uma noite tranquila</p>
+            <h4 data-i18n="dashboard.promo.sleep.title">Sono profundo</h4>
+            <p data-i18n="dashboard.promo.sleep.desc">Relaxamento para uma noite tranquila</p>
             <div class="exercise-meta">
              <span
               ><svg
@@ -226,9 +225,9 @@
                <polyline points="12 6 12 12 16 14" /></svg
               >10 min</span
              >
-             <span>Sono</span>
+             <span data-i18n="exercises.tags.sleep">Sono</span>
             </div>
-            <div class="stars" aria-label="Nível 2 de 5">
+            <div class="stars" aria-hidden="true">
              <svg class="star" viewBox="0 0 24 24" fill="currentColor">
               <path
                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
@@ -258,7 +257,7 @@
            </div>
           </div>
           <div class="exercise-card-footer">
-           <span>Iniciar exercício</span
+           <span data-i18n="dashboard.startExercise">Iniciar exercício</span
            ><svg
             viewBox="0 0 24 24"
             fill="none"
@@ -287,9 +286,9 @@
           </svg>
          </div>
          <div class="challenge-info">
-          <h4>Desafio ativo</h4>
+          <h4 data-i18n="dashboard.activeChallenge">Desafio ativo</h4>
           <h3 id="challenge-title">—</h3>
-          <p id="challenge-desc">A carregar…</p>
+          <p id="challenge-desc">—</p>
           <div class="challenge-progress">
            <div class="progress-bar-wrap">
             <div
@@ -311,7 +310,7 @@
           </svg>
           <span id="challenge-pts-value">— pts</span>
          </div>
-         <button class="btn-challenge" type="button" id="btn-view-challenge">
+         <button class="btn-challenge" type="button" id="btn-view-challenge" data-i18n="dashboard.viewChallenge">
           Ver desafio
          </button>
         </div>
@@ -333,7 +332,7 @@
           <line x1="3" y1="10" x2="21" y2="10" />
          </svg>
         </div>
-        <h3>Próximos exercícios</h3>
+        <h3 data-i18n="dashboard.nextExercises">Próximos exercícios</h3>
        </div>
        <div class="next-list">
         <div class="next-item">
@@ -349,13 +348,13 @@
           </svg>
          </div>
          <div class="next-item-info">
-          <h4>Respiração consciente</h4>
-          <p>Reduz o stress e acalma a mente</p>
+          <h4 data-i18n="dashboard.promo.breath.title">Respiração consciente</h4>
+          <p data-i18n="dashboard.promo.breath.desc">Reduz o stress e acalma a mente</p>
           <div class="next-item-meta">
-           <span>5 min</span><span>Stress</span>
+           <span>5 min</span><span data-i18n="exercises.tags.stress">Stress</span>
           </div>
          </div>
-         <a href="exercicios.html" class="play-btn" aria-label="Iniciar"
+         <a href="exercicios.html" class="play-btn" data-i18n-aria-label="dashboard.startAria" aria-label="Iniciar"
           ><svg viewBox="0 0 24 24" fill="currentColor">
            <polygon points="5 3 19 12 5 21 5 3" /></svg
          ></a>
@@ -372,11 +371,11 @@
           </svg>
          </div>
          <div class="next-item-info">
-          <h4>Sono profundo</h4>
-          <p>Relaxamento para uma noite tranquila</p>
-          <div class="next-item-meta"><span>10 min</span><span>Sono</span></div>
+          <h4 data-i18n="dashboard.promo.sleep.title">Sono profundo</h4>
+          <p data-i18n="dashboard.promo.sleep.desc">Relaxamento para uma noite tranquila</p>
+          <div class="next-item-meta"><span>10 min</span><span data-i18n="exercises.tags.sleep">Sono</span></div>
          </div>
-         <a href="exercicios.html" class="play-btn" aria-label="Iniciar"
+         <a href="exercicios.html" class="play-btn" data-i18n-aria-label="dashboard.startAria" aria-label="Iniciar"
           ><svg viewBox="0 0 24 24" fill="currentColor">
            <polygon points="5 3 19 12 5 21 5 3" /></svg
          ></a>
@@ -394,17 +393,17 @@
           </svg>
          </div>
          <div class="next-item-info">
-          <h4>Atenção plena</h4>
-          <p>Foca-te no presente e melhora a concentração</p>
-          <div class="next-item-meta"><span>7 min</span><span>Foco</span></div>
+          <h4 data-i18n="dashboard.promo.focus.title">Atenção plena</h4>
+          <p data-i18n="dashboard.promo.focus.desc">Foca-te no presente e melhora a concentração</p>
+          <div class="next-item-meta"><span>7 min</span><span data-i18n="exercises.tags.focus">Foco</span></div>
          </div>
-         <a href="exercicios.html" class="play-btn" aria-label="Iniciar"
+         <a href="exercicios.html" class="play-btn" data-i18n-aria-label="dashboard.startAria" aria-label="Iniciar"
           ><svg viewBox="0 0 24 24" fill="currentColor">
            <polygon points="5 3 19 12 5 21 5 3" /></svg
          ></a>
         </div>
        </div>
-       <a href="exercicios.html" class="view-all">Ver todos os exercícios</a>
+       <a href="exercicios.html" class="view-all" data-i18n="dashboard.viewAllExercises">Ver todos os exercícios</a>
       </div>
      </div>
     </div>
@@ -438,7 +437,7 @@
        <button type="button" class="mood-pick" data-mood="4">4</button>
        <button type="button" class="mood-pick" data-mood="5">5</button>
       </div>
-      <p class="checkin-mood-label" id="checkin-mood-label" data-i18n="mood.pickValue">
+      <p class="checkin-mood-label" id="checkin-mood-label">
        Escolhe um valor de 1 a 5
       </p>
       <button

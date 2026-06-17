@@ -24,36 +24,36 @@
     <div class="page-stack">
      <div class="card admin-toolbar">
       <div>
-       <p class="admin-eyebrow">Administração</p>
-       <h2 class="admin-toolbar-title">Gestão Zenify</h2>
-       <p class="lead">Gere utilizadores, exercícios, desafios, medalhas e dicas da plataforma.</p>
+       <p class="admin-eyebrow" data-i18n="admin.eyebrow">Administração</p>
+       <h2 class="admin-toolbar-title" data-i18n="admin.title">Gestão Zenify</h2>
+       <p class="lead" data-i18n="admin.lead">Gere utilizadores, exercícios, desafios, medalhas e dicas da plataforma.</p>
       </div>
       <div class="admin-toolbar-actions">
-       <a href="dashboard.html" class="btn-secondary">Ir para dashboard</a>
-       <button type="button" class="btn-secondary" id="btn-admin-logout">
+       <a href="dashboard.html" class="btn-secondary" data-i18n="admin.goDashboard">Ir para dashboard</a>
+       <button type="button" class="btn-secondary" id="btn-admin-logout" data-i18n="admin.logout">
         Terminar sessão
        </button>
       </div>
      </div>
 
      <div class="card admin-nav-card">
-      <nav class="admin-tabs" role="tablist" aria-label="Secções de administração">
-       <button type="button" class="admin-tab" data-view-target="overview" role="tab">
+      <nav class="admin-tabs" role="tablist" data-i18n-aria-label="admin.tabsAria" aria-label="Secções de administração">
+       <button type="button" class="admin-tab" data-view-target="overview" role="tab" data-i18n="admin.tabOverview">
         Visão geral
        </button>
-       <button type="button" class="admin-tab" data-view-target="users" role="tab">
+       <button type="button" class="admin-tab" data-view-target="users" role="tab" data-i18n="admin.tabUsers">
         Utilizadores
        </button>
-       <button type="button" class="admin-tab" data-view-target="activities" role="tab">
+       <button type="button" class="admin-tab" data-view-target="activities" role="tab" data-i18n="admin.tabActivities">
         Exercícios
        </button>
-       <button type="button" class="admin-tab" data-view-target="challenges" role="tab">
+       <button type="button" class="admin-tab" data-view-target="challenges" role="tab" data-i18n="admin.tabChallenges">
         Desafios
        </button>
-       <button type="button" class="admin-tab" data-view-target="medals" role="tab">
+       <button type="button" class="admin-tab" data-view-target="medals" role="tab" data-i18n="admin.tabMedals">
         Medalhas
        </button>
-       <button type="button" class="admin-tab" data-view-target="tips" role="tab">
+       <button type="button" class="admin-tab" data-view-target="tips" role="tab" data-i18n="admin.tabTips">
         Dicas
        </button>
       </nav>
@@ -62,8 +62,8 @@
      <section data-view="overview" class="admin-view">
       <div class="admin-stats-grid" id="admin-overview-stats"></div>
       <div class="card">
-       <h3>Resumo da plataforma</h3>
-       <p class="lead">
+       <h3 data-i18n="admin.overviewTitle">Resumo da plataforma</h3>
+       <p class="lead" data-i18n="admin.overviewLead">
         Painel central para acompanhar adoção, conteúdos publicados e métricas de
         bem-estar agregadas dos utilizadores.
        </p>
@@ -72,8 +72,8 @@
 
      <section data-view="users" class="admin-view hidden">
       <div class="card">
-       <h3>Utilizadores registados</h3>
-       <p class="lead">Altera perfis ou remove contas. Não podes remover a tua própria conta.</p>
+       <h3 data-i18n="admin.usersTitle">Utilizadores registados</h3>
+       <p class="lead" data-i18n="admin.usersLead">Altera perfis ou remove contas. Não podes remover a tua própria conta.</p>
        <div class="list-rows" id="admin-users-list"></div>
       </div>
      </section>
@@ -81,29 +81,29 @@
      <section data-view="activities" class="admin-view hidden">
       <div class="page-grid-2">
        <div class="card">
-        <h3>Novo exercício</h3>
+        <h3 data-i18n="admin.newActivity">Novo exercício</h3>
         <form id="admin-activity-form" class="admin-form">
          <div class="field">
-          <label for="admin-activity-title">Título</label>
-          <input id="admin-activity-title" type="text" required placeholder="Respiração 4-4" />
+          <label for="admin-activity-title" data-i18n="admin.labelTitle">Título</label>
+          <input id="admin-activity-title" type="text" required data-i18n-placeholder="admin.activityTitlePh" placeholder="Respiração 4-4" />
          </div>
          <div class="field">
-          <label for="admin-activity-type">Tipo</label>
+          <label for="admin-activity-type" data-i18n="admin.labelType">Tipo</label>
           <select id="admin-activity-type"></select>
          </div>
          <div class="field">
-          <label for="admin-activity-duration">Duração (min)</label>
+          <label for="admin-activity-duration" data-i18n="admin.labelDuration">Duração (min)</label>
           <input id="admin-activity-duration" type="number" min="1" max="120" value="5" />
          </div>
          <div class="field">
-          <label for="admin-activity-description">Descrição</label>
-          <textarea id="admin-activity-description" placeholder="Instruções breves para o utilizador"></textarea>
+          <label for="admin-activity-description" data-i18n="admin.labelDescription">Descrição</label>
+          <textarea id="admin-activity-description" data-i18n-placeholder="admin.activityDescPh" placeholder="Instruções breves para o utilizador"></textarea>
          </div>
-         <button type="submit" class="btn-primary">Adicionar exercício</button>
+         <button type="submit" class="btn-primary" data-i18n="admin.addActivity">Adicionar exercício</button>
         </form>
        </div>
        <div class="card">
-        <h3>Exercícios ativos</h3>
+        <h3 data-i18n="admin.activeActivities">Exercícios ativos</h3>
         <div class="list-rows" id="admin-activities-list"></div>
        </div>
       </div>
@@ -112,39 +112,39 @@
      <section data-view="challenges" class="admin-view hidden">
       <div class="page-grid-2">
        <div class="card">
-        <h3>Novo desafio</h3>
+        <h3 data-i18n="admin.newChallenge">Novo desafio</h3>
         <form id="admin-challenge-form" class="admin-form">
          <div class="field">
-          <label for="admin-challenge-title">Título</label>
+          <label for="admin-challenge-title" data-i18n="admin.labelTitle">Título</label>
           <input id="admin-challenge-title" type="text" required />
          </div>
          <div class="field">
-          <label for="admin-challenge-description">Descrição</label>
+          <label for="admin-challenge-description" data-i18n="admin.labelDescription">Descrição</label>
           <textarea id="admin-challenge-description" required></textarea>
          </div>
          <div class="admin-form-grid">
           <div class="field">
-           <label for="admin-challenge-type">Tipo</label>
+           <label for="admin-challenge-type" data-i18n="admin.labelType">Tipo</label>
            <select id="admin-challenge-type"></select>
           </div>
           <div class="field">
-           <label for="admin-challenge-target">Meta</label>
+           <label for="admin-challenge-target" data-i18n="admin.labelTarget">Meta</label>
            <input id="admin-challenge-target" type="number" min="1" value="1" />
           </div>
           <div class="field">
-           <label for="admin-challenge-xp">XP</label>
+           <label for="admin-challenge-xp" data-i18n="admin.labelXp">XP</label>
            <input id="admin-challenge-xp" type="number" min="1" value="50" />
           </div>
           <div class="field">
-           <label for="admin-challenge-icon">Ícone</label>
+           <label for="admin-challenge-icon" data-i18n="admin.labelIcon">Ícone</label>
            <input id="admin-challenge-icon" type="text" value="🎯" maxlength="4" />
           </div>
          </div>
-         <button type="submit" class="btn-primary">Adicionar desafio</button>
+         <button type="submit" class="btn-primary" data-i18n="admin.addChallenge">Adicionar desafio</button>
         </form>
        </div>
        <div class="card">
-        <h3>Desafios definidos</h3>
+        <h3 data-i18n="admin.definedChallenges">Desafios definidos</h3>
         <div class="list-rows" id="admin-challenges-list"></div>
        </div>
       </div>
@@ -153,39 +153,39 @@
      <section data-view="medals" class="admin-view hidden">
       <div class="page-grid-2">
        <div class="card">
-        <h3>Nova medalha</h3>
+        <h3 data-i18n="admin.newMedal">Nova medalha</h3>
         <form id="admin-medal-form" class="admin-form">
          <div class="field">
-          <label for="admin-medal-title">Título</label>
+          <label for="admin-medal-title" data-i18n="admin.labelTitle">Título</label>
           <input id="admin-medal-title" type="text" required />
          </div>
          <div class="field">
-          <label for="admin-medal-description">Descrição</label>
+          <label for="admin-medal-description" data-i18n="admin.labelDescription">Descrição</label>
           <textarea id="admin-medal-description" required></textarea>
          </div>
          <div class="field">
-          <label for="admin-medal-condition">Condição</label>
-          <input id="admin-medal-condition" type="text" required placeholder="streak_7" />
+          <label for="admin-medal-condition" data-i18n="admin.labelCondition">Condição</label>
+          <input id="admin-medal-condition" type="text" required data-i18n-placeholder="admin.medalConditionPh" placeholder="streak_7" />
          </div>
          <div class="admin-form-grid">
           <div class="field">
-           <label for="admin-medal-icon">Ícone</label>
+           <label for="admin-medal-icon" data-i18n="admin.labelIcon">Ícone</label>
            <input id="admin-medal-icon" type="text" value="🏅" maxlength="4" />
           </div>
           <div class="field">
-           <label for="admin-medal-color">Cor de fundo</label>
+           <label for="admin-medal-color" data-i18n="admin.labelBgColor">Cor de fundo</label>
            <input id="admin-medal-color" type="color" value="#ede8f8" />
           </div>
           <div class="field">
-           <label for="admin-medal-text-color">Cor do texto</label>
+           <label for="admin-medal-text-color" data-i18n="admin.labelTextColor">Cor do texto</label>
            <input id="admin-medal-text-color" type="color" value="#6a5a9a" />
           </div>
          </div>
-         <button type="submit" class="btn-primary">Adicionar medalha</button>
+         <button type="submit" class="btn-primary" data-i18n="admin.addMedal">Adicionar medalha</button>
         </form>
        </div>
        <div class="card">
-        <h3>Medalhas definidas</h3>
+        <h3 data-i18n="admin.definedMedals">Medalhas definidas</h3>
         <div class="list-rows" id="admin-medals-list"></div>
        </div>
       </div>
@@ -194,21 +194,21 @@
      <section data-view="tips" class="admin-view hidden">
       <div class="page-grid-2">
        <div class="card">
-        <h3>Nova dica</h3>
+        <h3 data-i18n="admin.newTip">Nova dica</h3>
         <form id="admin-tip-form" class="admin-form">
          <div class="field">
-          <label for="admin-tip-mood">Humor alvo</label>
+          <label for="admin-tip-mood" data-i18n="admin.labelMood">Humor alvo</label>
           <select id="admin-tip-mood"></select>
          </div>
          <div class="field">
-          <label for="admin-tip-content">Conteúdo</label>
-          <textarea id="admin-tip-content" required placeholder="Sugestão personalizada para o utilizador"></textarea>
+          <label for="admin-tip-content" data-i18n="admin.labelContent">Conteúdo</label>
+          <textarea id="admin-tip-content" required data-i18n-placeholder="admin.tipContentPh" placeholder="Sugestão personalizada para o utilizador"></textarea>
          </div>
-         <button type="submit" class="btn-primary">Adicionar dica</button>
+         <button type="submit" class="btn-primary" data-i18n="admin.addTip">Adicionar dica</button>
         </form>
        </div>
        <div class="card">
-        <h3>Dicas publicadas</h3>
+        <h3 data-i18n="admin.publishedTips">Dicas publicadas</h3>
         <div class="list-rows" id="admin-tips-list"></div>
        </div>
       </div>

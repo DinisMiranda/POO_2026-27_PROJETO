@@ -1,7 +1,7 @@
 import { UserService } from "../data/user-service.js";
 import { requireSession } from "../data/session.js";
 import { redirectByRole, redirectToLogin } from "../data/navigation.js";
-import { initI18n, setPageTitle } from "../data/i18n.js";
+import { setPageTitle, t } from "../data/i18n.js";
 import { mountAppShell } from "../views/app-shell.js";
 import { initViews } from "../views/view-manager.js";
 import { AdminService } from "../data/admin-service.js";
@@ -82,7 +82,6 @@ async function init() {
 
  activeUser = user;
 
- initI18n();
  mountAppShell();
  setPageTitle("page.title.admin");
 
@@ -100,10 +99,10 @@ async function init() {
  bindActivityForm(async (payload) => {
   const ok = await AdminService.addActivity(payload);
   if (!ok) {
-   showToast("Não foi possível criar o exercício.", true);
+   showToast(t("admin.activityAddError"), true);
    return;
   }
-  showToast("Exercício adicionado.");
+  showToast(t("admin.activityAdded"));
   await refreshActivities();
   await refreshOverview();
  });
@@ -111,10 +110,10 @@ async function init() {
  bindChallengeForm(async (payload) => {
   const ok = await AdminService.addChallenge(payload);
   if (!ok) {
-   showToast("Não foi possível criar o desafio.", true);
+   showToast(t("admin.challengeAddError"), true);
    return;
   }
-  showToast("Desafio adicionado.");
+  showToast(t("admin.challengeAdded"));
   await refreshChallenges();
   await refreshOverview();
  });
@@ -122,10 +121,10 @@ async function init() {
  bindMedalForm(async (payload) => {
   const ok = await AdminService.addMedal(payload);
   if (!ok) {
-   showToast("Não foi possível criar a medalha.", true);
+   showToast(t("admin.medalAddError"), true);
    return;
   }
-  showToast("Medalha adicionada.");
+  showToast(t("admin.medalAdded"));
   await refreshMedals();
   await refreshOverview();
  });
@@ -133,10 +132,10 @@ async function init() {
  bindTipForm(async (payload) => {
   const ok = await AdminService.addTip(payload);
   if (!ok) {
-   showToast("Não foi possível criar a dica.", true);
+   showToast(t("admin.tipAddError"), true);
    return;
   }
-  showToast("Dica adicionada.");
+  showToast(t("admin.tipAdded"));
   await refreshTips();
   await refreshOverview();
  });
@@ -144,14 +143,14 @@ async function init() {
  bindListActions({
   async onDeleteUser(id) {
    if (id === activeUser?.id) return;
-   if (!confirm("Remover este utilizador?")) return;
+   if (!confirm(t("admin.confirmRemoveUser"))) return;
 
    const ok = await AdminService.deleteUser(id);
    if (!ok) {
-    showToast("Não foi possível remover o utilizador.", true);
+    showToast(t("admin.userRemoveError"), true);
     return;
    }
-   showToast("Utilizador removido.");
+   showToast(t("admin.userRemoved"));
    await refreshUsers();
    await refreshOverview();
   },
@@ -159,58 +158,58 @@ async function init() {
   async onUserRoleChange(id, role) {
    const ok = await AdminService.updateUserRole(id, role);
    if (!ok) {
-    showToast("Não foi possível atualizar o perfil.", true);
+    showToast(t("admin.roleUpdateError"), true);
     await refreshUsers();
     return;
    }
-   showToast("Perfil atualizado.");
+   showToast(t("admin.roleUpdated"));
    await refreshUsers();
   },
 
   async onDeleteActivity(id) {
-   if (!confirm("Remover este exercício?")) return;
+   if (!confirm(t("admin.confirmRemoveActivity"))) return;
    const ok = await AdminService.deleteActivity(id);
    if (!ok) {
-    showToast("Não foi possível remover o exercício.", true);
+    showToast(t("admin.activityRemoveError"), true);
     return;
    }
-   showToast("Exercício removido.");
+   showToast(t("admin.activityRemoved"));
    await refreshActivities();
    await refreshOverview();
   },
 
   async onDeleteChallenge(id) {
-   if (!confirm("Remover este desafio?")) return;
+   if (!confirm(t("admin.confirmRemoveChallenge"))) return;
    const ok = await AdminService.deleteChallenge(id);
    if (!ok) {
-    showToast("Não foi possível remover o desafio.", true);
+    showToast(t("admin.challengeRemoveError"), true);
     return;
    }
-   showToast("Desafio removido.");
+   showToast(t("admin.challengeRemoved"));
    await refreshChallenges();
    await refreshOverview();
   },
 
   async onDeleteMedal(id) {
-   if (!confirm("Remover esta medalha?")) return;
+   if (!confirm(t("admin.confirmRemoveMedal"))) return;
    const ok = await AdminService.deleteMedal(id);
    if (!ok) {
-    showToast("Não foi possível remover a medalha.", true);
+    showToast(t("admin.medalRemoveError"), true);
     return;
    }
-   showToast("Medalha removida.");
+   showToast(t("admin.medalRemoved"));
    await refreshMedals();
    await refreshOverview();
   },
 
   async onDeleteTip(id) {
-   if (!confirm("Remover esta dica?")) return;
+   if (!confirm(t("admin.confirmRemoveTip"))) return;
    const ok = await AdminService.deleteTip(id);
    if (!ok) {
-    showToast("Não foi possível remover a dica.", true);
+    showToast(t("admin.tipRemoveError"), true);
     return;
    }
-   showToast("Dica removida.");
+   showToast(t("admin.tipRemoved"));
    await refreshTips();
    await refreshOverview();
   },

@@ -240,6 +240,9 @@ async function initDashboard() {
  activeUser = await requireSession();
  if (!activeUser) return;
 
+ View.renderMentalState(resolveMentalState([]));
+ View.resetCheckinMoodModal();
+
  bindEvents();
  await loadStreak();
  await loadHumorChart();

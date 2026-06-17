@@ -1,4 +1,5 @@
 import { t, tf } from "../data/i18n.js";
+import { localizeActivity } from "../data/content-i18n.js";
 
 /** Fábricas de UI personalizada por exercício (id da activity). */
 
@@ -42,12 +43,29 @@ function createTimer(totalSeconds, onTick, onDone) {
 }
 
 function shell(activity, innerHtml) {
+ const localized = localizeActivity(activity);
  return `
   <div class="player-inner player-inner--${activity.type}" data-player-id="${activity.id}">
-    <p class="player-intro">${activity.description || ""}</p>
+    <p class="player-intro">${localized.description || ""}</p>
     ${innerHtml}
   </div>
 `;
+}
+
+function meditationPrompts() {
+ return [1, 2, 3, 4, 5, 6, 7, 8].map((n) => t(`exercises.player.meditation.p${n}`));
+}
+
+function bodyZones() {
+ const keys = ["feet", "legs", "belly", "chest", "hands", "shoulders", "face"];
+ return keys.map((key) => ({
+  name: t(`exercises.player.zones.${key}.name`),
+  hint: t(`exercises.player.zones.${key}.hint`),
+ }));
+}
+
+function walkPrompts() {
+ return [1, 2, 3, 4].map((n) => t(`exercises.player.walkP${n}`));
 }
 
 /** Respiração 4-4 — círculo animado com fases */
@@ -139,16 +157,7 @@ function breathingPlayer(activity, container, callbacks) {
 
 /** Meditação guiada — prompts sequenciais */
 function meditationPlayer(activity, container, callbacks) {
- const prompts = [
-  "Fecha os olhos suavemente e endireita a coluna.",
-  "Leva a atenção para a respiração natural, sem a forçar.",
-  "Nota o ar a entrar e a sair pelo nariz.",
-  "Se surgirem pensamentos, observa-os e deixa-os passar.",
-  "Volta sempre à sensação do corpo neste momento.",
-  "Expande a consciência para os sons à tua volta.",
-  "Sente gratidão por este momento de pausa.",
-  "Prepara-te para regressar com calma e clareza.",
- ];
+ const prompts = meditationPrompts();
 
  let index = 0;
  let promptInterval = null;
@@ -163,15 +172,15 @@ function meditationPlayer(activity, container, callbacks) {
     <div class="meditation-progress"><div class="meditation-progress-bar" id="meditation-bar"></div></div>
   </div>
   <div class="player-stats">
-    <span>Passo <strong id="meditation-step">1</strong> / ${prompts.length}</span>
+    <span id="meditation-step-label">${tf("exercises.player.step", { n: 1, total: prompts.length })}</span>
     <span class="player-timer" id="meditation-timer">${formatTime((activity.duration || 5) * 60)}</span>
   </div>
-  <button type="button" class="btn-primary" id="meditation-start">Iniciar meditação</button>
+  <button type="button" class="btn-primary" id="meditation-start">${t("exercises.player.startMeditation")}</button>
 `,
  );
 
  const promptEl = container.querySelector("#meditation-prompt");
- const stepEl = container.querySelector("#meditation-step");
+ const stepEl = container.querySelector("#meditation-step-label");
  const barEl = container.querySelector("#meditation-bar");
  const timerEl = container.querySelector("#meditation-timer");
  const startBtn = container.querySelector("#meditation-start");
@@ -185,8 +194,8 @@ function meditationPlayer(activity, container, callbacks) {
   if (barEl) barEl.style.width = `${pct}%`;
  }, () => {
   clearInterval(promptInterval);
-  if (promptEl) promptEl.textContent = "Meditação concluída. Respira fundo e abre os olhos.";
-  startBtn.textContent = "Repetir";
+  if (promptEl) promptEl.textContent = t("exercises.player.meditationDone");
+  startBtn.textContent = t("exercises.player.repeat");
   startBtn.disabled = false;
   callbacks.onReadyToComplete?.(true);
  });
@@ -194,7 +203,9 @@ function meditationPlayer(activity, container, callbacks) {
  function start() {
   index = 0;
   if (promptEl) promptEl.textContent = prompts[0];
-  if (stepEl) stepEl.textContent = "1";
+  if (stepEl) {
+   stepEl.textContent = tf("exercises.player.step", { n: 1, total: prompts.length });
+  }
   if (barEl) barEl.style.width = "0%";
   startBtn.disabled = true;
   startBtn.textContent = t("common.running");
@@ -203,7 +214,12 @@ function meditationPlayer(activity, container, callbacks) {
   promptInterval = setInterval(() => {
    index = Math.min(index + 1, prompts.length - 1);
    if (promptEl) promptEl.textContent = prompts[index];
-   if (stepEl) stepEl.textContent = String(index + 1);
+   if (stepEl) {
+    stepEl.textContent = tf("exercises.player.step", {
+     n: index + 1,
+     total: prompts.length,
+    });
+   }
   }, stepSeconds * 1000);
 
   timer.start(timerEl);
@@ -221,15 +237,7 @@ function meditationPlayer(activity, container, callbacks) {
 
 /** Escaneamento corporal — percorre zonas do corpo */
 function bodyScanPlayer(activity, container, callbacks) {
- const zones = [
-  { name: "Pés", hint: "Relaxa dedos e solas. Sentir o contacto com o chão." },
-  { name: "Pernas", hint: "Liberta tensão em coxas e joelhos." },
-  { name: "Abdómen", hint: "Deixa o ar entrar suavemente na barriga." },
-  { name: "Peito", hint: "Observa o peito a subir e descer." },
-  { name: "Mãos", hint: "Abre e fecha as mãos com consciência." },
-  { name: "Ombros", hint: "Deixa os ombros caírem, longe das orelhas." },
-  { name: "Rosto", hint: "Suaviza testa, maxilar e língua." },
- ];
+ const zones = bodyZones();
 
  let zoneIndex = 0;
  let zoneInterval = null;
@@ -253,10 +261,10 @@ function bodyScanPlayer(activity, container, callbacks) {
     </div>
   </div>
   <div class="player-stats">
-    <span>Zona <strong id="bodyscan-step">1</strong> / ${zones.length}</span>
+    <span>${t("exercises.player.zone")} <strong id="bodyscan-step">1</strong> / ${zones.length}</span>
     <span class="player-timer" id="bodyscan-timer">${formatTime((activity.duration || 10) * 60)}</span>
   </div>
-  <button type="button" class="btn-primary" id="bodyscan-start">Iniciar escaneamento</button>
+  <button type="button" class="btn-primary" id="bodyscan-start">${t("exercises.player.startScan")}</button>
 `,
  );
 
@@ -282,7 +290,7 @@ function bodyScanPlayer(activity, container, callbacks) {
  timer = createTimer(total, null, () => {
   clearInterval(zoneInterval);
   highlight(zones.length - 1);
-  startBtn.textContent = "Repetir";
+  startBtn.textContent = t("exercises.player.repeat");
   startBtn.disabled = false;
   callbacks.onReadyToComplete?.(true);
  });
@@ -319,19 +327,19 @@ function gratitudePlayer(activity, container, callbacks) {
   `
   <form class="gratitude-form" id="gratitude-form">
     <label class="field">
-      <span>1. Pelo que és grato hoje?</span>
-      <textarea id="grat-1" rows="2" placeholder="Ex.: Um café calmo antes das aulas"></textarea>
+      <span>${t("exercises.player.gratQ1")}</span>
+      <textarea id="grat-1" rows="2" placeholder="${t("exercises.player.gratPh1")}"></textarea>
     </label>
     <label class="field">
-      <span>2. O que correu bem?</span>
-      <textarea id="grat-2" rows="2" placeholder="Ex.: Consegui estudar sem procrastinar"></textarea>
+      <span>${t("exercises.player.gratQ2")}</span>
+      <textarea id="grat-2" rows="2" placeholder="${t("exercises.player.gratPh2")}"></textarea>
     </label>
     <label class="field">
-      <span>3. O que queres levar para amanhã?</span>
-      <textarea id="grat-3" rows="2" placeholder="Ex.: Mais pausas conscientes"></textarea>
+      <span>${t("exercises.player.gratQ3")}</span>
+      <textarea id="grat-3" rows="2" placeholder="${t("exercises.player.gratPh3")}"></textarea>
     </label>
     <label class="field">
-      <span>Como te sentes agora? (1–5)</span>
+      <span>${t("exercises.player.gratMood")}</span>
       <div class="mood-picker" id="gratitude-mood">
         ${[1, 2, 3, 4, 5]
          .map((n) => `<button type="button" class="mood-pick" data-mood="${n}">${n}</button>`)
@@ -339,7 +347,7 @@ function gratitudePlayer(activity, container, callbacks) {
       </div>
     </label>
   </form>
-  <p class="player-hint" id="gratitude-hint">Preenche os 3 campos e escolhe o teu humor.</p>
+  <p class="player-hint" id="gratitude-hint">${t("exercises.player.gratHint")}</p>
 `,
  );
 
@@ -358,8 +366,8 @@ function gratitudePlayer(activity, container, callbacks) {
   callbacks.onReadyToComplete?.(ok);
   if (hint) {
    hint.textContent = ok ?
-    "Pronto! Clica em «Concluir exercício» para guardar."
-   : "Preenche os 3 campos e escolhe o teu humor.";
+    t("exercises.player.readyToComplete")
+   : t("exercises.player.gratHint");
   }
   return ok;
  }
@@ -400,14 +408,14 @@ function walkPlayer(activity, container, callbacks) {
   `
   <div class="walk-stage">
     <div class="walk-path" id="walk-path"></div>
-    <p class="walk-prompt" id="walk-prompt">Caminha devagar. Toca em «Passo» a cada passo consciente.</p>
+    <p class="walk-prompt" id="walk-prompt">${t("exercises.player.walkIntro")}</p>
     <button type="button" class="walk-step-btn" id="walk-step-btn">
       <span class="walk-step-icon">👣</span>
-      <span>Registar passo</span>
+      <span>${t("exercises.player.registerStep")}</span>
     </button>
   </div>
   <div class="player-stats">
-    <span>Passos: <strong id="walk-count">0</strong> / ${targetSteps}</span>
+    <span>${t("exercises.player.steps")} <strong id="walk-count">0</strong> / ${targetSteps}</span>
     <span class="player-timer" id="walk-timer">${formatTime((activity.duration || 10) * 60)}</span>
   </div>
 `,
@@ -419,19 +427,14 @@ function walkPlayer(activity, container, callbacks) {
  const stepBtn = container.querySelector("#walk-step-btn");
  const timerEl = container.querySelector("#walk-timer");
 
- const prompts = [
-  "Sente o calcanhar a tocar o chão.",
-  "Rola o peso para a planta do pé.",
-  "Observa o balanço natural dos braços.",
-  "Mantém a respiração calma e regular.",
- ];
+ const prompts = walkPrompts();
 
  let promptIdx = 0;
 
  const timer = createTimer((activity.duration || 10) * 60, null, () => {
   stepBtn.disabled = true;
   callbacks.onReadyToComplete?.(steps >= Math.floor(targetSteps * 0.5));
-  if (promptEl) promptEl.textContent = "Tempo terminado. Podes concluir o exercício.";
+  if (promptEl) promptEl.textContent = t("exercises.player.timeDone");
  });
 
  function addStepDot() {
@@ -449,7 +452,7 @@ function walkPlayer(activity, container, callbacks) {
 
   if (steps >= targetSteps) {
    callbacks.onReadyToComplete?.(true);
-   if (promptEl) promptEl.textContent = "Objetivo de passos alcançado! Excelente caminhada consciente.";
+   if (promptEl) promptEl.textContent = t("exercises.player.walkGoal");
   } else if (steps >= Math.floor(targetSteps * 0.5)) {
    callbacks.onReadyToComplete?.(true);
   }
@@ -487,7 +490,7 @@ export function mountExercisePlayer(activity, container, callbacks) {
  const factory =
   PLAYER_BY_ID[String(activity.id)] || PLAYER_BY_TYPE[activity.type];
  if (!factory) {
-  container.innerHTML = `<p class="player-hint">Exercício sem player personalizado.</p>`;
+  container.innerHTML = `<p class="player-hint">${t("exercises.player.noPlayer")}</p>`;
   return { destroy() {} };
  }
  return factory(activity, container, callbacks);
